@@ -1,7 +1,7 @@
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::{parse::Parse, Ident};
 use regex::Regex;
+use syn::{parse::Parse, Ident};
 
 use super::{ArbitraryStyleBlock, ArbitraryStyleSyntax};
 
@@ -50,7 +50,10 @@ impl Parse for MacroSyntax {
 
         // this is because of how parsing works. Need to find more elegant way though
         // TODO: find a more elegant way
-        code.code = Regex::new("\n    ").expect("BUG: failed to build regex for indentation SASS").replace_all(&code.code, "\n").to_string();
+        code.code = Regex::new("\n    ")
+            .expect("BUG: failed to build regex for indentation SASS")
+            .replace_all(&code.code, "\n")
+            .to_string();
 
         Ok(Self {
             ident,
@@ -61,6 +64,4 @@ impl Parse for MacroSyntax {
 }
 
 #[cfg(test)]
-mod test {
-
-}
+mod test {}

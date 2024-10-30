@@ -2,6 +2,7 @@
 name = "sabry_procmacro_impl"
 description = "Sabry proc-macro internals reusable outside of proc-macro context"
 version.workspace = true
+repository.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 authors.workspace = true

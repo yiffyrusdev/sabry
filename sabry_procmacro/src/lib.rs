@@ -1,3 +1,5 @@
+#![doc = include_str!("../README.md")]
+
 use proc_macro::TokenStream;
 use sabry_procmacro_impl::impls::{
     sassy::sassy_macro_impl, styly::styly_macro_impl, usey::usey_macro_impl,

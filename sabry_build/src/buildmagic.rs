@@ -4,15 +4,13 @@ use std::{
     fs::{self, OpenOptions},
     io::{self, Write},
     path::PathBuf,
-    str::FromStr, vec,
+    str::FromStr,
+    vec,
 };
 
 use sabry_intrnl::{
     compiler::{CompilerAdapter, SabryCompilerError},
-    config::{
-        manifest::ManifestError,
-        BehavHashCollision, BehavSassModCollision, SabryConfig,
-    },
+    config::{manifest::ManifestError, BehavHashCollision, BehavSassModCollision, SabryConfig},
     scoper::{hash::ScopeHash, ArbitraryScope, ScopeError},
 };
 use sabry_procmacro_impl::impls::styly;

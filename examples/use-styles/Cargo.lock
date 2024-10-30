@@ -1023,6 +1023,7 @@ dependencies = [
  "grass",
  "lightningcss",
  "proc-macro2",
+ "quote",
  "raffia",
  "regex",
  "serde",

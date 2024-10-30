@@ -15,20 +15,7 @@ sabry_procmacro = {path = "sabry_procmacro", version = "0.0.1"}
 sabry_procmacro_impl = {path = "sabry_procmacro_impl", version = "0.0.1"}
 sabry_build = {path = "sabry_build", version = "0.0.1"}
 
-syn = {version = "^2.0"}
-quote = {version = "^1.0"}
-proc-macro2 = {version = "^1.0"}
-raffia = {version = "^0.9"}
-regex = {version = "^1.11"}
-grass = {version = "^0.13"}
-lightningcss = {version = "1.0.0-alpha.59"}
-blake3 = {version = "^1.5"}
-base64 = {version = "^0.22"}
-const_format = {version = "^0.2"}
 
-thiserror = {version = "^1.0"}
-serde = {version = "^1.0"}
-toml = {version = "^0.8"}
 
 
 [workspace.package]

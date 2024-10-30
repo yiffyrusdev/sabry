@@ -10,12 +10,11 @@ license.workspace = true
 [dependencies]
 sabry_intrnl = {workspace = true}
 
-proc-macro2 = {workspace = true, features = ["span-locations"]}
-syn = {workspace = true, features = ["parsing"]}
-quote = {workspace = true}
-regex = {workspace = true}
-
-raffia = {workspace = true}
+syn = {version = "^2.0", features = ["parsing"]}
+quote = {version = "^1.0"}
+proc-macro2 = {version = "^1.0", features = ["span-locations"]}
+raffia = {version = "^0.9"}
+regex = {version = "^1.11"}
 
 [features]
 sass = [

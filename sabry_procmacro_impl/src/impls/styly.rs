@@ -85,8 +85,7 @@ pub fn styly_macro_impl(input: TokenStream) -> TokenStream {
                         let interp = s
                             .as_sass_interpolated()
                             .and_then(|i| i.elements.first())
-                            .and_then(|e| e.as_static())
-                            .and_then(|s| Some(s.raw.to_string()));
+                            .and_then(|e| e.as_static().map(|s| s.raw.to_string()));
 
                         interp
                     })

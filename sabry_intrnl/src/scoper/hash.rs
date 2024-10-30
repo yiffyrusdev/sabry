@@ -2,7 +2,7 @@ use base64::Engine;
 
 use crate::config::SabryHashConfig;
 
-use super::ArbitraryScope;
+use super::{apply_basic_rusty_member_gen_rules, ArbitraryScope};
 
 /// Convenience wrapper for String-being-a-hash
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -50,6 +50,7 @@ impl ScopeHash {
         //? This isn't right. "size" is size of hash in symbols.
         // naaah, its fine :D (Dan)
         let hash = base64::prelude::BASE64_URL_SAFE_NO_PAD.encode(&hash[..size]);
+        let hash = apply_basic_rusty_member_gen_rules(&hash);
 
         Self(hash)
     }

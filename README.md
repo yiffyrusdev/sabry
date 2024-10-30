@@ -130,7 +130,7 @@ Also, just about everything is pub-available in this crate - Sabry is ready for 
 
 Feel free to check out examples:
 
-|[crate of styles](./examples//define-styles/)|[style usage](./examples/use-styles/)|[leptox-axum with sabry](./examples/leptos-axum)|
+|[crate of styles](./examples//define-styles/)|[style usage](./examples/use-styles/)|[leptos-axum with sabry](./examples/leptos-axum)|
 |-|-|-|
 
 ### Create a crate full of arbitrary SASS

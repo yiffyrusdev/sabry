@@ -2,7 +2,9 @@ name: cargo basic build-test
 
 on:
   push:
+    branches: ["window", "master"]
   pull_request:
+    branches: ["window"]
 
 env: 
   CARGO_TERM_COLOR: always

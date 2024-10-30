@@ -20,7 +20,7 @@ At first, I'll show how this crate "tastes". With SABRY, its in your power to:
 
 Write arbitrary SASS/SCSS code and ship it *as a crate* however you please: with modules, with feature flags, etc. Say "bye" to manual copying, cli-tools and consts.
 
-```rust
+```rust,ignore
 sassy!(tokens {@mixin colored{color: red;}});
 ```
 
@@ -34,7 +34,7 @@ sassy!(tokens {@mixin colored{color: red;}});
 
 Code your SASS in separate files to get proper syntax highlighting, or do sass-in-the-rust to keep things in one place
 
-```rust
+```rust,ignore
 styly!(component {.btn {color: green;}});
 styly!(extras "src/components/extras.scss");
 ```
@@ -64,7 +64,7 @@ tgk_brandstyle = {version = "0.0.1", features = ["utils"]}
 
 `@use` your style-crates in sass code *naturally*
 
-```rust
+```rust,ignore
 styly!(breadcumb {
     @use 'tokens';
     .scope {@include tokens.badge(primary);}
@@ -81,7 +81,7 @@ styly!(breadcumb {
 
 Keep things as private and modular as you wish
 
-```rust
+```rust,ignore
 styly!(pub cats "src/sections/cats/style.scss");
 styly!(dogs {#howl {border: none;}})
 
@@ -103,7 +103,7 @@ styly!(dogs {#howl {border: none;}})
 
 Compile all the sweet SASS/SCSS into the optimized CSS bundle, ship it in CSS shunks or even include the compiled style into the binary
 
-```rust
+```rust,ignore
 styly!(cssbundle {.c1 {color: white;}})
 styly!(const binary {.c2 {color: black;}})
 ```
@@ -144,7 +144,7 @@ The only need is the dependency
 sabry = {version = "0.0.1"}
 ```
 And a proc-macro
-```rust
+```rust,ignore
 // lib.rs
 use sabry::sassy;
 
@@ -175,7 +175,7 @@ Depend on sabry
 sabry = {version = "0.0.1"}
 ```
 And create a style scope wherever you want:
-```rust
+```rust,ignore
 // breadcumblist.rs
 use sabry::styly;
 
@@ -221,7 +221,7 @@ sabry = {version = "0.0.1", features = ["build"]}
 > If you do use some non-default feature flags make sure to keep them in sync between sabry-dependency and sabry-build-dependency.
 
 Then you have to tell sabry when code should be compiled. We'll do this in *build.rs* file.
-```rust
+```rust,ignore
 // build.rs
 use shared_styles::{mixins, styles};
 
@@ -237,7 +237,7 @@ fn main(){
 `buildy` is the entry function of sabry build-time process. The handy `usey!` macro will do just proper handling of our style-macros for it.
 
 Now lets get back to the code and use the mixin defined in another crate:
-```rust
+```rust,ignore
 // breadcumblist.rs
 use sabry::styly;
 
@@ -370,7 +370,7 @@ It does accept the following syntax: `$name(:$syntax)? ({ $code })|($filename)`,
 - *$filename* is a string literal which contains path to the file relative to package root
 
 Examples:
-```rust
+```rust,ignore
 sassy!(module1 {$primary-color: red;});
 sassy!(module2 "src/assets/module2.scss");
 sassy!(module3:sass "src/assets/module3.sass");
@@ -401,7 +401,7 @@ It does accept the following syntax: `pub? const? $ident(:$syntax)? ({ $code })|
 - *$filename* is a string literal which contains path to the file relative to package root
 
 Examples
-```rust
+```rust,ignore
 styly!(fox {.fur {color: red; &-dark {color: black;}}})
 styly!(pub fox {.fur {color: red; &-dark {color: black;}}})
 styly!(pub const fox:sass {
@@ -414,7 +414,7 @@ styly!(pub const fox:sass {
 Every of those calls will produce the styling scope as a module. Differences are explained right below.
 
 In general the scope does look like this:
-```rust
+```rust,ignore
 const FOX: &str = "J9k_s9";
 mod fox {
     pub const fur: &str = "J9k_s9 fur";
@@ -437,7 +437,7 @@ You can read more about scoping and hashing in the [scoping](#scoping) section.
 
 By default generated `mod` is private. You can make both mod and wrapper style constant public by adding the `pub` to macro call:
 
-```rust
+```rust,ignore
 styly!(pub whatever "src/assets/whatever.scss");
 ```
 
@@ -447,11 +447,11 @@ As you've seen above, scope doe not contain any style code by itself. That's the
 
 However you could still compile styles into the artifact by simply adding the `const` to the macro call:
 
-```rust
+```rust,ignore
 styly!(const scope "src/assets/scope.scss");
 ```
 Which results in following:
-```rust
+```rust,ignore
 const SCOPE: &str = /* scope hash */;
 const SCOPE_CSS: &str = /* compiled from src/assets/scope.scss */;
 mod scope {/* selector collection */}
@@ -475,12 +475,12 @@ Each of those pairs is processed as a file which sabry needs to write into
 the configured `intermediate_dir` and then passed into the CSS compiler.
 
 You could, for example, define the module "mixin_a":
-```rust
+```rust,ignore
 buildy(vec![("mixin_a".to_string(), "@mixin a(){}".to_string())]);
 ```
 
 However there's a usey macro, which handles this for you:
-```rust
+```rust,ignore
 buildy(
     usey!(mixins!(), utils!())
 );
@@ -535,7 +535,7 @@ Different selector types are scoped differently:
 As for **SASS parent selectors**: they are currently handled in different way. Instead of
 walking up the syntax tree sabry just creates function member for the scope and leave the rest to grass:
 
-```rust
+```rust,ignore
 styly!(scope {
     .cls1 {
         &-dark {}
@@ -543,7 +543,7 @@ styly!(scope {
 });
 ```
 is something like
-```rust
+```rust,ignore
 const SCOPE: &str = "Ut8CskJ";
 mod scope {
     pub const cls1: &str = "Ut8CskJ cls1";
@@ -561,6 +561,7 @@ This isn't very handy, also isn't strict enough, and is a high-priority subject 
 
 - [] Crates of styled components - currently the only way to create them seems to be const styly.
     - [] CSS support
+- [] Currently the crate causes "dependency inheritance" infection. We cant get rid of it, however should be doable to at least get rid of flag inheritance
 - [] There are some strange parsing errors, seems like a bug, however very hard to reproduce. Have to investigate. Maybe do more tests.
 - [] Experience with cargo-leptos is fine, and we do use it, however its a bit "raughy". Need to do something about it.
 

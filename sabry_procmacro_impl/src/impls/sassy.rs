@@ -1,6 +1,7 @@
 use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{parse::Parse, Ident};
+use regex::Regex;
 
 use super::{ArbitraryStyleBlock, ArbitraryStyleSyntax};
 
@@ -43,9 +44,6 @@ pub struct MacroSyntax {
 
 impl Parse for MacroSyntax {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-        #[cfg(feature = "sass")]
-        use regex::Regex;
-
         let ident = input.parse::<Ident>()?;
         let mode = input.parse::<ArbitraryStyleSyntax>()?;
         let mut code = input.parse::<ArbitraryStyleBlock>()?;

@@ -1,0 +1,28 @@
+[package]
+name = "sabry_intrnl"
+description = "Sabry internal, yet still public library"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+raffia = {workspace = true}
+grass = {workspace = true}
+lightningcss = {workspace = true}
+blake3 = {workspace = true}
+base64 = {workspace = true}
+
+syn = {workspace = true}
+proc-macro2 = {workspace = true}
+regex = {workspace = true}
+const_format = {workspace = true}
+
+serde = {workspace = true, features = ["derive"]}
+toml = {workspace = true}
+thiserror = {workspace = true}
+
+[features]
+sass = []
+scss = []

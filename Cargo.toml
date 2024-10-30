@@ -1,0 +1,80 @@
+[workspace]
+resolver = "2"
+members = [
+    "sabry_procmacro",
+    "sabry_procmacro_impl",
+    "sabry_intrnl",
+]
+exclude = [
+    "examples"
+]
+
+[workspace.dependencies]
+sabry_intrnl = {path = "sabry_intrnl", version = "0.0.1"}
+sabry_procmacro = {path = "sabry_procmacro", version = "0.0.1"}
+sabry_procmacro_impl = {path = "sabry_procmacro_impl", version = "0.0.1"}
+sabry_build = {path = "sabry_build", version = "0.0.1"}
+
+syn = {version = "^2.0"}
+quote = {version = "^1.0"}
+proc-macro2 = {version = "^1.0"}
+raffia = {version = "^0.9"}
+regex = {version = "^1.11"}
+grass = {version = "^0.13"}
+lightningcss = {version = "1.0.0-alpha.59"}
+blake3 = {version = "^1.5"}
+base64 = {version = "^0.22"}
+const_format = {version = "^0.2"}
+
+thiserror = {version = "^1.0"}
+serde = {version = "^1.0"}
+toml = {version = "^0.8"}
+
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+rust-version = "1.82"
+authors = ["Svyatoslav Pushkarev <yiffyrusdev@yandex.ru>"]
+license = "MIT"
+publish = true
+
+[package]
+name = "sabry"
+description = "Syntactically Awesome But RustY - crate that brings SCSS/SASS into rust."
+keywords = ["web", "sass", "scss", "macro"]
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+sabry_procmacro = {workspace = true, optional = true}
+sabry_build = {workspace = true, optional = true}
+sabry_intrnl = {workspace = true}
+
+[features]
+default = ["scss"]
+procmacro = [
+    "dep:sabry_procmacro"
+]
+sass = [
+    "procmacro",
+    "sabry_procmacro/sass",
+    "sabry_intrnl/sass",
+    "sabry_build/sass"
+]
+scss = [
+    "procmacro",
+    "sabry_procmacro/scss",
+    "sabry_intrnl/scss",
+    "sabry_build/scss"
+]
+build = [
+    "dep:sabry_build"
+]
+net-files = [
+    "sabry_build/net-files"
+]

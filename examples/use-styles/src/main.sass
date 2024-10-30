@@ -1,0 +1,12 @@
+@use "tokens"
+
+.someth
+    @include tokens.clickable
+    background: white
+    &-dark
+        background: none
+        border: 1px solid black
+    &[value]
+        &::after
+            content: "valued"
+            color: green

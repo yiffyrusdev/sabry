@@ -1,0 +1,24 @@
+[package]
+name = "use-styles"
+version = "0.0.0"
+edition = "2021"
+rust-version = "1.82"
+publish = false
+
+[dependencies]
+sabry = {path = "../../", features = ["sass"]}
+
+[build-dependencies]
+sabry = {path = "../../", features = ["build", "sass"]}
+define-styles = {path = "../define-styles"}
+
+[package.metadata.sabry]
+css.bundle = "target/static/style.css"
+css.scopes = "target/static/styles/"
+css.bundle_prelude = ["assets/prelude.css"]
+
+hash.size = 6
+hash.collision = "error"
+
+[package.metadata.sabry.lightningcss]
+targets = {chrome = "120", firefox = "120", ie = "8"}

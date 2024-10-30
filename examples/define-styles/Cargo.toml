@@ -1,0 +1,9 @@
+[package]
+name = "define-styles"
+version = "0.0.0"
+edition = "2021"
+rust-version = "1.82"
+publish = false
+
+[dependencies]
+sabry = {path = "../../", features = ["sass"]}

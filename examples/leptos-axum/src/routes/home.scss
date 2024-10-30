@@ -1,0 +1,12 @@
+@use "tokens";
+@use "utils";
+@use "theme";
+
+.btn {
+    @include tokens.clickable(accent);
+}
+
+.table {
+    @include utils.flex(column, center, center);
+    @include theme.surface(primary);
+}

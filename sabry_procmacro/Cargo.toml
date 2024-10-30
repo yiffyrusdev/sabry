@@ -1,0 +1,22 @@
+[package]
+name = "sabry_procmacro"
+description = "Sabry proc-macro declarations"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies]
+sabry_procmacro_impl = {workspace = true}
+
+[features]
+sass = [
+    "sabry_procmacro_impl/sass"
+]
+scss = [
+    "sabry_procmacro_impl/scss"
+]

@@ -17,9 +17,3 @@ raffia = {version = "^0.9"}
 regex = {version = "^1.11"}
 
 [features]
-sass = [
-    "sabry_intrnl/sass"
-]
-scss = [
-    "sabry_intrnl/scss"
-]

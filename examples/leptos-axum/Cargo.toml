@@ -23,11 +23,11 @@ tracing = { version = "0.1", optional = true }
 http = "1"
 
 # sabry with sass
-sabry = {path = "../../", features = ["sass"]}
+sabry = {path = "../../"}
 
 [build-dependencies]
 # sabry for build with sass
-sabry = {path = "../../", features = ["build", "sass"]}
+sabry = {path = "../../", features = ["build"]}
 # lets depend on our styles
 define-styles = {path = "../define-styles"}
 

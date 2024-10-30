@@ -74,18 +74,14 @@ impl ToString for ArbitraryStyleBlock {
 
 #[derive(Clone, Copy)]
 pub enum ArbitraryStyleSyntax {
-    #[cfg(feature = "scss")]
     Scss,
-    #[cfg(feature = "sass")]
     Sass,
 }
 
 impl From<ArbitraryStyleSyntax> for CompilerSyntax {
     fn from(value: ArbitraryStyleSyntax) -> Self {
         match value {
-            #[cfg(feature = "sass")]
             ArbitraryStyleSyntax::Sass => Self::Sass,
-            #[cfg(feature = "scss")]
             ArbitraryStyleSyntax::Scss => Self::Scss,
         }
     }
@@ -94,9 +90,7 @@ impl From<ArbitraryStyleSyntax> for CompilerSyntax {
 impl ToTokens for ArbitraryStyleSyntax {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         match self {
-            #[cfg(feature = "sass")]
             Self::Sass => tokens.append_all(quote! {"sass"}),
-            #[cfg(feature = "scss")]
             Self::Scss => tokens.append_all(quote! {"scss"}),
         }
     }
@@ -114,9 +108,7 @@ impl Parse for ArbitraryStyleSyntax {
         let ident = input.parse::<Ident>()?;
 
         match ident.to_string().as_str() {
-            #[cfg(feature = "sass")]
             "sass" => Ok(Self::Sass),
-            #[cfg(feature = "scss")]
             "scss" => Ok(Self::Scss),
             _ => Err(syn::Error::new(
                 ident.span(),
@@ -132,9 +124,7 @@ impl Parse for ArbitraryStyleSyntax {
 impl Debug for ArbitraryStyleSyntax {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let name = match self {
-            #[cfg(feature = "sass")]
             Self::Sass => "sass",
-            #[cfg(feature = "scss")]
             Self::Scss => "scss",
         };
         write!(f, "{name}")
@@ -142,23 +132,15 @@ impl Debug for ArbitraryStyleSyntax {
 }
 
 impl Default for ArbitraryStyleSyntax {
-    #[cfg(feature = "scss")]
     fn default() -> Self {
         Self::Scss
-    }
-
-    #[cfg(all(feature = "sass", not(feature = "scss")))]
-    fn default() -> Self {
-        Self::Sass
     }
 }
 
 impl From<ArbitraryStyleSyntax> for raffia::Syntax {
     fn from(value: ArbitraryStyleSyntax) -> Self {
         match value {
-            #[cfg(feature = "sass")]
             ArbitraryStyleSyntax::Sass => Self::Sass,
-            #[cfg(feature = "scss")]
             ArbitraryStyleSyntax::Scss => Self::Scss,
         }
     }
@@ -166,7 +148,6 @@ impl From<ArbitraryStyleSyntax> for raffia::Syntax {
 
 #[cfg(test)]
 mod test {
-    #[cfg(feature = "sass")]
     #[test]
     fn arbitrary_style_block_sass() {
         use super::ArbitraryStyleBlock;
@@ -183,7 +164,6 @@ mod test {
         assert_eq!(code, block.code);
     }
 
-    #[cfg(feature = "scss")]
     #[test]
     fn arbitrary_style_block_scss() {
         use super::ArbitraryStyleBlock;

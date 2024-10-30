@@ -43,21 +43,9 @@ sabry_build = {workspace = true, optional = true}
 sabry_intrnl = {workspace = true}
 
 [features]
-default = ["scss"]
+default = ["procmacro"]
 procmacro = [
     "dep:sabry_procmacro"
-]
-sass = [
-    "procmacro",
-    "sabry_procmacro/sass",
-    "sabry_intrnl/sass",
-    "sabry_build/sass"
-]
-scss = [
-    "procmacro",
-    "sabry_procmacro/scss",
-    "sabry_intrnl/scss",
-    "sabry_build/scss"
 ]
 build = [
     "dep:sabry_build"

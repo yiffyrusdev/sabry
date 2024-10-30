@@ -14,9 +14,3 @@ proc-macro = true
 sabry_procmacro_impl = {workspace = true}
 
 [features]
-sass = [
-    "sabry_procmacro_impl/sass"
-]
-scss = [
-    "sabry_procmacro_impl/scss"
-]

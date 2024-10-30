@@ -89,18 +89,14 @@ pub enum SabryCompilerError {
 /// Unification wrapper over all the Syntax enums
 #[derive(Clone, Copy)]
 pub enum CompilerSyntax {
-    #[cfg(feature = "sass")]
     Sass,
-    #[cfg(feature = "scss")]
     Scss,
 }
 
 impl From<raffia::Syntax> for CompilerSyntax {
     fn from(value: raffia::Syntax) -> Self {
         match value {
-            #[cfg(feature = "sass")]
             raffia::Syntax::Sass => Self::Sass,
-            #[cfg(feature = "scss")]
             raffia::Syntax::Scss => Self::Scss,
             // TODO: fallbacky error-prone
             _ => Self::Scss,
@@ -111,9 +107,7 @@ impl From<raffia::Syntax> for CompilerSyntax {
 impl From<CompilerSyntax> for grass::InputSyntax {
     fn from(value: CompilerSyntax) -> Self {
         match value {
-            #[cfg(feature = "scss")]
             CompilerSyntax::Scss => Self::Scss,
-            #[cfg(feature = "sass")]
             CompilerSyntax::Sass => Self::Sass,
         }
     }

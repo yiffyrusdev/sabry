@@ -6,4 +6,4 @@ rust-version = "1.82"
 publish = false
 
 [dependencies]
-sabry = {path = "../../", features = ["sass"]}
+sabry = {path = "../../"}

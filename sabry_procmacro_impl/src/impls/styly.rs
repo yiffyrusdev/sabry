@@ -3,7 +3,7 @@ use quote::quote;
 use sabry_intrnl::{
     compiler::CompilerAdapter,
     config::SabryConfig,
-    scoper::{ArbitraryScope, ScopedSelector},
+    scoper::{apply_basic_rusty_member_gen_rules, ArbitraryScope, ScopedSelector},
 };
 use syn::{parse::Parse, Ident, Token};
 
@@ -67,7 +67,7 @@ pub fn styly_macro_impl(input: TokenStream) -> TokenStream {
     match ms.generator {
         ScopeGenerator::Module { public, constant } => {
             let scope_hash = scope.hash.as_str();
-            let scope_ident = scope.original_scope.name;
+            let scope_ident = scope.original_scope.name.clone();
             let scope_wrapper_ident =
                 syn::parse_str::<Ident>(&scope_ident.to_string().to_uppercase())
                     .expect("BUG: We just converted valid Ident to string and uppercased");
@@ -76,6 +76,33 @@ pub fn styly_macro_impl(input: TokenStream) -> TokenStream {
             } else {
                 quote! {}
             };
+
+            let nests = scope.original_scope.adapter().nesting_selectors();
+            let special_nesting_members = nests
+                .iter()
+                .filter_map(|ns| {
+                    ns.suffix.clone().and_then(|s| {
+                        let interp = s
+                            .as_sass_interpolated()
+                            .and_then(|i| i.elements.first())
+                            .and_then(|e| e.as_static())
+                            .and_then(|s| Some(s.raw.to_string()));
+
+                        interp
+                    })
+                })
+                .map(|s| {
+                    let ident = apply_basic_rusty_member_gen_rules(&s);
+                    let fnident = syn::parse_str::<Ident>(format!("_{ident}").as_str())
+                        .expect("BUG: invalid ident for nesting selector formed");
+                    let formatstr = format!("{{c}}{}", &s);
+                    let doc = format!("Nesting selector. Originated from '&{s}'");
+
+                    quote! {
+                        #[doc = #doc]
+                        pub fn #fnident(c: &str) -> String {format!(#formatstr)}
+                    }
+                });
 
             let scope_members = scope
                 .hashed_selectors
@@ -133,6 +160,7 @@ pub fn styly_macro_impl(input: TokenStream) -> TokenStream {
                     #[doc = #mod_docs]
                     #scope_vis mod #scope_ident {
                         #(#scope_members)*
+                        #(#special_nesting_members)*
                     }
                 }
             } else {
@@ -142,6 +170,7 @@ pub fn styly_macro_impl(input: TokenStream) -> TokenStream {
                     #[doc = #mod_docs]
                     #scope_vis mod #scope_ident {
                         #(#scope_members)*
+                        #(#special_nesting_members)*
                     }
                 }
             }

@@ -1003,7 +1003,7 @@ dependencies = [
 
 [[package]]
 name = "sabry_build"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "proc-macro2",
  "sabry_intrnl",
@@ -1015,7 +1015,7 @@ dependencies = [
 
 [[package]]
 name = "sabry_intrnl"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "base64",
  "blake3",
@@ -1033,14 +1033,14 @@ dependencies = [
 
 [[package]]
 name = "sabry_procmacro"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "sabry_procmacro_impl",
 ]
 
 [[package]]
 name = "sabry_procmacro_impl"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
  "proc-macro2",
  "quote",

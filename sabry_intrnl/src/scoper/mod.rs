@@ -294,7 +294,7 @@ impl ScopedSelector {
     }
 }
 
-fn apply_basic_rusty_member_gen_rules(source: &str) -> String {
+pub fn apply_basic_rusty_member_gen_rules(source: &str) -> String {
     let omit_regex = Regex::new(r"(^\-)|(\-$)|[^a-zA-Z0-9\-\_]")
         .expect("BUG: can not build omition regex for rusty member generation");
 

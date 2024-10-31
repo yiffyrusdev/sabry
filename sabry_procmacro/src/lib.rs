@@ -48,7 +48,10 @@ pub fn sassy(input: TokenStream) -> TokenStream {
 /// ## Usage
 ///
 /// Write style in rusty code (rust-analyzer wont autocomplete your scope members)
+///
 /// ```ignore
+/// use sabry::styly;
+///
 /// styly!(scope1 {
 ///     /* SCSS */
 /// });
@@ -107,9 +110,8 @@ pub fn styly(input: TokenStream) -> TokenStream {
 /// use brandstyle::tokens as brand_tokens;
 ///
 /// usey!(
-///     brandstyle::theme!(),
-///     tokens!(),
-///     brand_tokens!(),
+///     theme!(),
+///     tokens!()
 /// );
 /// ```
 ///

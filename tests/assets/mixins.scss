@@ -1,0 +1,9 @@
+$primary-color: black;
+
+@mixin colored($col: primary) {
+    @if $col == primary {
+        color: $primary-color;
+    } @else {
+        color: $col;
+    }
+}

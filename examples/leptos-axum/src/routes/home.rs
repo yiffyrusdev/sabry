@@ -1,7 +1,41 @@
 use leptos::prelude::*;
 use sabry::styly;
 
-styly!(style "src/routes/home.scss");
+styly!(style {
+    @use "tokens";
+    @use "utils";
+    @use "theme";
+
+    h2 {
+        margin-bottom: 1rem;
+        @include theme.surface(primary);
+        @include theme.txt(primary);
+        span {
+            @include theme.txt(accent);
+        }
+    }
+
+    .btn {
+        @include tokens.clickable(accent);
+        &-dark {
+            @include tokens.clickable(secondary, 0.8, 1.1);
+        }
+    }
+
+    .table {
+        @include utils.flex(column, center, center);
+        @include theme.surface(primary);
+    }
+
+    .card {
+        @include theme.surface(secondary);
+    }
+    .pocwarn {
+        @include theme.surface(secondary);
+        text-transform: uppercase;
+    }
+
+});
 
 /// Renders the home page of your application.
 #[component]
@@ -12,7 +46,13 @@ pub fn Route() -> impl IntoView {
 
     view! {class = STYLE,
         <section class=style::table>
-            <h1>"Welcome to Leptos!"</h1>
+            <h2>"Welcome to Leptos"</h2>
+            <h2 class="">
+                "This head is styled with lepty-scopes feature"
+                <br/>
+                <span class="">"And this child too!"</span>
+            </h2>
+
             <button class=style::btn on:click=on_click>"Ima CRAZY button, clicked: " {count} " times!"</button>
             <button class=style::_dark(style::btn) on:click=on_click>"Ima CRAZY button, clicked: " {count} " times!"</button>
             <span class=style::card>"DISCLAIMER:"</span>

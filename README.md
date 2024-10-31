@@ -209,6 +209,8 @@ Every selector, if that does make sense, now available for you as a member of `s
 
 ### Use styles earlier created in another crate
 
+> **Tip** | If you use [leptos](https://github.com/leptos-rs/leptos) - check [this](#leptos-specials) section as well
+
 The combination of previous two, with some additional work to do and some extra sugar to enjoy.
 
 Sabry is needed as both dependency and build-dependency.

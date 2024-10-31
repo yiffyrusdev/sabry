@@ -12,6 +12,10 @@
 >
 > the latest-trashy state is in the "window" branch
 
+[![Crates.io](https://img.shields.io/crates/v/sabry.svg)](https://crates.io/crates/sabry)
+[![Docs.rs](https://img.shields.io/docsrs/sabry/latest.svg)](https://docs.rs/sabry)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/yiffyrusdev/sabry/blob/master/LICENSE)
+
 At first, I'll show how this crate "tastes". With SABRY, its in your power to:
 
 <table>
@@ -65,7 +69,7 @@ tgk_brandstyle = {version = "0.0.1", features = ["utils"]}
 `@use` your style-crates in sass code *naturally*
 
 ```rust,ignore
-styly!(breadcumb {
+styly!(breadbadge {
     @use 'tokens';
     .scope {@include tokens.badge(primary);}
 })
@@ -176,11 +180,11 @@ sabry = {version = "0.0.1"}
 ```
 And create a style scope wherever you want:
 ```rust,ignore
-// breadcumblist.rs
+// breadbadgelist.rs
 use sabry::styly;
 
 styly!(const styles {
-    .cumbs {
+    .badges {
         display: flex;
         &__list {
             display: flex;
@@ -192,8 +196,8 @@ styly!(const styles {
 });
 
 fn render() -> HtmlElement {
-    div().class(styles::cumbs).chain(
-        ul().class(styles::_list(styles::cumbs))
+    div().class(styles::badges).chain(
+        ul().class(styles::_list(styles::badges))
     ).chain(
         span().id(styles::thewolf)
     )
@@ -201,7 +205,7 @@ fn render() -> HtmlElement {
 ```
 > That `const` usage is covered in the [following](#constant-styly-scopes) section. In this example we dont invoke sabry build-magic, so, to be as close to real life as possible, I used a const.
 
-Every selector, if that does make sense, now available for you as a member of `styles` scope. In this example - `styles::cumbs`, `styles::thewolf` and `styles::_list()`. More about scoping and member names you can read [here](#styly-scopes).
+Every selector, if that does make sense, now available for you as a member of `styles` scope. In this example - `styles::badges`, `styles::thewolf` and `styles::_list()`. More about scoping and member names you can read [here](#styly-scopes).
 
 ### Use styles earlier created in another crate
 
@@ -238,12 +242,12 @@ fn main(){
 
 Now lets get back to the code and use the mixin defined in another crate:
 ```rust,ignore
-// breadcumblist.rs
+// breadbadgelist.rs
 use sabry::styly;
 
 styly!(styles {
     @use "mixins";
-    .cumbs {
+    .badges {
         display: flex;
         &__list {
             display: flex;
@@ -255,8 +259,8 @@ styly!(styles {
 });
 
 fn render() -> HtmlElement {
-    div().class(styles::cumbs).chain(
-        ul().class(styles::_list(styles::cumbs))
+    div().class(styles::badges).chain(
+        ul().class(styles::_list(styles::badges))
     ).chain(
         span().id(styles::thewolf)
     )

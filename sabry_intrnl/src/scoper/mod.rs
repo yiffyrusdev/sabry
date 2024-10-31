@@ -1,3 +1,4 @@
+use cfg_if::cfg_if;
 use hash::ScopeHash;
 use raffia::Spanned;
 use regex::Regex;
@@ -187,10 +188,22 @@ impl HashedSelector {
             // As we dont want to use two HTML props for a single ID,
             // ID scoping is done with id modification
             ScopedSelector::Id(a) => {
-                format!("{}-{}", hash.as_str(), a.ident)
+                cfg_if! {
+                    if #[cfg(feature = "lepty-scoping")] {
+                        format!("{}.{}", a.ident, hash.as_str())
+                    } else {
+                        format!("{}-{}", hash.as_str(), a.ident)
+                    }
+                }
             }
             ScopedSelector::Tag(a) => {
-                format!(".{} {}", hash.as_str(), a.ident)
+                cfg_if! {
+                    if #[cfg(feature = "lepty-scoping")] {
+                        format!("{}.{}", a.ident, hash.as_str())
+                    } else {
+                        format!(".{} {}", hash.as_str(), a.ident)
+                    }
+                }
             }
         }
     }
@@ -205,10 +218,26 @@ impl HashedSelector {
     pub fn make_hashed_html(value: &ScopedSelector, hash: &ScopeHash) -> Option<String> {
         match value {
             // Class scoping is done with class composition
-            ScopedSelector::Class(a) => Some(format!("{} {}", hash.as_str(), a.ident)),
+            ScopedSelector::Class(a) => {
+                cfg_if! {
+                    if #[cfg(feature = "lepty-scoping")] {
+                        Some(a.ident.to_string())
+                    } else {
+                        Some(format!("{} {}", hash.as_str(), a.ident))
+                    }
+                }
+            },
             // As we dont want to use two HTML props for a single ID,
             // ID scoping is done with id modification
-            ScopedSelector::Id(a) => Some(format!("{}-{}", hash.as_str(), a.ident)),
+            ScopedSelector::Id(a) => {
+                cfg_if! {
+                    if #[cfg(feature = "lepty-scoping")] {
+                        Some(a.ident.to_string())
+                    } else {
+                        Some(format!("{}-{}", hash.as_str(), a.ident))
+                    }
+                }
+            },
             ScopedSelector::Tag(_) => None,
         }
     }
@@ -330,6 +359,7 @@ pub fn apply_basic_rusty_member_gen_rules(source: &str) -> String {
 mod test {
     use std::collections::HashSet;
 
+    use cfg_if::cfg_if;
     use syn::Ident;
 
     use crate::{
@@ -345,14 +375,33 @@ mod test {
             ".cls1{color:red; &-dark{color: black;} #id1 {color:green;} div {color:blue;}} .cls3#id2{color: black;}";
         let hash = ScopeHash::test_init("F2kf8nMs".into());
 
-        let expect_code = ".F2kf8nMs.cls1{color:red; &-dark{color: black;} #F2kf8nMs-id1 {color:green;} .F2kf8nMs div {color:blue;}} .F2kf8nMs.cls3#F2kf8nMs-id2{color: black;}";
-        let expect_selector_htmls = HashSet::from([
-            "F2kf8nMs cls1".to_string(),
-            "F2kf8nMs-id1".to_string(),
-            "F2kf8nMs cls3".to_string(),
-            "F2kf8nMs-id2".to_string(),
-            "".to_string(), // comes from `div` which has no html hashed code, still want to check presense
-        ]);
+        cfg_if! {
+            if #[cfg(feature = "lepty-scoping")]{
+                let expect_code = ".F2kf8nMs.cls1{color:red; &-dark{color: black;} #id1.F2kf8nMs {color:green;} div.F2kf8nMs {color:blue;}} .F2kf8nMs.cls3#id2.F2kf8nMs{color: black;}";
+            } else {
+                let expect_code = ".F2kf8nMs.cls1{color:red; &-dark{color: black;} #F2kf8nMs-id1 {color:green;} .F2kf8nMs div {color:blue;}} .F2kf8nMs.cls3#F2kf8nMs-id2{color: black;}";
+            }
+        }
+
+        cfg_if! {
+            if #[cfg(feature = "lepty-scoping")] {
+                let expect_selector_htmls = HashSet::from([
+                    "cls1".to_string(),
+                    "id1".to_string(),
+                    "cls3".to_string(),
+                    "id2".to_string(),
+                    "".to_string(), // comes from `div` which has no html hashed code, still want to check presense
+                ]);
+            } else {
+                let expect_selector_htmls = HashSet::from([
+                    "F2kf8nMs cls1".to_string(),
+                    "F2kf8nMs-id1".to_string(),
+                    "F2kf8nMs cls3".to_string(),
+                    "F2kf8nMs-id2".to_string(),
+                    "".to_string(), // comes from `div` which has no html hashed code, still want to check presense
+                ]);
+            }
+        }
 
         let scope = ArbitraryScope::from_source(
             raffia::Syntax::Scss,

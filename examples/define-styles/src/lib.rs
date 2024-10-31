@@ -1,5 +1,7 @@
 use sabry::sassy;
 
+sassy!(style "src/style.scss");
+
 sassy!(utils {
     @mixin flex($direction, $align, $justify, $gap: .5rem) {
         display: flex;

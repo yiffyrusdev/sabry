@@ -12,6 +12,10 @@
 >
 > the latest-trashy state is in the "window" branch
 
+[![Crates.io](https://img.shields.io/crates/v/sabry.svg)](https://crates.io/crates/sabry)
+[![Docs.rs](https://img.shields.io/docsrs/sabry/latest.svg)](https://docs.rs/sabry)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/yiffyrusdev/sabry/blob/master/LICENSE)
+
 At first, I'll show how this crate "tastes". With SABRY, its in your power to:
 
 <table>
@@ -65,7 +69,7 @@ tgk_brandstyle = {version = "0.0.1", features = ["utils"]}
 `@use` your style-crates in sass code *naturally*
 
 ```rust,ignore
-styly!(breadcumb {
+styly!(breadbadge {
     @use 'tokens';
     .scope {@include tokens.badge(primary);}
 })
@@ -130,7 +134,7 @@ Also, just about everything is pub-available in this crate - Sabry is ready for 
 
 Feel free to check out examples:
 
-|[crate of styles](./examples//define-styles/)|[style usage](./examples/use-styles/)|[leptox-axum with sabry](./examples/leptos-axum)|
+|[crate of styles](./examples//define-styles/)|[style usage](./examples/use-styles/)|[leptos-axum with sabry](./examples/leptos-axum)|
 |-|-|-|
 
 ### Create a crate full of arbitrary SASS
@@ -176,11 +180,11 @@ sabry = {version = "0.0.1"}
 ```
 And create a style scope wherever you want:
 ```rust,ignore
-// breadcumblist.rs
+// breadbadgelist.rs
 use sabry::styly;
 
 styly!(const styles {
-    .cumbs {
+    .badges {
         display: flex;
         &__list {
             display: flex;
@@ -192,8 +196,8 @@ styly!(const styles {
 });
 
 fn render() -> HtmlElement {
-    div().class(styles::cumbs).chain(
-        ul().class(styles::_list(styles::cumbs))
+    div().class(styles::badges).chain(
+        ul().class(styles::_list(styles::badges))
     ).chain(
         span().id(styles::thewolf)
     )
@@ -201,9 +205,11 @@ fn render() -> HtmlElement {
 ```
 > That `const` usage is covered in the [following](#constant-styly-scopes) section. In this example we dont invoke sabry build-magic, so, to be as close to real life as possible, I used a const.
 
-Every selector, if that does make sense, now available for you as a member of `styles` scope. In this example - `styles::cumbs`, `styles::thewolf` and `styles::_list()`. More about scoping and member names you can read [here](#styly-scopes).
+Every selector, if that does make sense, now available for you as a member of `styles` scope. In this example - `styles::badges`, `styles::thewolf` and `styles::_list()`. More about scoping and member names you can read [here](#styly-scopes).
 
 ### Use styles earlier created in another crate
+
+> **Tip** | If you use [leptos](https://github.com/leptos-rs/leptos) - check [this](#leptos-specials) section as well
 
 The combination of previous two, with some additional work to do and some extra sugar to enjoy.
 
@@ -238,12 +244,12 @@ fn main(){
 
 Now lets get back to the code and use the mixin defined in another crate:
 ```rust,ignore
-// breadcumblist.rs
+// breadbadgelist.rs
 use sabry::styly;
 
 styly!(styles {
     @use "mixins";
-    .cumbs {
+    .badges {
         display: flex;
         &__list {
             display: flex;
@@ -255,14 +261,81 @@ styly!(styles {
 });
 
 fn render() -> HtmlElement {
-    div().class(styles::cumbs).chain(
-        ul().class(styles::_list(styles::cumbs))
+    div().class(styles::badges).chain(
+        ul().class(styles::_list(styles::badges))
     ).chain(
         span().id(styles::thewolf)
     )
 }
 ```
 So the `mixins!` macro we just passed to the `usey!` macro inside of `buildy` function call is now accessible with simple and natural `@use "mixins"` SASS rule!
+
+### Leptos specials
+
+With [leptos](https://github.com/leptos-rs/leptos) framework you can do the trick to apply some class to most of HtmlElements for the entire component/island:
+
+```rust,ignore
+#[component]
+fn component() -> impl IntoView {
+    view! {class="cls1", /* <- here */
+        <h1>"Head"</h1>
+        <p>"text"</p>
+    }
+}
+```
+... and have "cls1" on both `h1` and `p` auto-assigned. Isn't this cool?
+
+So, if you're on leptos, and don't mind to take this approach, I'd highly recommend turning the *lepty-scoping* feature on:
+
+```toml
+# Cargo.toml
+
+[dependencies]
+sabry = {version = "0.0.1", features = ["lepty-scoping"]}
+
+[build-dependencies]
+sabry = {version = "0.0.1", features = ["build", "lepty-scoping"]}
+```
+
+```rust,ignore
+styly!(scope {
+    @use "tokens";
+    h1 {
+        @include tokens.sectionhead();
+        img {
+            @include tokens.sectionimg();
+        }
+    }
+    .breadcumbs {
+        @include tokens.badgelist();
+        &__item {
+            @include tokens.badge(secondary);
+        }
+    }
+});
+
+#[component]
+fn component() -> impl IntoView {
+    view! {class=SCOPE,
+        <h1>
+            "Head"
+            <img src="whatever"/>
+        </h1>
+        <ul class=scope::breadcumbs>
+            <li class=scope::___item(scope::breadcumbs)>
+                "Home page"
+            </li>
+        </ul>
+    }
+}
+```
+
+That will perform *much* better:
+
+- All scope members - like `scope::breadcumbs` - wont contain repeating scope hash, just the original class/id selector
+- You will not encounter [the catch](#scoping) with nested tagname selectors
+
+Also, this isn't really exclusive leptos-supporting feature. It just changes scoping behavour.
 
 ## Configuration
 
@@ -531,6 +604,8 @@ Different selector types are scoped differently:
 >
 > Also if there are nested tagname selectors - sabry won't take this into account and you'll
 > have to wrap them with `SCOPE` class as well
+>
+> **However** If you are able to apply some class to all html elements you have - like `view!{class=CLASS...}` with Leptos - you could use *lepty-scoping* feature flag for sabry and get rid of this catch! See more [here](#leptos-specials).
 
 As for **SASS parent selectors**: they are currently handled in different way. Instead of
 walking up the syntax tree sabry just creates function member for the scope and leave the rest to grass:

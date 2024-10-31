@@ -994,28 +994,15 @@ checksum = "f3cb5ba0dc43242ce17de99c180e96db90b235b8a9fdc9543c96d2209116bd9f"
 
 [[package]]
 name = "sabry"
-version = "0.0.1"
+version = "0.0.1-alpha.1"
 dependencies = [
- "sabry_build",
  "sabry_intrnl",
  "sabry_procmacro",
 ]
 
 [[package]]
-name = "sabry_build"
-version = "0.0.0"
-dependencies = [
- "proc-macro2",
- "sabry_intrnl",
- "sabry_procmacro_impl",
- "syn 2.0.85",
- "thiserror",
- "walkdir",
-]
-
-[[package]]
 name = "sabry_intrnl"
-version = "0.0.0"
+version = "0.0.1-alpha.1"
 dependencies = [
  "base64",
  "blake3",
@@ -1023,6 +1010,7 @@ dependencies = [
  "grass",
  "lightningcss",
  "proc-macro2",
+ "quote",
  "raffia",
  "regex",
  "serde",
@@ -1033,14 +1021,14 @@ dependencies = [
 
 [[package]]
 name = "sabry_procmacro"
-version = "0.0.0"
+version = "0.0.1-alpha.1"
 dependencies = [
  "sabry_procmacro_impl",
 ]
 
 [[package]]
 name = "sabry_procmacro_impl"
-version = "0.0.0"
+version = "0.0.1-alpha.1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1048,15 +1036,6 @@ dependencies = [
  "regex",
  "sabry_intrnl",
  "syn 2.0.85",
-]
-
-[[package]]
-name = "same-file"
-version = "1.0.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502"
-dependencies = [
- "winapi-util",
 ]
 
 [[package]]
@@ -1291,16 +1270,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "65dd7eed29412da847b0f78bcec0ac98588165988a8cfe41d4ea1d429f8ccfff"
 
 [[package]]
-name = "walkdir"
-version = "2.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "29790946404f91d9c5d06f9874efddea1dc06c5efe94541a7d6863108e3a5e4b"
-dependencies = [
- "same-file",
- "winapi-util",
-]
-
-[[package]]
 name = "wasi"
 version = "0.11.0+wasi-snapshot-preview1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1360,15 +1329,6 @@ name = "wasm-bindgen-shared"
 version = "0.2.95"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "65fc09f10666a9f147042251e0dda9c18f166ff7de300607007e96bdebc1068d"
-
-[[package]]
-name = "winapi-util"
-version = "0.1.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
-dependencies = [
- "windows-sys",
-]
 
 [[package]]
 name = "windows-sys"

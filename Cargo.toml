@@ -43,6 +43,9 @@ sabry_intrnl = {workspace = true}
 
 [features]
 default = ["procmacro"]
+lepty-scoping = [
+    "sabry_intrnl/lepty-scoping"
+]
 procmacro = [
     "dep:sabry_procmacro"
 ]

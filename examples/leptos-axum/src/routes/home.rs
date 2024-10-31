@@ -1,18 +1,7 @@
 use leptos::prelude::*;
 use sabry::styly;
 
-styly!(s "src/routes/home.scss");
-
-styly!(s2 {
-    @use "theme";
-    .card {
-        @include theme.surface(secondary);
-    }
-    .pocwarn {
-        @include theme.surface(secondary);
-        text-transform: uppercase;
-    }
-});
+styly!(style "src/routes/home.scss");
 
 /// Renders the home page of your application.
 #[component]
@@ -21,13 +10,14 @@ pub fn Route() -> impl IntoView {
     let count = RwSignal::new(0);
     let on_click = move |_| *count.write() += 1;
 
-    view! {
-        <section class=s::table>
+    view! {class = STYLE,
+        <section class=style::table>
             <h1>"Welcome to Leptos!"</h1>
-            <button class=s::btn on:click=on_click>"Ima CRAZY button, clicked: " {count} " times!"</button>
-            <span class=s2::card>"DISCLAIMER:"</span>
-            <p class=s2::pocwarn>"This isn't a design example! Its just proof of sabry's capabilities."</p>
-            <p class=s2::pocwarn>"Plz dont make websites/apps which look like this page :D"</p>
+            <button class=style::btn on:click=on_click>"Ima CRAZY button, clicked: " {count} " times!"</button>
+            <button class=style::_dark(style::btn) on:click=on_click>"Ima CRAZY button, clicked: " {count} " times!"</button>
+            <span class=style::card>"DISCLAIMER:"</span>
+            <p class=style::pocwarn>"This isn't a design example! Its just proof of sabry's capabilities."</p>
+            <p class=style::pocwarn>"Plz dont make websites/apps which look like this page :D"</p>
         </section>
     }
 }

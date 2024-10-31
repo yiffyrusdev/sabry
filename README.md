@@ -268,6 +268,73 @@ fn render() -> HtmlElement {
 ```
 So the `mixins!` macro we just passed to the `usey!` macro inside of `buildy` function call is now accessible with simple and natural `@use "mixins"` SASS rule!
 
+### Leptos specials
+
+With [leptos](https://github.com/leptos-rs/leptos) framework you can do the trick to apply some class to most of HtmlElements for the entire component/island:
+
+```rust,ignore
+#[component]
+fn component() -> impl IntoView {
+    view! {class="cls1", /* <- here */
+        <h1>"Head"</h1>
+        <p>"text"</p>
+    }
+}
+```
+... and have "cls1" on both `h1` and `p` auto-assigned. Isn't this cool?
+
+So, if you're on leptos, and don't mind to take this approach, I'd highly recommend turning the *lepty-scoping* feature on:
+
+```toml
+# Cargo.toml
+
+[dependencies]
+sabry = {version = "0.0.1", features = ["lepty-scoping"]}
+
+[build-dependencies]
+sabry = {version = "0.0.1", features = ["build", "lepty-scoping"]}
+```
+
+```rust,ignore
+styly!(scope {
+    @use "tokens";
+    h1 {
+        @include tokens.sectionhead();
+        img {
+            @include tokens.sectionimg();
+        }
+    }
+    .breadcumbs {
+        @include tokens.badgelist();
+        &__item {
+            @include tokens.badge(secondary);
+        }
+    }
+});
+
+#[component]
+fn component() -> impl IntoView {
+    view! {class=SCOPE,
+        <h1>
+            "Head"
+            <img src="whatever"/>
+        </h1>
+        <ul class=scope::breadcumbs>
+            <li class=scope::___item(scope::breadcumbs)>
+                "Home page"
+            </li>
+        </ul>
+    }
+}
+```
+
+That will perform *much* better:
+
+- All scope members - like `scope::breadcumbs` - wont contain repeating scope hash, just the original class/id selector
+- You will not encounter [the catch](#scoping) with nested tagname selectors
+
+Also, this isn't really exclusive leptos-supporting feature. It just changes scoping behavour.
+
 ## Configuration
 
 Sabry configuration lives in `[package.metadata.sabry]` table of the manifest file.
@@ -535,6 +602,8 @@ Different selector types are scoped differently:
 >
 > Also if there are nested tagname selectors - sabry won't take this into account and you'll
 > have to wrap them with `SCOPE` class as well
+>
+> **However** If you are able to apply some class to all html elements you have - like `view!{class=CLASS...}` with Leptos - you could use *lepty-scoping* feature flag for sabry and get rid of this catch! See more [here](#leptos-specials).
 
 As for **SASS parent selectors**: they are currently handled in different way. Instead of
 walking up the syntax tree sabry just creates function member for the scope and leave the rest to grass:

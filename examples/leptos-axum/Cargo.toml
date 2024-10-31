@@ -23,11 +23,11 @@ tracing = { version = "0.1", optional = true }
 http = "1"
 
 # sabry with sass
-sabry = {path = "../../"}
+sabry = {path = "../../", features = ["lepty-scoping"]}
 
 [build-dependencies]
 # sabry for build with sass
-sabry = {path = "../../", features = ["build"]}
+sabry = {path = "../../", features = ["build", "lepty-scoping"]}
 # lets depend on our styles
 define-styles = {path = "../define-styles"}
 
@@ -51,11 +51,12 @@ css.minify = true
 css.bundle = "target/.sabry/target/bundle.css"
 
 [package.metadata.leptos]
+# Sabry-specific quality of life config
+style-file = "target/.sabry/target/bundle.css"
+
 output-name = "leptos-axum"
 site-root = "target/site"
 site-pkg-dir = "pkg"
-# Sabry-generated bundle for leptos
-style-file = "target/.sabry/target/bundle.css"
 assets-dir = "public"
 site-addr = "127.0.0.1:3000"
 reload-port = 3001

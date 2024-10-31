@@ -1,4 +1,4 @@
-use std::{fmt::Debug, fs};
+use std::{fmt::Debug, fs, path::PathBuf, str::FromStr};
 
 use proc_macro2::{Span, TokenStream};
 use quote::{quote, ToTokens, TokenStreamExt};
@@ -36,9 +36,28 @@ impl Parse for ArbitraryStyleBlock {
         let (code, span) = if let Ok(path_tok) = input.parse::<LitStr>() {
             let path = path_tok.value();
 
-            let iofile = match fs::read(&path) {
+            let path = match PathBuf::from_str(&path) {
+                Ok(p) => p,
+                Err(_) => {
+                    return Err(syn::Error::new(
+                        path_tok.span(),
+                        format!("Could not read {} as a path: Infallible", path),
+                    ))
+                }
+            };
+            let fullpath = match path.canonicalize() {
+                Ok(cp) => cp,
+                Err(e) => {
+                    return Err(syn::Error::new(
+                        path_tok.span(),
+                        format!("Could not use path {path:?}: {:?}", e.kind()),
+                    ))
+                }
+            };
+
+            let iofile = match fs::read(&fullpath) {
                 Ok(bf) => bf,
-                Err(_) => return Err(syn::Error::new(path_tok.span(), format!("Could not read file '{path}'. Perhaps its relative? Thats not currently supported :(")))
+                Err(_) => return Err(syn::Error::new(path_tok.span(), format!("Could not read file at {fullpath:?}")))
             };
             let code = String::from_utf8_lossy(&iofile).to_string();
 

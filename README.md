@@ -444,7 +444,7 @@ sassy!(module2 "tests/assets/mixins.scss");
 sassy!(module3:sass "tests/assets/mixins.sass");
 // works, but there are catches.
 sassy!(module4:sass {"
-    =colored($col: primary)
+    @mixin colored($col: primary)
         @if $col == primary
             color: white
         @else

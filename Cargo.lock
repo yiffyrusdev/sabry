@@ -1813,7 +1813,6 @@ dependencies = [
  "base64",
  "blake3",
  "cfg-if",
- "const_format",
  "grass",
  "lightningcss",
  "proc-macro2",

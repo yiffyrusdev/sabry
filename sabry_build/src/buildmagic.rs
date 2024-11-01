@@ -23,6 +23,29 @@ type ModuleCode = String;
 type StyleModule = (ModuleName, ModuleCode);
 type BuilderResult = Result<(), SabryBuildError>;
 
+/// Entry point of sabrys build-magic
+///
+/// Example:
+/// ```
+/// # use sabry_build::buildmagic::buildy;
+/// /* buildy call */
+/// buildy(
+///     vec![("mixins.scss".to_string(), "@mixin abc(){}".to_string())]
+/// ).expect("Sabry failed to build CSS");
+/// ```
+///
+/// Also you could use style-macros defined anywhere with `sabry::sassy!` procmacro:
+/// ```ignore
+/// buildy(
+///     sabry::usey!(
+///         crate1::mixins!(),
+///         crate2::tokens!(),
+///         crate3::mixins!()
+///     )
+/// ).expect("Sabry failed to build CSS");
+/// ```
+///
+/// This function is intended to run at build time, however, you're free to use it however you please
 pub fn buildy(inline_side_modules: impl IntoIterator<Item = StyleModule>) -> BuilderResult {
     println!("🧙: This is probably the stderr. Something went wrong:");
 
@@ -49,6 +72,17 @@ pub fn buildy(inline_side_modules: impl IntoIterator<Item = StyleModule>) -> Bui
     Ok(())
 }
 
+/// Entrypoint structure of sabrys build-magic.
+///
+/// You could construct CSS compilation process by yourself instead of using `buildy` function:
+/// ```rust
+/// # use sabry_intrnl::config::SabryConfig;
+/// # use sabry_build::buildmagic::SabryBuilder;
+/// let config = SabryConfig::require().expect("Config didnt load");
+/// let builder = SabryBuilder::new(config);
+/// ```
+///
+/// the [buildy] function will just do baseline usage of this structure for you
 pub struct SabryBuilder {
     config: SabryConfig,
     css_compiler: CompilerAdapter,
@@ -57,6 +91,14 @@ pub struct SabryBuilder {
 
 //🧙
 impl SabryBuilder {
+    /// Construct new [SabryBuilder] from the config
+    ///
+    /// You can require [SabryConfig] automatically, with the [Result], by:
+    ///
+    /// ```
+    /// # use sabry_intrnl::config::SabryConfig;
+    /// SabryConfig::require().expect("Config didnt load");
+    /// ```
     pub fn new(config: SabryConfig) -> Self {
         let css_compiler = CompilerAdapter::new(config.clone());
         Self {

@@ -58,3 +58,8 @@ build = [
 net-files = [
     "sabry_build/net-files"
 ]
+internals = []
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

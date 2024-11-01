@@ -636,6 +636,14 @@ This isn't very handy, also isn't strict enough, and is a high-priority subject 
 
 Not any valid CSS selector is a valid rust identifier. In general this section should not be needed, as you should receive autocompletion from the editor. *However* it doesn't seem to work properly. Check the [wip](#wip) section out.
 
+## Notable feature flags
+
+**build** - turns on the `sabry::buildy` function, along with the entire `sabry_build` crate where it lives
+
+**internals** - exposes majority of internal stuff for you to experiment or build own workflow
+
+**lepty-scoping** - overhauls the scope generation logic, best suitable for the leptos. Check out the [section](#leptos-specials) and an [example](https://github.com/yiffyrusdev/sabry/tree/master/examples/leptos-axum)
+
 ## WIP
 
 *(sorted by my own priority)*, "dones" are excluded

@@ -19,3 +19,7 @@ walkdir = {version = "^2.5"}
 
 [features]
 net-files = []
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

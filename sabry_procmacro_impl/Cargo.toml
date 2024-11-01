@@ -18,3 +18,7 @@ raffia = {version = "^0.9"}
 regex = {version = "^1.11"}
 
 [features]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

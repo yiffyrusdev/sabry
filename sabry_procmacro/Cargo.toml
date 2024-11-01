@@ -15,3 +15,7 @@ proc-macro = true
 sabry_procmacro_impl = {workspace = true}
 
 [features]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

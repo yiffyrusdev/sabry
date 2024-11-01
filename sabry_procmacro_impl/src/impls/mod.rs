@@ -57,7 +57,12 @@ impl Parse for ArbitraryStyleBlock {
 
             let iofile = match fs::read(&fullpath) {
                 Ok(bf) => bf,
-                Err(_) => return Err(syn::Error::new(path_tok.span(), format!("Could not read file at {fullpath:?}")))
+                Err(_) => {
+                    return Err(syn::Error::new(
+                        path_tok.span(),
+                        format!("Could not read file at {fullpath:?}"),
+                    ))
+                }
             };
             let code = String::from_utf8_lossy(&iofile).to_string();
 

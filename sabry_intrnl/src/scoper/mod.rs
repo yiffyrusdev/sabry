@@ -226,7 +226,7 @@ impl HashedSelector {
                         Some(format!("{} {}", hash.as_str(), a.ident))
                     }
                 }
-            },
+            }
             // As we dont want to use two HTML props for a single ID,
             // ID scoping is done with id modification
             ScopedSelector::Id(a) => {
@@ -237,7 +237,7 @@ impl HashedSelector {
                         Some(format!("{}-{}", hash.as_str(), a.ident))
                     }
                 }
-            },
+            }
             ScopedSelector::Tag(_) => None,
         }
     }

@@ -273,7 +273,7 @@ fn component() -> impl IntoView {
     }
 }
 ```
-... and have "cls1" on both `h1` and `p` auto-assigned. Isn't this cool?
+... and have "cls1" on both `h1` and `p` auto-assigned. Isn't that cool?
 
 So, if you're on leptos, and don't mind to take this approach, I'd highly recommend turning the *lepty-scoping* feature on:
 
@@ -327,6 +327,7 @@ fn component() -> impl IntoView {
 That will perform *much* better:
 
 - All scope members - like `scope::breadcumbs` - wont contain repeating scope hash, just the original class/id selector
+    - So instead of scope members (which [aren't](https://github.com/yiffyrusdev/sabry/issues/2) autocompleted for sass-in-the-rust yet) you could just write bare selectors, as you do, for example, with svelte: `<li class="breadcumbs__item">`
 - You will not encounter [the catch](#scoping) with nested tagname selectors
 
 Also, this isn't really exclusive leptos-supporting feature. It just changes scoping behavour.
@@ -631,15 +632,20 @@ So you still can get the scoped variant of `cls1-dark` class: `scope::_dark(scop
 
 This isn't very handy, also isn't strict enough, and is a high-priority subject to change. wip.
 
+#### Scope member naming rules
+
+Not any valid CSS selector is a valid rust identifier. In general this section should not be needed, as you should receive autocompletion from the editor. *However* it doesn't seem to work properly. Check the [wip](#wip) section out.
+
 ## WIP
 
 *(sorted by my own priority)*, "dones" are excluded
 
-- [] Crates of styled components - currently the only way to create them seems to be const styly.
-    - [] CSS support
-- [] Currently the crate causes "dependency inheritance" infection. We cant get rid of it, however should be doable to at least get rid of flag inheritance
-- [] There are some strange parsing errors, seems like a bug, however very hard to reproduce. Have to investigate. Maybe do more tests.
-- [] Experience with cargo-leptos is fine, and we do use it, however its a bit "raughy". Need to do something about it.
+- [ ] Somehow achieve the autocompletion for scopes. The problem is explained in details [here](https://github.com/yiffyrusdev/sabry/issues/2)
+- [ ] Crates of styled components - currently the only way to create them seems to be const styly.
+    - [ ] CSS support
+- [ ] Currently the crate causes "dependency inheritance" infection. We cant get rid of it, however should be doable to at least get rid of flag inheritance
+- [ ] There are some strange parsing errors, seems like a bug, however very hard to reproduce. Have to investigate. Maybe do more tests.
+- [ ] Experience with cargo-leptos is fine, and we do use it, however its a bit "raughy". Need to do something about it.
 
 ## Contributions
 

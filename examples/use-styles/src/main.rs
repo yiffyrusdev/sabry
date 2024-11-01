@@ -11,8 +11,6 @@ styly!(pub const bundlemod {
     }
 });
 
-styly!(pub const filemod:sass "src/main.sass");
-
 fn main(){
     println!("someth class codemod styles: {}", bundlemod::someth);
     println!("someth class filemod styles: {}", filemod::someth);

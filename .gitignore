@@ -2,3 +2,4 @@
 rust-toolchain.toml
 .vscode
 .profile
+/Cargo.lock

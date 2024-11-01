@@ -8,7 +8,6 @@ pub use sabry_build::buildmagic::buildy;
 #[cfg(feature = "procmacro")]
 pub use sabry_procmacro::*;
 
-
 // reexports
 #[cfg_attr(docsrs, doc(cfg(all(feature = "build", feature = "internals"))))]
 #[cfg(all(feature = "build", feature = "internals"))]

@@ -1,10 +1,10 @@
 use leptos::prelude::*;
 use sabry::styly;
 
-styly!(style {
-    @use "tokens";
-    @use "utils";
-    @use "theme";
+styly!(style {"
+    @use 'tokens';
+    @use 'utils';
+    @use 'theme';
 
     h2 {
         margin-bottom: 1rem;
@@ -35,7 +35,7 @@ styly!(style {
         text-transform: uppercase;
     }
 
-});
+"});
 
 /// Renders the home page of your application.
 #[component]

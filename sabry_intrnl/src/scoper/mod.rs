@@ -215,7 +215,7 @@ impl HashedSelector {
     ///
     /// Not every hashed selector is presentable for HTML-ish use: like `div`, in that case
     /// returns [None]
-    pub fn make_hashed_html(value: &ScopedSelector, hash: &ScopeHash) -> Option<String> {
+    pub fn make_hashed_html(value: &ScopedSelector, _hash: &ScopeHash) -> Option<String> {
         match value {
             // Class scoping is done with class composition
             ScopedSelector::Class(a) => {
@@ -223,7 +223,7 @@ impl HashedSelector {
                     if #[cfg(feature = "lepty-scoping")] {
                         Some(a.ident.to_string())
                     } else {
-                        Some(format!("{} {}", hash.as_str(), a.ident))
+                        Some(format!("{} {}", _hash.as_str(), a.ident))
                     }
                 }
             }
@@ -234,7 +234,7 @@ impl HashedSelector {
                     if #[cfg(feature = "lepty-scoping")] {
                         Some(a.ident.to_string())
                     } else {
-                        Some(format!("{}-{}", hash.as_str(), a.ident))
+                        Some(format!("{}-{}", _hash.as_str(), a.ident))
                     }
                 }
             }

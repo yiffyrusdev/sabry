@@ -2,8 +2,9 @@ use std::{fmt::Debug, fs, path::PathBuf, str::FromStr};
 
 use proc_macro2::{Span, TokenStream};
 use quote::{quote, ToTokens, TokenStreamExt};
+use regex::Regex;
 use sabry_intrnl::compiler::CompilerSyntax;
-use syn::{braced, parse::Parse, spanned::Spanned, Ident, LitStr, Token};
+use syn::{braced, parse::Parse, Ident, LitStr, Token};
 
 pub mod sassy;
 pub mod styly;
@@ -68,21 +69,17 @@ impl Parse for ArbitraryStyleBlock {
 
             (code, path_tok.span())
         } else {
-            // Does not work on stable!
-            // We're on nightly though
-            // So what?
-            // Then is works.
-            let _s;
-            braced!(_s in input);
-            let stream = _s.parse::<TokenStream>()?;
-
-            let c = match stream.span().source_text() {
-                Some(stx) => stx,
-                // TODO: rust-analyzer does fall into this even if all is fine
-                None => "".to_string(), //return Err(syn::Error::new(stream.span(), "Source code expected")),
-            };
-
-            (c, stream.span())
+            let s;
+            braced!(s in input);
+            if let Ok(stream) = s.parse::<LitStr>() {
+                let c = stream.value();
+                // shift the entire code for the first line ident
+                let ident_regex = Regex::new(r"\n\s{4}").expect("BUG: base ident regex at sabry_procmacro_impl/src/impls/mod.rs:: impl Parse for ArbitraryStyleBlock");
+                let c = ident_regex.replace_all(&c, "\n").to_string();
+                (c, stream.span())
+            } else {
+                return Err(syn::Error::new(s.span(), "Use \"\" within the braces to specify your SASS/SCSS. Unquoted style syntax is reserved for the future. Unquoted SCSS/SASS doesnt make sense though, as you won't benefit from it in rust file.\n\ntip: use `{\"style\"}` instead of `{style}`"));
+            }
         };
 
         Ok(Self { code, span })
@@ -137,9 +134,9 @@ impl Parse for ArbitraryStyleSyntax {
             _ => Err(syn::Error::new(
                 ident.span(),
                 format!(
-                        "Available syntax are `sass` (WIP) and `scss`, each of them requires feature flag. Omit to use default {:?} syntax",
-                        Self::default()
-                    ),
+                    "Available syntax are `sass` and `scss`, omit to use default {:?} syntax",
+                    Self::default()
+                ),
             )),
         }
     }
@@ -176,31 +173,49 @@ mod test {
     fn arbitrary_style_block_sass() {
         use super::ArbitraryStyleBlock;
 
-        let code = "#a
-            co:d
-            .sel
-                di: pi
-        .sel,div > sel
-            f: \"into\"";
-        let braced_code = format!("{{{code}}}");
-        let block = syn::parse_str::<ArbitraryStyleBlock>(&braced_code).unwrap();
+        let code = "
+    #a
+        co: red
+    .sel
+        co: white
+    &-dark
+        & > div
+            co: blue";
+        let expect_code = "
+#a
+    co: red
+.sel
+    co: white
+&-dark
+    & > div
+        co: blue";
+        let input = format!("{{\"{code}\"}}");
+        let block = syn::parse_str::<ArbitraryStyleBlock>(&input).unwrap();
 
-        assert_eq!(code, block.code);
+        assert_eq!(expect_code, block.code);
     }
 
     #[test]
     fn arbitrary_style_block_scss() {
         use super::ArbitraryStyleBlock;
 
-        let code = "#a {
-            c:r;
-        }
-        .b.c{
-            c:\"into\";
-        }";
-        let braced_code = format!("{{{code}}}");
-        let block = syn::parse_str::<ArbitraryStyleBlock>(&braced_code).unwrap();
+        let code = "
+    #a {
+        c: r;
+    }
+    .b.c {
+        c: 'into';
+    }";
+        let expect_code = "
+#a {
+    c: r;
+}
+.b.c {
+    c: 'into';
+}";
+        let input = format!("{{\"{code}\"}}");
+        let block = syn::parse_str::<ArbitraryStyleBlock>(&input).unwrap();
 
-        assert_eq!(code, block.code)
+        assert_eq!(expect_code, block.code)
     }
 }

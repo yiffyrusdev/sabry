@@ -2,7 +2,7 @@ use sabry::sassy;
 
 sassy!(style "src/style.scss");
 
-sassy!(utils {
+sassy!(utils {"
     @mixin flex($direction, $align, $justify, $gap: .5rem) {
         display: flex;
         list-style: none;
@@ -29,9 +29,9 @@ sassy!(utils {
             justify-content: $justify;
         }
     }
-});
+"});
 
-sassy!(theme {
+sassy!(theme {"
     $thm-surface-primary: #2b2a29;
     $thm-surface-secondary: #6C6C6C;
     $thm-surface-tertiary: #4C4C4C;
@@ -75,10 +75,10 @@ sassy!(theme {
             color: $thm-text-accent;
         }
     }
-});
+"});
 
-sassy!(tokens {
-    @use "theme";
+sassy!(tokens {"
+    @use 'theme';
 
     @mixin clickable($style: accent, $scale: 1.2, $clickscale: 0.9){
         @if $style == accent{
@@ -103,4 +103,4 @@ sassy!(tokens {
             transform: scale($clickscale);
         }
     }
-});
+"});

@@ -1,7 +1,10 @@
 use sabry::styly;
 
-styly!(pub const bundlemod {
-    @use "tokens";
+// Sabry now (0.0.1-alpha.3) disallows unquoted styles
+// you won't benefit from unqouted styles though, as you won't get syntax highlighting
+// Also, unqouted styles are reserved for future
+styly!(pub const bundlemod {"
+    @use 'tokens';
     .someth {
         @include tokens.clickable;
         background-color: black;
@@ -9,7 +12,9 @@ styly!(pub const bundlemod {
             background-color: white;
         }
     }
-});
+"});
+
+styly!(pub filemod:sass "src/main.sass");
 
 fn main(){
     println!("someth class codemod styles: {}", bundlemod::someth);

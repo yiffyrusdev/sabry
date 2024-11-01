@@ -3,11 +3,11 @@ use sabry::{sassy, usey};
 
 // This module will have the same name as define_styles_example::utils
 // and sabry is configured to merge them
-sassy!(utils {
+sassy!(utils {"
     @mixin nonclickable(){
         display: none;
     }
-});
+"});
 
 fn main(){
     /* Declare modules to use with sabry */

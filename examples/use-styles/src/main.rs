@@ -12,6 +12,9 @@ styly!(pub const bundlemod {"
             background-color: white;
         }
     }
+    #fox {
+        color: red;
+    }
 "});
 
 styly!(pub filemod:sass "src/main.sass");
@@ -19,6 +22,7 @@ styly!(pub filemod:sass "src/main.sass");
 fn main(){
     println!("someth class codemod styles: {}", bundlemod::someth);
     println!("someth class filemod styles: {}", filemod::someth);
-    //println!("someth-dark selector will be: {}", bundlemod::_dark(bundlemod::someth));
+    println!("someth-dark selector will be: {}", bundlemod::___dark(bundlemod::someth));
+    println!("#fox id will be: {}", bundlemod::thefox);
     println!("Thats how we used the styles! Good luck!!");
 }

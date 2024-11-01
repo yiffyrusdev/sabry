@@ -29,8 +29,19 @@ sabry::sassy!(tokens {"@mixin colored{color: red;}"});
 ```
 
 </td>
+</tr>
+<tr>
 <td>
-📦
+
+Get the *(almost)* proper autocompletion for your scope from rust-analyzer
+
+```rust
+sabry::styly!(scope {".cls1{} #id1{}"});
+/* autocompleted for you */
+scope::cls1;
+scope::theid1;
+```
+
 </td>
 </tr>
 <tr>
@@ -44,9 +55,6 @@ sabry::styly!(extras "tests/assets/mixins.scss");
 ```
 
 </td>
-<td>
-:3
-</td>
 </tr>
 <tr>
 <td>
@@ -58,9 +66,6 @@ Depend on styles with cargo, at build time, which brings all the rusty sweeties 
 tgk_brandstyle = {version = "0.0.1", features = ["utils"]}
 ```
 
-</td>
-<td>
-🦀
 </td>
 </tr>
 <tr>
@@ -75,9 +80,6 @@ sabry::styly!(breadbadge {"
 "});
 ```
 
-</td>
-<td>
-🪄
 </td>
 </tr>
 <tr>
@@ -99,9 +101,6 @@ sabry::styly!(dogs {"#howl {border: none;}"});
 ```
 
 </td>
-<td>
-^_^
-</td>
 </tr>
 <tr>
 <td>
@@ -113,9 +112,6 @@ sabry::styly!(cssbundle {".c1 {color: white;}"});
 sabry::styly!(const binary {".c2 {color: black;}"});
 ```
 
-</td>
-<td>
-🏗️
 </td>
 </tr>
 </table>

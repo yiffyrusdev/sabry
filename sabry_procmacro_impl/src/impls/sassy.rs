@@ -46,14 +46,7 @@ impl Parse for MacroSyntax {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
         let ident = input.parse::<Ident>()?;
         let mode = input.parse::<ArbitraryStyleSyntax>()?;
-        let mut code = input.parse::<ArbitraryStyleBlock>()?;
-
-        // this is because of how parsing works. Need to find more elegant way though
-        // TODO: find a more elegant way
-        code.code = Regex::new("\n    ")
-            .expect("BUG: failed to build regex for indentation SASS")
-            .replace_all(&code.code, "\n")
-            .to_string();
+        let code = input.parse::<ArbitraryStyleBlock>()?;
 
         Ok(Self {
             ident,

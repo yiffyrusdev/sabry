@@ -1,24 +1,30 @@
+use ostrta::OneSyntaxToRuleThemAll;
 use raffia::{
     ast::{
         ClassSelector, CompoundSelector, IdSelector, NestingSelector, SimpleSelector, Statement,
         Stylesheet, TypeSelector,
     },
-    ParserBuilder, Syntax,
+    ParserBuilder,
 };
+
+pub mod ostrta;
 
 /// Convenience wrapper for [Stylesheet]
 pub struct StylesheetAdapter<'s> {
-    pub syntax: Syntax,
+    pub syntax: OneSyntaxToRuleThemAll,
     source: &'s str,
     stylesheet: Stylesheet<'s>,
 }
 
 impl<'s> StylesheetAdapter<'s> {
-    pub fn new(source: &'s str, syntax: Syntax) -> Result<Self, raffia::error::Error> {
+    pub fn new(
+        source: &'s str,
+        syntax: OneSyntaxToRuleThemAll,
+    ) -> Result<Self, raffia::error::Error> {
         Ok(Self {
             stylesheet: ParserBuilder::new(source)
                 .ignore_comments()
-                .syntax(syntax)
+                .syntax(syntax.into())
                 .build()
                 .parse()?,
             syntax,
@@ -103,6 +109,8 @@ mod test {
 
     use raffia::Spanned;
 
+    use crate::syntax::ostrta::OneSyntaxToRuleThemAll;
+
     use super::StylesheetAdapter;
 
     #[test]
@@ -157,7 +165,7 @@ div#id2
         let expect_tags = HashSet::from(["ul", "div", "span"]);
 
         //scss
-        let adp = StylesheetAdapter::new(source_scss, raffia::Syntax::Scss).unwrap();
+        let adp = StylesheetAdapter::new(source_scss, OneSyntaxToRuleThemAll::Scss).unwrap();
 
         let classes = adp
             .class_selectors()
@@ -183,7 +191,7 @@ div#id2
         assert_eq!(expect_tags, tags);
 
         //sass
-        let adp = StylesheetAdapter::new(source_sass, raffia::Syntax::Sass).unwrap();
+        let adp = StylesheetAdapter::new(source_sass, OneSyntaxToRuleThemAll::Sass).unwrap();
 
         let classes = adp
             .class_selectors()
@@ -215,7 +223,7 @@ div#id2
         let newname = "cls203-jg7ihgjhftyfhjh";
         let expect = ".cls1{color:red; .cls203-jg7ihgjhftyfhjh{color:green;}}";
 
-        let adp = StylesheetAdapter::new(scss, raffia::Syntax::Scss).unwrap();
+        let adp = StylesheetAdapter::new(scss, OneSyntaxToRuleThemAll::Scss).unwrap();
         let classes = adp.class_selectors();
         let target_class = classes[0].clone();
 

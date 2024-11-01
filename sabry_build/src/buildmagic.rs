@@ -186,7 +186,7 @@ impl SabryBuilder {
             }
 
             let css = self.css_compiler.compile_module(
-                scope.original_scope.adapter().syntax.into(),
+                scope.original_scope.adapter().syntax,
                 &scope.hashed_code,
             )?;
             self.state

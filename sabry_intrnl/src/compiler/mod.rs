@@ -7,7 +7,7 @@ use lightningcss::{
     targets::Targets,
 };
 
-use crate::config::SabryConfig;
+use crate::{config::SabryConfig, syntax::ostrta::OneSyntaxToRuleThemAll};
 
 /// Convenience wrapper on Grass and Lightningcss
 pub struct CompilerAdapter {
@@ -21,7 +21,7 @@ impl CompilerAdapter {
 
     pub fn compile_module(
         &self,
-        syntax: CompilerSyntax,
+        syntax: OneSyntaxToRuleThemAll,
         code: &str,
     ) -> Result<String, SabryCompilerError> {
         let options = grass::Options::from(&self.config).input_syntax(syntax.into());
@@ -129,32 +129,5 @@ impl Debug for SabryCompilerError {
         };
 
         write!(f, "{explain}")
-    }
-}
-
-/// Unification wrapper over all the Syntax enums
-#[derive(Clone, Copy)]
-pub enum CompilerSyntax {
-    Sass,
-    Scss,
-}
-
-impl From<raffia::Syntax> for CompilerSyntax {
-    fn from(value: raffia::Syntax) -> Self {
-        match value {
-            raffia::Syntax::Sass => Self::Sass,
-            raffia::Syntax::Scss => Self::Scss,
-            // TODO: fallbacky error-prone
-            _ => Self::Scss,
-        }
-    }
-}
-
-impl From<CompilerSyntax> for grass::InputSyntax {
-    fn from(value: CompilerSyntax) -> Self {
-        match value {
-            CompilerSyntax::Scss => Self::Scss,
-            CompilerSyntax::Sass => Self::Sass,
-        }
     }
 }

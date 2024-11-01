@@ -5,7 +5,7 @@ use hash::ScopeHash;
 use raffia::Spanned;
 use regex::Regex;
 
-use crate::{config::SabryHashConfig, syntax::StylesheetAdapter};
+use crate::{config::SabryHashConfig, syntax::{ostrta::OneSyntaxToRuleThemAll, StylesheetAdapter}};
 
 pub mod hash;
 
@@ -35,7 +35,7 @@ pub struct ArbitraryScope<'s> {
 impl<'s> ArbitraryScope<'s> {
     /// Parse given source code with given syntax and assign given name
     pub fn from_source(
-        syntax: raffia::Syntax,
+        syntax: OneSyntaxToRuleThemAll,
         name: syn::Ident,
         source: &'s str,
     ) -> Result<Self, ScopeError> {
@@ -375,7 +375,7 @@ mod test {
 
     use crate::{
         config::SabryHashConfig,
-        scoper::{hash::ScopeHash, HashedScope},
+        scoper::{hash::ScopeHash, HashedScope}, syntax::ostrta::OneSyntaxToRuleThemAll,
     };
 
     use super::ArbitraryScope;
@@ -415,7 +415,7 @@ mod test {
         }
 
         let scope = ArbitraryScope::from_source(
-            raffia::Syntax::Scss,
+            OneSyntaxToRuleThemAll::Scss,
             syn::parse_str("scope1").unwrap(),
             code,
         )
@@ -463,7 +463,7 @@ mod test {
 
         let hash_cfg = SabryHashConfig::default();
         let scope = ArbitraryScope::from_source(
-            raffia::Syntax::Scss,
+            OneSyntaxToRuleThemAll::Scss,
             syn::parse_str::<Ident>("scope2oiej").unwrap(),
             code,
         )

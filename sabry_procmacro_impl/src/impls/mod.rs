@@ -3,7 +3,7 @@ use std::{fmt::Debug, fs, path::PathBuf, str::FromStr};
 use proc_macro2::{Span, TokenStream};
 use quote::{quote, ToTokens, TokenStreamExt};
 use regex::Regex;
-use sabry_intrnl::compiler::CompilerSyntax;
+use sabry_intrnl::syntax::ostrta::OneSyntaxToRuleThemAll;
 use syn::{braced, parse::Parse, Ident, LitStr, Token};
 
 pub mod sassy;
@@ -93,26 +93,20 @@ impl ToString for ArbitraryStyleBlock {
     }
 }
 
-#[derive(Clone, Copy)]
-pub enum ArbitraryStyleSyntax {
-    Scss,
-    Sass,
-}
+#[derive(Default, Debug, Clone, Copy)]
+pub struct ArbitraryStyleSyntax(OneSyntaxToRuleThemAll);
 
-impl From<ArbitraryStyleSyntax> for CompilerSyntax {
+impl From<ArbitraryStyleSyntax> for OneSyntaxToRuleThemAll {
     fn from(value: ArbitraryStyleSyntax) -> Self {
-        match value {
-            ArbitraryStyleSyntax::Sass => Self::Sass,
-            ArbitraryStyleSyntax::Scss => Self::Scss,
-        }
+        value.0
     }
 }
 
 impl ToTokens for ArbitraryStyleSyntax {
     fn to_tokens(&self, tokens: &mut TokenStream) {
-        match self {
-            Self::Sass => tokens.append_all(quote! {"sass"}),
-            Self::Scss => tokens.append_all(quote! {"scss"}),
+        match self.0 {
+            OneSyntaxToRuleThemAll::Sass => tokens.append_all(quote! {"sass"}),
+            OneSyntaxToRuleThemAll::Scss => tokens.append_all(quote! {"scss"}),
         }
     }
 }
@@ -120,11 +114,7 @@ impl ToTokens for ArbitraryStyleSyntax {
 impl TryFrom<&str> for ArbitraryStyleSyntax {
     type Error = ();
     fn try_from(value: &str) -> Result<Self, Self::Error> {
-        match value {
-            "sass" => Ok(Self::Sass),
-            "scss" => Ok(Self::Scss),
-            _ => Err(())
-        }
+        Ok(Self(OneSyntaxToRuleThemAll::try_from(value)?))
     }
 }
 
@@ -148,31 +138,6 @@ impl Parse for ArbitraryStyleSyntax {
                     Self::default()
                 ),
             )),
-        }
-    }
-}
-
-impl Debug for ArbitraryStyleSyntax {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let name = match self {
-            Self::Sass => "sass",
-            Self::Scss => "scss",
-        };
-        write!(f, "{name}")
-    }
-}
-
-impl Default for ArbitraryStyleSyntax {
-    fn default() -> Self {
-        Self::Scss
-    }
-}
-
-impl From<ArbitraryStyleSyntax> for raffia::Syntax {
-    fn from(value: ArbitraryStyleSyntax) -> Self {
-        match value {
-            ArbitraryStyleSyntax::Sass => Self::Sass,
-            ArbitraryStyleSyntax::Scss => Self::Scss,
         }
     }
 }

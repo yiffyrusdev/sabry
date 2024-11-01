@@ -22,7 +22,7 @@ pub fn sassy_macro_impl(input: TokenStream) -> TokenStream {
     };
 
     // quick raffia syntax check
-    match ArbitraryScope::from_source(mode.into(), ident.clone(), &code.code) {
+    match ArbitraryScope::from_source(mode.0, ident.clone(), &code.code) {
         Ok(_) => {}
         Err(e) => return syn::Error::new(code.span, format!("{e:?}")).into_compile_error(),
     }

@@ -69,7 +69,7 @@ impl ScopeHash {
 mod test {
     use syn::Ident;
 
-    use crate::{config::SabryHashConfig, scoper::ArbitraryScope};
+    use crate::{config::SabryHashConfig, scoper::ArbitraryScope, syntax::ostrta::OneSyntaxToRuleThemAll};
 
     use super::ScopeHash;
 
@@ -78,7 +78,7 @@ mod test {
         let source = ".cls1{color:red; &-dark{color: black} #id1 {color:green;} div {color:blue;}} .cls3#id2{color: black;}";
 
         let scope1 = ArbitraryScope::from_source(
-            raffia::Syntax::Scss,
+            OneSyntaxToRuleThemAll::Scss,
             syn::parse_str::<Ident>("lasifudm").unwrap(),
             source,
         )
@@ -86,7 +86,7 @@ mod test {
         let hash1 = ScopeHash::new(&scope1, &SabryHashConfig::default());
 
         let scope2 = ArbitraryScope::from_source(
-            raffia::Syntax::Scss,
+            OneSyntaxToRuleThemAll::Scss,
             syn::parse_str::<Ident>("lasifudm").unwrap(),
             source,
         )

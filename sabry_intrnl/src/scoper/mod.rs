@@ -18,7 +18,7 @@ pub enum ScopeError {
 impl Debug for ScopeError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let a = match self {
-            Self::Raffia(kind, source) => format!("{kind}: at {source}")
+            Self::Raffia(kind, source) => format!("{kind}: at {source}"),
         };
 
         write!(f, "{a}")
@@ -43,14 +43,11 @@ impl<'s> ArbitraryScope<'s> {
             Ok(a) => a,
             Err(e) => {
                 let source = &source[e.span.start..e.span.end];
-                return Err(ScopeError::Raffia(e.kind, source.to_string()))
+                return Err(ScopeError::Raffia(e.kind, source.to_string()));
             }
         };
 
-        Ok(Self {
-            adapter,
-            name,
-        })
+        Ok(Self { adapter, name })
     }
 
     /// Consume arbitrary scope and create a [HashedScope] in its basis

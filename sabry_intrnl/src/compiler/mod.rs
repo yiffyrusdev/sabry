@@ -109,19 +109,22 @@ impl Debug for SabryCompilerError {
             Self::LightPrint(e) => format!(
                 "{} at {:?}",
                 e.kind,
-                e.loc.clone()
+                e.loc
+                    .clone()
                     .map(|l| format!("file {}, line {}, col {}", l.filename, l.line, l.column))
             ),
             Self::GrassCompile(err) => format!("{err}"),
             Self::LightMinify(e) => format!(
                 "{} at {:?}",
                 e.kind,
-                e.loc.clone()
+                e.loc
+                    .clone()
                     .map(|l| format!("file {}, line {}, col {}", l.filename, l.line, l.column))
             ),
             Self::LightParse { kind, loc } => format!(
                 "{kind} at {:?}",
-                loc.clone().map(|l| format!("file {}, line {}, col {}", l.filename, l.line, l.column))
+                loc.clone()
+                    .map(|l| format!("file {}, line {}, col {}", l.filename, l.line, l.column))
             ),
         };
 

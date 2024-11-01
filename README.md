@@ -342,13 +342,14 @@ Full example, close to defaults:
 
 [package.metadata.sabry]
 css.bundle = "target/static/style.css"
-css.bundle_prelude = ["assets/prelude.css"]
+css.prelude = ["assets/prelude.css"]
 css.scopes = "target/statis/scopes/"
 css.minify = true
 
 sass.intermediate_dir = "target/.sabry/sass"
 sass.module_name_collision = "merge"
 sass.modules = ["assets/sass/mod1.scss"]
+sass.prelude = ["assets/sass/prelude.scss"]
 sass.scanroot = "src"
 
 hash.size = 6
@@ -366,11 +367,11 @@ ie = "6"
 
 ### `sabry.css`
 
-**bundle** *(no default)* - file path ro write CSS bundle into relative to project root
+**bundle** *(no default)* - file path ro write CSS bundle into, relative to crate root
 
-**bundle_prelude** *(no default)* - collection of CSS files, relative to the project root, which content will be inserted before the compiled style into the *bundle* file if any
+**prelude** *(no default)* - collection of CSS files, relative to the crate root, which content will be inserted before the compiled style into the *bundle* file if any. Does not affect generated CSS scopes if any.
 
-**scopes** *(no default)* - dir path to put separate CSS for every scope into relative to project root
+**scopes** *(no default)* - dir path to put separate CSS for every scope into, relative to crate root
 
 **minify** *(default true)* - print compressed CSS output and do the lightningcss thing
 
@@ -380,7 +381,9 @@ ie = "6"
 
 **scanroot** *(default "src")* - root directory to start scanning "rs" files from. Used in build function
 
-**modules** *(no default)* - collection of SASS/SCSS files, relative to the project root, which should be available as modules as well
+**modules** *(no default)* - collection of SASS/SCSS files, relative to the crate root, which should be available as modules as well
+
+**prelude** *(no default)* - collection of SASS/SCSS files, relative to the crate root, which content will be compiled into CSS and then inserted into the CSS *bundle* if any. Does not affect generated CSS scopes if any.
 
 **module_name_collision** *(default "merge")* - how to handle similary named modules.
 

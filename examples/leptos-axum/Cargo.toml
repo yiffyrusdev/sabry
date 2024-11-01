@@ -49,6 +49,8 @@ ssr = [
 css.minify = true
 # We'll use bundle for leptos
 css.bundle = "target/.sabry/target/bundle.css"
+css.prelude = ["styles/prelude.css"]
+sass.prelude = ["styles/app.scss"]
 
 [package.metadata.leptos]
 # Sabry-specific quality of life config

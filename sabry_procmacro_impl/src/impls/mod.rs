@@ -117,6 +117,17 @@ impl ToTokens for ArbitraryStyleSyntax {
     }
 }
 
+impl TryFrom<&str> for ArbitraryStyleSyntax {
+    type Error = ();
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        match value {
+            "sass" => Ok(Self::Sass),
+            "scss" => Ok(Self::Scss),
+            _ => Err(())
+        }
+    }
+}
+
 impl Parse for ArbitraryStyleSyntax {
     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
         match input.parse::<Token![:]>() {
@@ -128,10 +139,9 @@ impl Parse for ArbitraryStyleSyntax {
         }
         let ident = input.parse::<Ident>()?;
 
-        match ident.to_string().as_str() {
-            "sass" => Ok(Self::Sass),
-            "scss" => Ok(Self::Scss),
-            _ => Err(syn::Error::new(
+        match Self::try_from(ident.to_string().as_str()) {
+            Ok(v) => Ok(v),
+            Err(_) => Err(syn::Error::new(
                 ident.span(),
                 format!(
                     "Available syntax are `sass` and `scss`, omit to use default {:?} syntax",

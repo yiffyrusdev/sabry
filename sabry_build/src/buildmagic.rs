@@ -13,7 +13,7 @@ use sabry_intrnl::{
     config::{manifest::ManifestError, BehavHashCollision, BehavSassModCollision, SabryConfig},
     scoper::{hash::ScopeHash, ArbitraryScope, ScopeError},
 };
-use sabry_procmacro_impl::impls::styly;
+use sabry_procmacro_impl::impls::{styly, ArbitraryStyleSyntax};
 use walkdir::WalkDir;
 
 use crate::filevisit::{self, FileVisitError};
@@ -164,6 +164,7 @@ impl SabryBuilder {
             println!("🧙 sabry didn't load any usable styles");
         }
 
+        // compile styly! macro parsed styles
         for styly in &self.state.loaded_stylyses {
             let scope = ArbitraryScope::from_source(
                 styly.syntax.into(),
@@ -191,6 +192,12 @@ impl SabryBuilder {
             self.state
                 .loaded_css_modules
                 .push((scope.original_scope.name.to_string(), css));
+        }
+
+        // compile sass preludes into the CSS prelude
+        for pre in &self.state.sass_prelude {
+            let css = self.css_compiler.compile_module(pre.syntax.into(), &pre.code)?;
+            self.state.css_prelude.push_str(&css);
         }
 
         Ok(())
@@ -230,12 +237,12 @@ impl SabryBuilder {
         Ok(())
     }
 
-    /// Load up configured preludes as side modules
+    /// Load up configured preludes and side modules
     pub fn load_preludes(&mut self) -> BuilderResult {
         // load sass modules from config
         let mut modules: Vec<StyleModule> = vec![];
-        if let Some(sass_pre) = &self.config.sass.modules {
-            for pre in sass_pre {
+        if let Some(sass_mods) = &self.config.sass.modules {
+            for pre in sass_mods {
                 let pre_path = PathBuf::from_str(pre)?;
                 let pre_name = pre_path
                     .file_name()
@@ -250,8 +257,26 @@ impl SabryBuilder {
             self.load_side_module(name, code)?;
         }
 
+        // load SASS preludes
+        if let Some(sass_pres) = &self.config.sass.prelude {
+            let mut sass_preludes: Vec<SassPreludeModule> = vec![];
+            for pre in sass_pres {
+                let pre_path = PathBuf::from_str(pre)?;
+
+                let syntax = pre_path.extension().unwrap_or_default().to_str().unwrap_or_default();
+                let syntax = match ArbitraryStyleSyntax::try_from(syntax) {
+                    Ok(s) => s,
+                    Err(_) => return Err(SabryBuildError::Another(format!("Unknown syntax for sass prelude {pre}")))
+                };
+
+                let code = fs::read_to_string(pre_path)?;
+                sass_preludes.push(SassPreludeModule {syntax, code});
+            }
+            self.state.sass_prelude.extend(sass_preludes);
+        }
+
         // load css preludes
-        if let Some(css_pre) = &self.config.css.bundle_prelude {
+        if let Some(css_pre) = &self.config.css.prelude {
             for pre in css_pre {
                 let code = fs::read_to_string(pre)?;
                 self.state.css_prelude.push_str(&code);
@@ -309,11 +334,30 @@ impl SabryBuilder {
 
 #[derive(Default)]
 pub struct SabryBuildState {
+    /// HashSet of scope hashes known by builder
+    /// Used to determine hash collision
     known_scope_hashes: HashSet<ScopeHash>,
+    /// HashSet of module names known by builder
+    /// Used to determine module name collision
     known_side_modules: HashSet<ModuleName>,
+    /// styly! macro uses, parsed
     loaded_stylyses: Vec<styly::MacroSyntax>,
+    /// CSS modules to form bundle/write separately
     loaded_css_modules: Vec<StyleModule>,
+    /// CSS prelude to write into bundle
+    /// Lives separately from [loaded_css_modules] to avoid name collision
     css_prelude: String,
+    /// SASS preludes loaded from config
+    /// Should be compiled into loaded_css_modules as well
+    sass_prelude: Vec<SassPreludeModule>
+}
+
+/// Convenience struct for [SabryBuildState::sass_prelude]
+pub struct SassPreludeModule {
+    /// syntax for the prelude
+    syntax: ArbitraryStyleSyntax,
+    /// code of the prelude
+    code: String
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -342,4 +386,6 @@ pub enum SabryBuildError {
     CssCompile(#[from] SabryCompilerError),
     #[error("Failed to load config/manifest")]
     Manifest(#[from] ManifestError),
+    #[error("Another error")]
+    Another(String)
 }

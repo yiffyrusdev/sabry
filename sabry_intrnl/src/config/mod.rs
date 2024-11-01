@@ -41,7 +41,7 @@ impl From<&ValuableManifest> for SabryConfig {
 pub struct SabryCssConfig {
     pub bundle: Option<String>,
     pub scopes: Option<String>,
-    pub bundle_prelude: Option<Vec<String>>,
+    pub prelude: Option<Vec<String>>,
     #[serde(default = "SabryCssConfig::default_minify")]
     pub minify: bool,
 }
@@ -57,7 +57,7 @@ impl Default for SabryCssConfig {
         Self {
             bundle: None,
             scopes: None,
-            bundle_prelude: None,
+            prelude: None,
             minify: Self::default_minify(),
         }
     }
@@ -71,6 +71,7 @@ pub struct SabrySassConfig {
     #[serde(default = "SabrySassConfig::default_scanroot")]
     pub scanroot: String,
     pub modules: Option<Vec<String>>,
+    pub prelude: Option<Vec<String>>,
     #[serde(default = "SabrySassConfig::default_intermediate_dir")]
     pub intermediate_dir: String,
     #[serde(default = "SabrySassConfig::default_module_name_collision")]
@@ -94,6 +95,7 @@ impl Default for SabrySassConfig {
         Self {
             scanroot: Self::default_scanroot(),
             modules: None,
+            prelude: None,
             intermediate_dir: Self::default_intermediate_dir(),
             module_name_collision: Self::default_module_name_collision(),
         }

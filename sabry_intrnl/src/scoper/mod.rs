@@ -5,7 +5,10 @@ use hash::ScopeHash;
 use raffia::Spanned;
 use regex::Regex;
 
-use crate::{config::SabryHashConfig, syntax::{ostrta::OneSyntaxToRuleThemAll, StylesheetAdapter}};
+use crate::{
+    config::SabryHashConfig,
+    syntax::{ostrta::OneSyntaxToRuleThemAll, StylesheetAdapter},
+};
 
 pub mod hash;
 
@@ -375,7 +378,8 @@ mod test {
 
     use crate::{
         config::SabryHashConfig,
-        scoper::{hash::ScopeHash, HashedScope}, syntax::ostrta::OneSyntaxToRuleThemAll,
+        scoper::{hash::ScopeHash, HashedScope},
+        syntax::ostrta::OneSyntaxToRuleThemAll,
     };
 
     use super::ArbitraryScope;

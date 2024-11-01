@@ -45,8 +45,7 @@ pub fn styly_macro_impl(input: TokenStream) -> TokenStream {
         Err(e) => return e.to_compile_error(),
     };
 
-    let scope = match ArbitraryScope::from_source(ms.syntax.0, ms.scope.clone(), &ms.code.code)
-    {
+    let scope = match ArbitraryScope::from_source(ms.syntax.0, ms.scope.clone(), &ms.code.code) {
         Ok(s) => match s.hashed(&config.hash) {
             Ok(hs) => Ok(hs),
             Err(e) => Err(e),

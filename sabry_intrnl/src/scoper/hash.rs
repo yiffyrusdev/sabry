@@ -69,7 +69,9 @@ impl ScopeHash {
 mod test {
     use syn::Ident;
 
-    use crate::{config::SabryHashConfig, scoper::ArbitraryScope, syntax::ostrta::OneSyntaxToRuleThemAll};
+    use crate::{
+        config::SabryHashConfig, scoper::ArbitraryScope, syntax::ostrta::OneSyntaxToRuleThemAll,
+    };
 
     use super::ScopeHash;
 

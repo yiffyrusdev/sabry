@@ -185,10 +185,9 @@ impl SabryBuilder {
                 }
             }
 
-            let css = self.css_compiler.compile_module(
-                scope.original_scope.adapter().syntax,
-                &scope.hashed_code,
-            )?;
+            let css = self
+                .css_compiler
+                .compile_module(scope.original_scope.adapter().syntax, &scope.hashed_code)?;
             self.state
                 .loaded_css_modules
                 .push((scope.original_scope.name.to_string(), css));
@@ -196,7 +195,9 @@ impl SabryBuilder {
 
         // compile sass preludes into the CSS prelude
         for pre in &self.state.sass_prelude {
-            let css = self.css_compiler.compile_module(pre.syntax.into(), &pre.code)?;
+            let css = self
+                .css_compiler
+                .compile_module(pre.syntax.into(), &pre.code)?;
             self.state.css_prelude.push_str(&css);
         }
 
@@ -263,14 +264,22 @@ impl SabryBuilder {
             for pre in sass_pres {
                 let pre_path = PathBuf::from_str(pre)?;
 
-                let syntax = pre_path.extension().unwrap_or_default().to_str().unwrap_or_default();
+                let syntax = pre_path
+                    .extension()
+                    .unwrap_or_default()
+                    .to_str()
+                    .unwrap_or_default();
                 let syntax = match ArbitraryStyleSyntax::try_from(syntax) {
                     Ok(s) => s,
-                    Err(_) => return Err(SabryBuildError::Another(format!("Unknown syntax for sass prelude {pre}")))
+                    Err(_) => {
+                        return Err(SabryBuildError::Another(format!(
+                            "Unknown syntax for sass prelude {pre}"
+                        )))
+                    }
                 };
 
                 let code = fs::read_to_string(pre_path)?;
-                sass_preludes.push(SassPreludeModule {syntax, code});
+                sass_preludes.push(SassPreludeModule { syntax, code });
             }
             self.state.sass_prelude.extend(sass_preludes);
         }
@@ -349,7 +358,7 @@ pub struct SabryBuildState {
     css_prelude: String,
     /// SASS preludes loaded from config
     /// Should be compiled into loaded_css_modules as well
-    sass_prelude: Vec<SassPreludeModule>
+    sass_prelude: Vec<SassPreludeModule>,
 }
 
 /// Convenience struct for [SabryBuildState::sass_prelude]
@@ -357,7 +366,7 @@ pub struct SassPreludeModule {
     /// syntax for the prelude
     syntax: ArbitraryStyleSyntax,
     /// code of the prelude
-    code: String
+    code: String,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -387,5 +396,5 @@ pub enum SabryBuildError {
     #[error("Failed to load config/manifest")]
     Manifest(#[from] ManifestError),
     #[error("Another error")]
-    Another(String)
+    Another(String),
 }

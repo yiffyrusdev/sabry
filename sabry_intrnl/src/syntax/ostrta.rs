@@ -3,7 +3,7 @@
 #[derive(Debug, Clone, Copy)]
 pub enum OneSyntaxToRuleThemAll {
     Sass,
-    Scss
+    Scss,
 }
 
 impl Default for OneSyntaxToRuleThemAll {
@@ -18,7 +18,7 @@ impl TryFrom<&str> for OneSyntaxToRuleThemAll {
         match value {
             "sass" => Ok(Self::Sass),
             "scss" => Ok(Self::Scss),
-            _ => Err(())
+            _ => Err(()),
         }
     }
 }
@@ -29,7 +29,7 @@ impl TryFrom<raffia::Syntax> for OneSyntaxToRuleThemAll {
         match value {
             raffia::Syntax::Sass => Ok(Self::Sass),
             raffia::Syntax::Scss => Ok(Self::Scss),
-            _ => Err(())
+            _ => Err(()),
         }
     }
 }
@@ -40,7 +40,7 @@ impl TryFrom<grass::InputSyntax> for OneSyntaxToRuleThemAll {
         match value {
             grass::InputSyntax::Sass => Ok(Self::Sass),
             grass::InputSyntax::Scss => Ok(Self::Scss),
-            _ => Err(())
+            _ => Err(()),
         }
     }
 }
@@ -49,7 +49,7 @@ impl From<OneSyntaxToRuleThemAll> for raffia::Syntax {
     fn from(value: OneSyntaxToRuleThemAll) -> Self {
         match value {
             OneSyntaxToRuleThemAll::Sass => Self::Sass,
-            OneSyntaxToRuleThemAll::Scss => Self::Scss
+            OneSyntaxToRuleThemAll::Scss => Self::Scss,
         }
     }
 }
@@ -58,7 +58,7 @@ impl From<OneSyntaxToRuleThemAll> for grass::InputSyntax {
     fn from(value: OneSyntaxToRuleThemAll) -> Self {
         match value {
             OneSyntaxToRuleThemAll::Scss => Self::Scss,
-            OneSyntaxToRuleThemAll::Sass => Self::Sass
+            OneSyntaxToRuleThemAll::Sass => Self::Sass,
         }
     }
 }

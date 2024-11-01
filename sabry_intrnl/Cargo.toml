@@ -18,7 +18,6 @@ grass = {version = "^0.13"}
 lightningcss = {version = "1.0.0-alpha.59"}
 blake3 = {version = "^1.5"}
 base64 = {version = "^0.22"}
-const_format = {version = "^0.2"}
 
 thiserror = {version = "^1.0"}
 serde = {version = "^1.0", features = ["derive"]}

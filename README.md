@@ -682,9 +682,9 @@ If you'd like to lend a paw - feel free to check the [WIP](#wip) section out, or
 
 ## MSRV
 
-Sabry passes its own tests on 1.82 nightly.
+Sabry passes its own tests on 1.78 nightly/stable.
 
-There *were* some strange parsing issues reports on *stable* channel, seems to be fixed. idk.
+Examples are on 1.82.
 
 ## License
 

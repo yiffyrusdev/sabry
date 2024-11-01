@@ -1,6 +1,7 @@
 [package]
 name = "leptos-axum-sabry"
 version = "0.1.0"
+rust-version = "1.82"
 edition = "2021"
 publish = false
 

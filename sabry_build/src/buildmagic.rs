@@ -331,7 +331,7 @@ pub enum SabryBuildError {
     #[error("Sabry cant understand the file")]
     FileVisit(#[from] FileVisitError),
     #[error("Syntax of style can not be parsed")]
-    SyntaxParse(#[from] ScopeError),
+    SyntaxError(#[from] ScopeError),
     #[error("Another scope has the same hash, and sabry is configured to raise an error. Try to adjust config, increase hash size, or change the style code")]
     HashCollision { scope: ModuleName },
     #[error("Something's wrong with file path")]

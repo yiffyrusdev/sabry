@@ -1,6 +1,6 @@
 use proc_macro2::TokenStream;
 use quote::quote;
-use regex::Regex;
+use sabry_intrnl::scoper::ArbitraryScope;
 use syn::{parse::Parse, Ident};
 
 use super::{ArbitraryStyleBlock, ArbitraryStyleSyntax};
@@ -20,6 +20,14 @@ pub fn sassy_macro_impl(input: TokenStream) -> TokenStream {
         Ok(m) => m,
         Err(e) => return e.to_compile_error(),
     };
+
+    // quick raffia syntax check
+    match ArbitraryScope::from_source(mode.into(), ident.clone(), &code.code) {
+        Ok(_) => {},
+        Err(e) => {
+            return syn::Error::new(code.span, format!("{e:?}")).into_compile_error()
+        }
+    }
 
     let sourcesass = code.to_string();
     let identname = ident.to_string();

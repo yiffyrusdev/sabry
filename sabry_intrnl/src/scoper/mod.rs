@@ -1,3 +1,5 @@
+use std::fmt::Debug;
+
 use cfg_if::cfg_if;
 use hash::ScopeHash;
 use raffia::Spanned;
@@ -7,15 +9,19 @@ use crate::{config::SabryHashConfig, syntax::StylesheetAdapter};
 
 pub mod hash;
 
-#[derive(Debug, thiserror::Error)]
+#[derive(thiserror::Error)]
 pub enum ScopeError {
     #[error("Raffia reports parse error")]
-    Raffia(raffia::error::ErrorKind),
+    Raffia(raffia::error::ErrorKind, String),
 }
 
-impl From<raffia::error::Error> for ScopeError {
-    fn from(value: raffia::error::Error) -> Self {
-        Self::Raffia(value.kind)
+impl Debug for ScopeError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let a = match self {
+            Self::Raffia(kind, source) => format!("{kind}: at {source}")
+        };
+
+        write!(f, "{a}")
     }
 }
 
@@ -33,8 +39,16 @@ impl<'s> ArbitraryScope<'s> {
         name: syn::Ident,
         source: &'s str,
     ) -> Result<Self, ScopeError> {
+        let adapter = match StylesheetAdapter::new(source, syntax) {
+            Ok(a) => a,
+            Err(e) => {
+                let source = &source[e.span.start..e.span.end];
+                return Err(ScopeError::Raffia(e.kind, source.to_string()))
+            }
+        };
+
         Ok(Self {
-            adapter: StylesheetAdapter::new(source, syntax)?,
+            adapter,
             name,
         })
     }

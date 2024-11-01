@@ -1,4 +1,11 @@
-use lightningcss::{printer::PrinterOptions, stylesheet::MinifyOptions, targets::Targets};
+use std::fmt::Debug;
+
+use lightningcss::{
+    error::{MinifyErrorKind, PrinterErrorKind},
+    printer::PrinterOptions,
+    stylesheet::MinifyOptions,
+    targets::Targets,
+};
 
 use crate::config::SabryConfig;
 
@@ -28,7 +35,12 @@ impl CompilerAdapter {
                 lightningcss::stylesheet::ParserOptions::default(),
             ) {
                 Ok(s) => s,
-                Err(_) => return Err(SabryCompilerError::Lightningcss()),
+                Err(e) => {
+                    return Err(SabryCompilerError::LightParse {
+                        kind: e.kind.to_string(),
+                        loc: e.loc,
+                    })
+                }
             };
 
             let targets = Targets {
@@ -47,16 +59,14 @@ impl CompilerAdapter {
                 ..Default::default()
             };
 
-            if lightsheet.minify(minify_options).is_err() {
-                return Err(SabryCompilerError::Lightningcss());
-            }
+            lightsheet.minify(minify_options)?;
 
             css = match lightsheet.to_css(printer_options) {
                 Ok(c) => {
                     drop(lightsheet);
                     c.code
                 }
-                Err(_) => return Err(SabryCompilerError::Lightningcss()),
+                Err(e) => return Err(SabryCompilerError::LightPrint(e)),
             };
         }
 
@@ -78,12 +88,45 @@ impl From<&SabryConfig> for grass::Options<'_> {
     }
 }
 
-#[derive(Debug, thiserror::Error)]
+#[derive(thiserror::Error)]
 pub enum SabryCompilerError {
     #[error("Could not compile into CSS with grass")]
     GrassCompile(#[from] Box<grass::Error>),
-    #[error("Could not parse compiled CSS with lightningcss")]
-    Lightningcss(),
+    #[error("Could not print compiled CSS with lightningcss")]
+    LightPrint(#[from] lightningcss::error::Error<PrinterErrorKind>),
+    #[error("Could not minify CSS with lightningcss")]
+    LightMinify(#[from] lightningcss::error::Error<MinifyErrorKind>),
+    #[error("Could not parse CSS with lightningcss")]
+    LightParse {
+        kind: String,
+        loc: Option<lightningcss::error::ErrorLocation>,
+    },
+}
+
+impl Debug for SabryCompilerError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let explain = match self {
+            Self::LightPrint(e) => format!(
+                "{} at {:?}",
+                e.kind,
+                e.loc.clone()
+                    .map(|l| format!("file {}, line {}, col {}", l.filename, l.line, l.column))
+            ),
+            Self::GrassCompile(err) => format!("{err}"),
+            Self::LightMinify(e) => format!(
+                "{} at {:?}",
+                e.kind,
+                e.loc.clone()
+                    .map(|l| format!("file {}, line {}, col {}", l.filename, l.line, l.column))
+            ),
+            Self::LightParse { kind, loc } => format!(
+                "{kind} at {:?}",
+                loc.clone().map(|l| format!("file {}, line {}, col {}", l.filename, l.line, l.column))
+            ),
+        };
+
+        write!(f, "{explain}")
+    }
 }
 
 /// Unification wrapper over all the Syntax enums

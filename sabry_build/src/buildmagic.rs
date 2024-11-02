@@ -145,10 +145,14 @@ impl SabryBuilder {
                 .append(true)
                 .open(path)?;
 
+            // merged bundle CSS does require another lightningcss pass
+            let mut buffer = String::new();
             for (_, code) in &self.state.loaded_css_modules {
-                write!(file, " {}", self.state.css_prelude)?;
-                write!(file, " {code}")?;
+                buffer.push_str(code);
             }
+            buffer = self.css_compiler.lightningcss(&buffer)?;
+
+            write!(file, "{buffer}")?;
         }
 
         Ok(())

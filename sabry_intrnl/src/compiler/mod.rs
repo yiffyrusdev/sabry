@@ -19,6 +19,8 @@ impl CompilerAdapter {
         Self { config }
     }
 
+    /// Compile given SASS/SCSS into CSS
+    /// with respect to self.config
     pub fn compile_module(
         &self,
         syntax: OneSyntaxToRuleThemAll,
@@ -28,47 +30,57 @@ impl CompilerAdapter {
 
         let mut css = grass::from_string(code, &options)?;
 
+        css = match self.lightningcss(&css) {
+            Ok(c) => c,
+            Err(e) => return Err(e),
+        };
+
+        Ok(css)
+    }
+
+    /// Perform lightningcss transformations on given css
+    /// with respect to self.config.css.minify on minification
+    pub fn lightningcss(&self, css: &str) -> Result<String, SabryCompilerError> {
+        let mut lightsheet = match lightningcss::stylesheet::StyleSheet::parse(
+            css,
+            lightningcss::stylesheet::ParserOptions::default(),
+        ) {
+            Ok(s) => s,
+            Err(e) => {
+                return Err(SabryCompilerError::LightParse {
+                    kind: e.kind.to_string(),
+                    loc: e.loc,
+                })
+            }
+        };
+
+        let targets = Targets {
+            browsers: Some(self.config.lightningcss.targets.clone().into()),
+            ..Default::default()
+        };
+
+        let printer_options = PrinterOptions {
+            minify: self.config.css.minify,
+            targets,
+            ..Default::default()
+        };
+
+        let minify_options = MinifyOptions {
+            targets,
+            ..Default::default()
+        };
+
         if self.config.css.minify {
-            //its lightningcss time!
-            let mut lightsheet = match lightningcss::stylesheet::StyleSheet::parse(
-                &css,
-                lightningcss::stylesheet::ParserOptions::default(),
-            ) {
-                Ok(s) => s,
-                Err(e) => {
-                    return Err(SabryCompilerError::LightParse {
-                        kind: e.kind.to_string(),
-                        loc: e.loc,
-                    })
-                }
-            };
-
-            let targets = Targets {
-                browsers: Some(self.config.lightningcss.targets.clone().into()),
-                ..Default::default()
-            };
-
-            let printer_options = PrinterOptions {
-                minify: self.config.css.minify,
-                targets,
-                ..Default::default()
-            };
-
-            let minify_options = MinifyOptions {
-                targets,
-                ..Default::default()
-            };
-
-            lightsheet.minify(minify_options)?;
-
-            css = match lightsheet.to_css(printer_options) {
-                Ok(c) => {
-                    drop(lightsheet);
-                    c.code
-                }
-                Err(e) => return Err(SabryCompilerError::LightPrint(e)),
-            };
+            lightsheet.minify(minify_options)?
         }
+
+        let css = match lightsheet.to_css(printer_options) {
+            Ok(c) => {
+                drop(lightsheet);
+                c.code
+            }
+            Err(e) => return Err(SabryCompilerError::LightPrint(e)),
+        };
 
         Ok(css)
     }

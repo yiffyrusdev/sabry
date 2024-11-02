@@ -565,9 +565,8 @@ buildy(
 The `usey!` macro accepts the following syntax:
 `#($macro,)*`, where
 
-- *$macro* is a macro which handles three expansions:
+- *$macro* is a macro which handles two expansions:
     - `() => { $code }`
-    - `(name) => { $name }`
     - `(syntax) => { $syntax }`
 
 Where for the *$macro*:
@@ -576,6 +575,20 @@ Where for the *$macro*:
 - *$name* is a name of module without extension as a string literal
 - *$syntax* is either "sass" or "scss"
 
+`usey!` macro will put the module full name from macro call identifier and the `syntax` expansion, so you could
+resolve potential naming conflicts:
+
+```rust,ignore
+use tgk_brandstyle::theme;
+use basestyle::theme as base_theme;
+
+sabry::buildy(
+    sabry::usey!(
+        theme!(),
+        base_theme!()
+    )
+)?;
+```
 
 Exactly this kind of macros is produced by [`sassy!`](#style-definition-with-sassy).
 

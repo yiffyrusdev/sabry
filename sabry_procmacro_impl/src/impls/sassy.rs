@@ -28,7 +28,6 @@ pub fn sassy_macro_impl(input: TokenStream) -> TokenStream {
     }
 
     let sourcesass = code.to_string();
-    let identname = ident.to_string();
     let macro_doc = format!("Arbitrary {:?} code declared with `sassy!`. Pretty usable in tandem with `usey!` and `magic()` at build time", mode);
 
     quote! {
@@ -36,7 +35,6 @@ pub fn sassy_macro_impl(input: TokenStream) -> TokenStream {
         #[macro_export]
         macro_rules! #ident {
             () => {#sourcesass};
-            (module) => {#identname};
             (syntax) => {#mode};
         }
     }

@@ -34,7 +34,11 @@ impl StyleCall {
         let call_bang = &self.call.bang_token;
         // the following calls are expected by macro genereted by `sassy!`
         let call_syntax = quote! {#call_path #call_bang (syntax)};
-        let call_file = quote! {#call_path #call_bang (module)};
+
+        let module_name = call_path
+            .get_ident()
+            .expect("BUG: failed to get identifier for macro call")
+            .to_string();
 
         if self.vis_pub {
             quote! {
@@ -42,7 +46,7 @@ impl StyleCall {
             }
         } else {
             quote! {
-                (format!("{}.{}", #call_file, #call_syntax), #call_code .to_string())
+                (format!("{}.{}", #module_name, #call_syntax), #call_code .to_string())
             }
         }
     }

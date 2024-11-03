@@ -36,9 +36,10 @@ impl StyleCall {
         let call_syntax = quote! {#call_path #call_bang (syntax)};
 
         let module_name = call_path
-            .get_ident()
-            .expect("BUG: failed to get identifier for macro call")
-            .to_string();
+            .segments
+            .last()
+            .map(|l| l.ident.to_string())
+            .expect("BUG: failed to get identifier for macro call");
 
         if self.vis_pub {
             quote! {

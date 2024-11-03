@@ -51,7 +51,7 @@ Code your SASS in separate files to get proper syntax highlighting, or do sass-i
 
 ```rust
 sabry::styly!(component {".btn {color: green;}"});
-sabry::styly!(extras "tests/assets/mixins.scss");
+sabry::styly!(extras "tests/assets/mixin-module.scss");
 ```
 
 </td>
@@ -88,7 +88,7 @@ sabry::styly!(breadbadge {"
 Keep things as private and modular as you wish
 
 ```rust
-sabry::styly!(pub cats "tests/assets/mixins.scss");
+sabry::styly!(pub cats "tests/assets/mixin-module.scss");
 sabry::styly!(dogs {"#howl {border: none;}"});
 ```
 ```rust,ignore
@@ -148,7 +148,7 @@ And a proc-macro
 // lib.rs
 use sabry::sassy;
 
-sassy!(mixins "tests/assets/mixins.scss");
+sassy!(mixins "tests/assets/mixin-module.scss");
 sassy!(styles {"
     $primary-color: black;
     @mixin colored($col: primary) {
@@ -443,8 +443,8 @@ Examples:
 use sabry::sassy;
 
 sassy!(module1 {"$primary-color: red;"});
-sassy!(module2 "tests/assets/mixins.scss");
-sassy!(module3:sass "tests/assets/mixins.sass");
+sassy!(module2 "tests/assets/mixin-module.scss");
+sassy!(module3:sass "tests/assets/mixin-module.sass");
 // works, but there are catches.
 sassy!(module4:sass {"
     @mixin colored($col: primary)
@@ -514,7 +514,7 @@ You can read more about scoping and hashing in the [scoping](#scoping) section.
 By default generated `mod` is private. You can make both mod and wrapper style constant public by adding the `pub` to macro call:
 
 ```rust
-sabry::styly!(pub whatever "tests/assets/mixins.scss");
+sabry::styly!(pub whatever "tests/assets/mixin-module.scss");
 ```
 
 #### Constant styly scopes
@@ -524,7 +524,7 @@ As you've seen above, scope doe not contain any style code by itself. That's the
 However you could still compile styles into the artifact by simply adding the `const` to the macro call:
 
 ```rust
-sabry::styly!(const scope "tests/assets/mixins.scss");
+sabry::styly!(const scope "tests/assets/mixin-module.scss");
 ```
 Which results in following:
 ```rust,ignore

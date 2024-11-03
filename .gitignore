@@ -3,3 +3,6 @@ rust-toolchain.toml
 .vscode
 .profile
 /Cargo.lock
+/tests/sabry_intermediate
+/tests/sabry_output
+/playground

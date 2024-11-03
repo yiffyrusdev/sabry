@@ -1,0 +1,19 @@
+
+@mixin color($color: black)
+    @if $color == black
+        color: white
+        background-color: green
+    @else if $color == white
+        color: red
+        background-color: black
+    @else
+        color: #c6c6c6
+        background-color: #00ffff
+    &::after
+        content: 'Colored'
+        color: $color
+        background-color: blue
+        &:hover
+            transform: scale(2)
+    &:hover
+        transform: translateX(10%)

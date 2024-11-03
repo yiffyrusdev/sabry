@@ -1,0 +1,20 @@
+@use 'module_c' as *;
+
+
+.coated{
+    @include color(green);
+    @include surface(black);
+    &-dark{
+        @include surface(red);
+        a{
+            @include surface(blue);
+            img{
+                @include color(black);
+            }
+        }
+    }
+    span{
+        @include color(green);
+        display: block;
+    }
+}

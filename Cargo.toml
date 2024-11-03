@@ -43,6 +43,7 @@ sabry_intrnl = {workspace = true}
 
 [dev-dependencies]
 leptos = {version = "0.7.0-gamma3"}
+insta = {version = "^1.41", features = ["glob"]}
 
 [features]
 default = ["procmacro"]

@@ -1,12 +1,4 @@
-use std::fs;
-
-use insta::{glob, Settings};
-
-use sabry::{
-    buildmagic::SabryBuilder,
-    config::{BehavHashCollision, BehavSassModCollision, SabryConfig},
-    sassy, styly, usey,
-};
+use sabry::styly;
 
 pub mod sass {
     use sabry::sassy;
@@ -113,70 +105,79 @@ fn syntax_contract() {
     assert_eq!(sass::module_inline_a!(syntax), "sass");
 }
 
-fn gen_config() -> SabryConfig {
-    let mut config = SabryConfig::require().unwrap();
-    config.css.bundle = Some("tests/sabry_output/bundle.css".into());
-    config.css.scopes = Some("tests/sabry_output/scopes".into());
-    config.css.minify = true;
-    config.css.prelude = Some(vec!["tests/assets/prelude.css".into()]);
+#[cfg(test)]
+#[cfg(all(feature = "procmacro", feature = "build"))]
+mod build_tests {
+    use std::fs;
 
-    config.sass.prelude = Some(vec![
-        "tests/assets/prelude.sass".into(),
-        "tests/assets/prelude.scss".into(),
-    ]);
-    config.sass.intermediate_dir = "tests/sabry_intermediate".into();
-    config.sass.scanroot = "tests".into();
-    config.sass.module_name_collision = BehavSassModCollision::Merge;
+    use insta::{glob, Settings};
+    use sabry::{usey, buildmagic::SabryBuilder, config::{BehavHashCollision, BehavSassModCollision, SabryConfig}};
 
-    config.hash.collision = BehavHashCollision::Error;
-    config.hash.size = 16;
-    config.hash.use_code_size = true;
-    config.hash.use_code_text = true;
-    config.hash.use_item_names = true;
-    config.hash.use_scope_name = true;
+    fn gen_config() -> SabryConfig {
+        let mut config = SabryConfig::require().unwrap();
+        config.css.bundle = Some("tests/sabry_output/bundle.css".into());
+        config.css.scopes = Some("tests/sabry_output/scopes".into());
+        config.css.minify = true;
+        config.css.prelude = Some(vec!["tests/assets/prelude.css".into()]);
 
-    config.lightningcss.targets.android = Some("10".into());
-    config.lightningcss.targets.chrome = Some("100".into());
-    config.lightningcss.targets.edge = Some("80".into());
-    config.lightningcss.targets.firefox = Some("100".into());
-    config.lightningcss.targets.ie = Some("8".into());
-    config.lightningcss.targets.ios_saf = Some("13.2".into());
-    config.lightningcss.targets.opera = Some("80".into());
-    config.lightningcss.targets.safari = Some("11".into());
-    config.lightningcss.targets.samsung = Some("80".into());
+        config.sass.prelude = Some(vec![
+            "tests/assets/prelude.sass".into(),
+            "tests/assets/prelude.scss".into(),
+        ]);
+        config.sass.intermediate_dir = "tests/sabry_intermediate".into();
+        config.sass.scanroot = "tests".into();
+        config.sass.module_name_collision = BehavSassModCollision::Merge;
 
-    config
-}
+        config.hash.collision = BehavHashCollision::Error;
+        config.hash.size = 16;
+        config.hash.use_code_size = true;
+        config.hash.use_code_text = true;
+        config.hash.use_item_names = true;
+        config.hash.use_scope_name = true;
 
-fn gen_builder() -> SabryBuilder {
-    let config = gen_config();
-    let builder = SabryBuilder::new(config);
+        config.lightningcss.targets.android = Some("10".into());
+        config.lightningcss.targets.chrome = Some("100".into());
+        config.lightningcss.targets.edge = Some("80".into());
+        config.lightningcss.targets.firefox = Some("100".into());
+        config.lightningcss.targets.ie = Some("8".into());
+        config.lightningcss.targets.ios_saf = Some("13.2".into());
+        config.lightningcss.targets.opera = Some("80".into());
+        config.lightningcss.targets.safari = Some("11".into());
+        config.lightningcss.targets.samsung = Some("80".into());
 
-    builder
-}
+        config
+    }
 
-#[test]
-fn compilation_with_buildy() {
-    let mut builder = gen_builder();
-    builder
-        .build(usey!(
-            sass::mixins_a!(),
-            sass::module_a!(),
-            scss::mixins_c!(),
-            scss::module_c!()
-        ))
-        .unwrap();
+    fn gen_builder() -> SabryBuilder {
+        let config = gen_config();
+        let builder = SabryBuilder::new(config);
 
-    glob!("sabry_output/**/*.css", |path| {
-        let generated = fs::read_to_string(path).unwrap();
+        builder
+    }
 
-        let mut settings = Settings::clone_current();
-        settings.set_snapshot_path("sabry_output_snapshots");
-        settings.set_prepend_module_to_snapshot(false);
-        settings.set_omit_expression(true);
-        settings.remove_info();
-        settings.bind(|| {
-            insta::assert_snapshot!(generated);
+    #[test]
+    fn compilation_with_buildy() {
+        let mut builder = gen_builder();
+        builder
+            .build(usey!(
+                super::sass::mixins_a!(),
+                super::sass::module_a!(),
+                super::scss::mixins_c!(),
+                super::scss::module_c!()
+            ))
+            .unwrap();
+
+        glob!("sabry_output/**/*.css", |path| {
+            let generated = fs::read_to_string(path).unwrap();
+
+            let mut settings = Settings::clone_current();
+            settings.set_snapshot_path("sabry_output_snapshots");
+            settings.set_prepend_module_to_snapshot(false);
+            settings.set_omit_expression(true);
+            settings.remove_info();
+            settings.bind(|| {
+                insta::assert_snapshot!(generated);
+            });
         });
-    });
+    }
 }

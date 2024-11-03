@@ -47,27 +47,9 @@ type BuilderResult = Result<(), SabryBuildError>;
 ///
 /// This function is intended to run at build time, however, you're free to use it however you please
 pub fn buildy(inline_side_modules: impl IntoIterator<Item = StyleModule>) -> BuilderResult {
-    println!("🧙: This is probably the stderr. Something went wrong:");
-
     let config = SabryConfig::require()?;
     let mut builder = SabryBuilder::new(config);
-
-    println!("🧙 loading preludes");
-    builder.load_preludes()?;
-
-    println!("🧙 loading `buildy` modules");
-    for (name, code) in inline_side_modules {
-        builder.load_side_module(name, code)?;
-    }
-
-    println!("🧙 loading this crate");
-    builder.load_styles_from_this_crate()?;
-
-    println!("🧙 compiling CSS");
-    builder.compile_everything()?;
-
-    println!("🧙 writing an output");
-    builder.generate_output()?;
+    builder.build(inline_side_modules)?;
 
     Ok(())
 }
@@ -106,6 +88,33 @@ impl SabryBuilder {
             css_compiler,
             state: SabryBuildState::default(),
         }
+    }
+
+    /// Default building workflow implementation
+    pub fn build(
+        &mut self,
+        inline_side_modules: impl IntoIterator<Item = StyleModule>,
+    ) -> BuilderResult {
+        println!("🧙: This is probably the stderr. Something went wrong:");
+
+        println!("🧙 loading preludes");
+        self.load_preludes()?;
+
+        println!("🧙 loading `buildy` modules");
+        for (name, code) in inline_side_modules {
+            self.load_side_module(name, code)?;
+        }
+
+        println!("🧙 loading this crate");
+        self.load_styles_from_this_crate()?;
+
+        println!("🧙 compiling CSS");
+        self.compile_everything()?;
+
+        println!("🧙 writing an output");
+        self.generate_output()?;
+
+        Ok(())
     }
 
     /// Write all the loaded CSS
@@ -228,6 +237,7 @@ impl SabryBuilder {
                 let entry_path = entry.path();
                 let ext = entry_path.extension().unwrap_or_default();
                 if ext == "rs" {
+                    println!(".. reading {entry_path:?}");
                     let visitor = filevisit::visit_file(entry_path)?;
                     self.state.loaded_stylyses.extend(visitor.found_stylys);
                 }

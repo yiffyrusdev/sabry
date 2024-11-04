@@ -4,5 +4,5 @@ sign-tag = true
 target = "x86_64-unknown-linux-gnu"
 
 pre-release-replacements = [
-  {file="README.md", search='sabry = {\s?version = "[0-9a-z\-\.]*"', replace='sabry = { version = "{{version}}"'},
+  {file="README.md", search='sabry = \{\s?version = "[0-9a-z\-\.]*"', replace='sabry = {version = "{{version}}"'},
 ]

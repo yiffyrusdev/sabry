@@ -1,8 +1,8 @@
 use std::{collections::HashSet, fs};
 
-use sabry_procmacro::{sassy, usey};
+use sabry_procmacro::{scssy, usey};
 
-sassy!(scmod:scss {"
+scssy!(scmod:scss {"
     @mixin abc(){
         color: red;
     }
@@ -10,18 +10,18 @@ sassy!(scmod:scss {"
         @include abc;
     }
 "});
-sassy!(samod:sass {"
+scssy!(samod:sass {"
     @mixin abc()
         color: green
     .sel1
         @include abc
 "});
 
-sassy!(scmicromod:scss "sabry_procmacro/tests/scmicro.scss");
-sassy!(samicromod:sass "sabry_procmacro/tests/samicro.sass");
+scssy!(scmicromod:scss "sabry_procmacro/tests/scmicro.scss");
+scssy!(samicromod:sass "sabry_procmacro/tests/samicro.sass");
 
 #[test]
-fn sassy_contract() {
+fn scssy_contract() {
     assert_eq!(scmod!(syntax), "scss");
     assert_eq!(
         scmod!(),

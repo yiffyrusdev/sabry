@@ -34,7 +34,7 @@ type BuilderResult = Result<(), SabryBuildError>;
 /// ).expect("Sabry failed to build CSS");
 /// ```
 ///
-/// Also you could use style-macros defined anywhere with `sabry::sassy!` procmacro:
+/// Also you could use style-macros defined anywhere with `sabry::scssy!` procmacro:
 /// ```ignore
 /// buildy(
 ///     sabry::usey!(

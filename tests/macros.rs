@@ -1,10 +1,10 @@
 use sabry::styly;
 
 pub mod sass {
-    use sabry::sassy;
+    use sabry::scssy;
 
-    sassy!(mixins_sass:sass "tests/assets/mixin-module.sass");
-    sassy!(mixins_inline_sass:sass {"
+    scssy!(mixins_sass:sass "tests/assets/mixin-module.sass");
+    scssy!(mixins_inline_sass:sass {"
     @mixin color($color: black)
         @if $color == black
             color: white
@@ -24,8 +24,8 @@ pub mod sass {
         &:hover
             transform: translateX(10%)
 "});
-    sassy!(module_sass:sass "tests/assets/module-forward.sass");
-    sassy!(module_inline_sass:sass {"
+    scssy!(module_sass:sass "tests/assets/module-forward.sass");
+    scssy!(module_inline_sass:sass {"
 @forward 'mixins_a'
 @forward 'mixins_c'
 "});
@@ -36,10 +36,10 @@ pub mod sass {
 }
 
 pub mod scss {
-    use sabry::sassy;
+    use sabry::scssy;
 
-    sassy!(mixins_scss:scss "tests/assets/mixin-module.scss");
-    sassy!(mixins_inline_scss:scss {"
+    scssy!(mixins_scss:scss "tests/assets/mixin-module.scss");
+    scssy!(mixins_inline_scss:scss {"
     @mixin surface($color: black){
         @if $color == black{
             color: white;
@@ -64,8 +64,8 @@ pub mod scss {
         }
     }
 "});
-    sassy!(module_scss:scss "tests/assets/module-forward.scss");
-    sassy!(module_inline_scss:scss {"
+    scssy!(module_scss:scss "tests/assets/module-forward.scss");
+    scssy!(module_inline_scss:scss {"
 @forward 'mixins_a';
 @forward 'mixins_c';
 "});

@@ -2,7 +2,7 @@
 
 use proc_macro::TokenStream;
 use sabry_procmacro_impl::impls::{
-    sassy::sassy_macro_impl, styly::styly_macro_impl, usey::usey_macro_impl,
+    scssy::scssy_macro_impl, styly::styly_macro_impl, usey::usey_macro_impl,
 };
 
 /// Macro that makes sass code rusty.
@@ -13,28 +13,28 @@ use sabry_procmacro_impl::impls::{
 /// ## Usage
 ///
 /// ```ignore
-/// sassy!(scssmodule {
+/// scssy!(scssmodule {
 ///     /* SCSS */
 /// });
-/// sassy!(sassmodule:sass {
+/// scssy!(sassmodule:sass {
 ///     /* SASS (WIP) */
 /// });
-/// sassy!(scssmod2:scss {
+/// scssy!(scssmod2:scss {
 ///     /* SCSS */
 /// });
 /// ```
 /// Or read code from file
 /// ```ignore
-/// sassy!(filemodule "src/styles/a.scss");
-/// sassy!(filemodule:sass "src/styles/b.sass");
+/// scssy!(filemodule "src/styles/a.scss");
+/// scssy!(filemodule:sass "src/styles/b.sass");
 /// ```
 ///
 /// \[SCSS syntax requires 'scss' feature\]
 /// \[SASS syntax requires 'sass' feature (WIP)\]
 ///
 #[proc_macro]
-pub fn sassy(input: TokenStream) -> TokenStream {
-    sassy_macro_impl(input.into()).into()
+pub fn scssy(input: TokenStream) -> TokenStream {
+    scssy_macro_impl(input.into()).into()
 }
 
 /// Macro that brings sass code into app

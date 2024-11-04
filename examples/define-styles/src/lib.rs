@@ -1,8 +1,8 @@
-use sabry::sassy;
+use sabry::scssy;
 
-sassy!(style "src/style.scss");
+scssy!(style "src/style.scss");
 
-sassy!(utils {"
+scssy!(utils {"
     @mixin flex($direction, $align, $justify, $gap: .5rem) {
         display: flex;
         list-style: none;
@@ -31,7 +31,7 @@ sassy!(utils {"
     }
 "});
 
-sassy!(theme {"
+scssy!(theme {"
     $thm-surface-primary: #2b2a29;
     $thm-surface-secondary: #6C6C6C;
     $thm-surface-tertiary: #4C4C4C;
@@ -77,7 +77,7 @@ sassy!(theme {"
     }
 "});
 
-sassy!(tokens {"
+scssy!(tokens {"
     @use 'theme';
 
     @mixin clickable($style: accent, $scale: 1.2, $clickscale: 0.9){

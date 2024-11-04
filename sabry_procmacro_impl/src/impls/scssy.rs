@@ -11,7 +11,7 @@ use super::{ArbitraryStyleBlock, ArbitraryStyleSyntax};
 /// `$syntax`: sass/scss
 ///
 /// `$code`: intended to be valid based on $syntax
-pub fn sassy_macro_impl(input: TokenStream) -> TokenStream {
+pub fn scssy_macro_impl(input: TokenStream) -> TokenStream {
     let MacroSyntax {
         ident,
         syntax: mode,
@@ -28,7 +28,7 @@ pub fn sassy_macro_impl(input: TokenStream) -> TokenStream {
     }
 
     let sourcesass = code.to_string();
-    let macro_doc = format!("Arbitrary {:?} code declared with `sassy!`. Pretty usable in tandem with `usey!` and `magic()` at build time", mode);
+    let macro_doc = format!("Arbitrary {:?} code declared with `scssy!`. Pretty usable in tandem with `usey!` and `magic()` at build time", mode);
 
     quote! {
         #[doc = #macro_doc]

@@ -6,7 +6,7 @@ use regex::Regex;
 use sabry_intrnl::syntax::ostrta::OneSyntaxToRuleThemAll;
 use syn::{braced, parse::Parse, Ident, LitStr, Token};
 
-pub mod sassy;
+pub mod scssy;
 pub mod styly;
 pub mod usey;
 

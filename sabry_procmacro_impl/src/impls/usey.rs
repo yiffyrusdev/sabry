@@ -32,7 +32,7 @@ impl StyleCall {
         let call_code = &self.call;
         let call_path = &self.call.path;
         let call_bang = &self.call.bang_token;
-        // the following calls are expected by macro genereted by `sassy!`
+        // the following calls are expected by macro genereted by `scssy!`
         let call_syntax = quote! {#call_path #call_bang (syntax)};
 
         let module_name = call_path

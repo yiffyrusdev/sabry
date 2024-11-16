@@ -141,7 +141,7 @@ The only need is the dependency
 #Cargo.toml
 
 [dependencies]
-sabry = {version = "0.0.1"}
+sabry = {version = "0.0.2"}
 ```
 And a proc-macro
 ```rust
@@ -174,7 +174,7 @@ Depend on sabry
 # Cargo.toml
 
 [dependencies]
-sabry = {version = "0.0.1"}
+sabry = {version = "0.0.2"}
 ```
 And create a style scope wherever you want:
 ```rust
@@ -214,10 +214,10 @@ To be able to compile all styles sabry also needs the *build* feature flag:
 # Cargo.toml
 
 [dependencies]
-sabry = {version = "0.0.1"}
+sabry = {version = "0.0.2"}
 
 [build-dependencies]
-sabry = {version = "0.0.1", features = ["build"]}
+sabry = {version = "0.0.2", features = ["build"]}
 ```
 > If you do use some non-default feature flags make sure to keep them in sync between sabry-dependency and sabry-build-dependency.
 
@@ -296,10 +296,10 @@ So, if you're on leptos, and don't mind to take this approach, I'd highly recomm
 # Cargo.toml
 
 [dependencies]
-sabry = {version = "0.0.1", features = ["lepty-scoping"]}
+sabry = {version = "0.0.2", features = ["lepty-scoping"]}
 
 [build-dependencies]
-sabry = {version = "0.0.1", features = ["build", "lepty-scoping"]}
+sabry = {version = "0.0.2", features = ["build", "lepty-scoping"]}
 ```
 
 ```rust

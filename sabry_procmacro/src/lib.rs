@@ -1,6 +1,8 @@
 #![doc = include_str!("../README.md")]
+#![cfg_attr(feature = "nightly", feature(proc_macro_span))]
 
-use proc_macro::TokenStream;
+use cfg_if::cfg_if;
+use proc_macro::{Span, TokenStream};
 use sabry_procmacro_impl::impls::{
     scssy::scssy_macro_impl, styly::styly_macro_impl, usey::usey_macro_impl,
 };
@@ -34,7 +36,14 @@ use sabry_procmacro_impl::impls::{
 ///
 #[proc_macro]
 pub fn scssy(input: TokenStream) -> TokenStream {
-    scssy_macro_impl(input.into()).into()
+    cfg_if! {
+        if #[cfg(feature = "nightly")] {
+            let source_path = Span::call_site().source_file().path().parent().map(|p| p.to_owned());
+        } else {
+            let source_path = None;
+        }
+    }
+    scssy_macro_impl(input.into(), source_path).into()
 }
 
 /// Macro that brings sass code into app
@@ -96,7 +105,15 @@ pub fn scssy(input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro]
 pub fn styly(input: TokenStream) -> TokenStream {
-    styly_macro_impl(input.into()).into()
+    cfg_if! {
+        if #[cfg(feature = "nightly")] {
+            let source_path = Span::call_site().source_file().path().parent().map(|p| p.to_owned());
+        } else {
+            let source_path = None;
+        }
+    }
+
+    styly_macro_impl(input.into(), source_path).into()
 }
 
 /// Macro that brings external sass code into app

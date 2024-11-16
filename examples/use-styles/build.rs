@@ -9,14 +9,8 @@ scssy!(utils {"
     }
 "});
 
-fn main(){
+fn main() {
     /* Declare modules to use with sabry */
-    sabry::buildy(
-        usey!(
-            theme!(),
-            tokens!(),
-            utils_dup!(),
-            utils!()
-        )
-    ).expect("Failed to build sabry styles");
+    sabry::buildy(usey!(theme!(), tokens!(), utils_dup!(), utils!()))
+        .expect("Failed to build sabry styles");
 }

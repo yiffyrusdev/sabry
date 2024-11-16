@@ -4,6 +4,7 @@ use leptos_router::{
     components::{Route, Router, Routes},
     StaticSegment,
 };
+use sabry::styly;
 
 use crate::routes;
 
@@ -29,7 +30,7 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
 pub fn App() -> impl IntoView {
     provide_meta_context();
 
-    view! {
+    view! {class=APP,
         <Stylesheet id="leptos" href="/pkg/leptos-axum.css"/>
         <Title text="Welcome to Leptos"/>
         <Router>
@@ -41,3 +42,11 @@ pub fn App() -> impl IntoView {
         </Router>
     }
 }
+
+styly!(app:scss {"
+    @use 'theme';
+
+    main {
+        @include theme.surface(primary);
+    }
+"});

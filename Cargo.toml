@@ -59,6 +59,9 @@ build = [
 net-files = [
     "sabry_build/net-files"
 ]
+nightly = [
+    "sabry_procmacro?/nightly"
+]
 internals = []
 
 [package.metadata.docs.rs]

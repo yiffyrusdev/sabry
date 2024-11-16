@@ -1,6 +1,8 @@
 use sabry::scssy;
 
-scssy!(style "src/style.scss");
+// relative path is available because 'nightly' feature flag is set.
+// If you don't - this will be "src/style.scss"
+scssy!(style "./style.scss");
 
 scssy!(utils {"
     @mixin flex($direction, $align, $justify, $gap: .5rem) {

@@ -1016,6 +1016,7 @@ dependencies = [
 name = "sabry_procmacro"
 version = "0.0.1"
 dependencies = [
+ "cfg-if",
  "sabry_procmacro_impl",
 ]
 

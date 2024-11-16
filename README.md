@@ -130,8 +130,8 @@ Also, just about everything is pub-available in this crate (with *internals* fea
 
 Feel free to check out examples:
 
-|[crate of styles](https://github.com/yiffyrusdev/sabry/tree/master/examples/define-styles)|[style usage](https://github.com/yiffyrusdev/sabry/tree/master/examples/use-styles)|[leptos-axum with sabry](https://github.com/yiffyrusdev/sabry/tree/master/examples/leptos-axum)|
-|-|-|-|
+|[crate of styles](https://github.com/yiffyrusdev/sabry/tree/master/examples/define-styles)|[style usage](https://github.com/yiffyrusdev/sabry/tree/master/examples/use-styles)|[leptos-axum with sabry](https://github.com/yiffyrusdev/sabry/tree/master/examples/leptos-axum)|[leptos components](https://github.com/yiffyrusdev/sabry/tree/master/examples/leptos-components)|
+|-|-|-|-|
 
 ### Create a crate full of arbitrary SASS
 
@@ -255,6 +255,23 @@ styly!(styles {"
 "});
 ```
 So the `mixins!` macro we just passed to the `usey!` macro inside of `buildy` function call is now accessible with simple and natural `@use "mixins"` SASS rule!
+
+### Create crate of styled components
+
+This is currently an alpha-testing-early-concept feature which comes
+with some things to avoid.
+
+While the process depends much on the framework you prefer, there are
+some limitations and essential recommendations:
+
+- Sabry will scope (hash) your styles at build time, which means
+higher collision probability between the component crate and the main application, which *can not* be currently
+detected by sabry.
+- You have to write style scopes for components with `const` styly macro flavour: `styly!(const whatever {""})`
+    - And then you have to solve the task of injecting those generated CSS for your component manually.
+- If you want to write styles in separate SASS/SCSS files, you need the nightly rust and the 'nightly' feature flag set
+for sabry, so you can use styles from relative paths `styly!(const comp "./style.scss")`
+    - Which will give you an error from rust-analyzer wether file exists or not. However, if the path is correct, it will build fine.
 
 ### Leptos specials
 
@@ -461,6 +478,8 @@ The given code to `scssy!` is not checked to be valid code in given syntax (wip)
 
 > SASS support inside of rust files is experimental. If you do want to use SASS tabbed syntax - consider to use files path instead of sass-in-rust option.
 
+> With *nightly* feature flag if using the relative path like `scssy!(module "./module.scss")` you'll get false-positive error even if file exists. Also you won't get autocompletion and rust-analyzer will complain on `module!` macro. WIP.
+
 ### Scoping with `styly!`
 
 The `styly!` macro is available with *procmacro* feature flag which is enabled by default.
@@ -540,6 +559,8 @@ mod scope {/* selector collection */}
 > *Second*. If you `@use` something inside of constant-flavored scope, you can only success if sabry *did the build magic before compilation of that macro call*. So you still can compile the styles into the artifact and enjoy mixins from other crates, but, in general, you are going to receive some false-positives from editor.
 >
 > Worth of notice: sabry will still include const-flavored styles into the CSS bundle during build time.
+
+> With *nightly* feature flag if using the relative path like `styly!(const scope "./sctyle.scss")` you'll get false-positive error even if file exists. Also you won't get autocompletion and rust-analyzer will complain on `SCOPE_CSS`, `scope::whatever` etc. WIP.
 
 ### Building with `buildy` and `usey!`
 
@@ -658,6 +679,8 @@ Not any valid CSS selector is a valid rust identifier. In general this section s
 
 **lepty-scoping** - overhauls the scope generation logic, best suitable for the leptos. Check out the [section](#leptos-specials) and an [example](https://github.com/yiffyrusdev/sabry/tree/master/examples/leptos-axum)
 
+**nightly** - allows relative path selection with `scssy!` and `styly!` macros. However rust-analyzer will raise false-positives for reachable files as well.
+
 ## WIP
 
 *(sorted by my own priority)*, "dones" are excluded
@@ -666,6 +689,8 @@ Not any valid CSS selector is a valid rust identifier. In general this section s
     - [ ] some weird unrelated stuff I can see in autocompletion
 - [ ] Crates of styled components - currently the only way to create them seems to be const styly.
     - [ ] CSS support
+    - [x] Allow relative path selection (with 'nightly' feature on nightly rust)
+        - [ ] Somehow get rid of false-positives AND retain proper autocompletion
 - [ ] Currently the crate causes "dependency inheritance" infection. We cant get rid of it, however should be doable to at least get rid of flag inheritance
 - [ ] Use sass-in-rust without quoted styles for variable injection:
     ```rust, ignore

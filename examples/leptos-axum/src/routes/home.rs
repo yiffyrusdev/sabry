@@ -45,6 +45,7 @@ pub fn Route() -> impl IntoView {
     let on_click = move |_| *count.write() += 1;
 
     view! {class = STYLE,
+        <leptos_components::Aside/> // lets use our component
         <section class=style::table>
             <h2>"Welcome to Leptos"</h2>
             <h2 class="">

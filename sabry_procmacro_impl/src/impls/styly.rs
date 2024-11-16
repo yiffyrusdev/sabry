@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use proc_macro2::{Span, TokenStream};
 use quote::quote;
 use sabry_intrnl::{
@@ -5,7 +7,10 @@ use sabry_intrnl::{
     config::SabryConfig,
     scoper::{apply_basic_rusty_member_gen_rules, ArbitraryScope, ScopedSelector},
 };
-use syn::{parse::Parse, Ident, Token};
+use syn::{
+    parse::{Parse, ParseStream},
+    Ident, Token,
+};
 
 use super::{ArbitraryStyleBlock, ArbitraryStyleSyntax};
 
@@ -26,7 +31,7 @@ use super::{ArbitraryStyleBlock, ArbitraryStyleSyntax};
 ///
 /// The machine-readable output may also be forced by use `machine_readable: true` arg on `parse_macro_syntax` function
 /// without modifying tokenstream
-pub fn styly_macro_impl(input: TokenStream) -> TokenStream {
+pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> TokenStream {
     let config = match SabryConfig::require() {
         Ok(c) => c,
         Err(e) => {
@@ -40,7 +45,7 @@ pub fn styly_macro_impl(input: TokenStream) -> TokenStream {
             .to_compile_error()
         }
     };
-    let ms = match parse_macro_syntax(input) {
+    let ms = match parse_macro_syntax(input, source_path) {
         Ok(ms) => ms,
         Err(e) => return e.to_compile_error(),
     };
@@ -180,8 +185,14 @@ pub fn styly_macro_impl(input: TokenStream) -> TokenStream {
 }
 
 // reusable function, that does not return tokenstream for machine-processing at build time
-pub fn parse_macro_syntax(input: TokenStream) -> Result<MacroSyntax, syn::Error> {
-    syn::parse2::<MacroSyntax>(input)
+pub fn parse_macro_syntax(
+    input: TokenStream,
+    source_path: Option<PathBuf>,
+) -> Result<MacroSyntax, syn::Error> {
+    syn::parse::Parser::parse2(
+        |input: ParseStream<'_>| MacroSyntax::parse_syn(input, source_path),
+        input,
+    )
 }
 
 #[derive(Debug)]
@@ -215,12 +226,19 @@ pub struct MacroSyntax {
     pub code: ArbitraryStyleBlock,
 }
 
-impl Parse for MacroSyntax {
-    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+impl MacroSyntax {
+    pub fn parse_syn(
+        input: syn::parse::ParseStream,
+        source_path: Option<PathBuf>,
+    ) -> syn::Result<Self> {
         let mut generator = input.parse::<ScopeGenerator>()?;
         let scope = input.parse::<Ident>()?;
         let syntax = input.parse::<ArbitraryStyleSyntax>()?;
-        let code = input.parse::<ArbitraryStyleBlock>()?;
+        let code = if source_path.is_some() {
+            ArbitraryStyleBlock::parse_syn(input, source_path)
+        } else {
+            input.parse::<ArbitraryStyleBlock>()
+        }?;
 
         if input.parse::<Token![#]>().is_ok() {
             generator = ScopeGenerator::MachineReadable
@@ -232,5 +250,11 @@ impl Parse for MacroSyntax {
             syntax,
             code,
         })
+    }
+}
+
+impl Parse for MacroSyntax {
+    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+        Self::parse_syn(input, None)
     }
 }

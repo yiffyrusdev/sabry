@@ -4,6 +4,7 @@
 async fn main() {
     use axum::Router;
     use leptos::prelude::*;
+    use leptos::logging::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use leptos_axum_sabry::shell::*;
 

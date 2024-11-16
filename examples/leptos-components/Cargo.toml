@@ -1,0 +1,33 @@
+[package]
+name = "leptos-components"
+version = "0.1.0"
+rust-version = "1.82"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+leptos = { version = "0.7.0-rc1" }
+leptos_meta = { version = "0.7.0-rc1" }
+leptos_router = { version = "0.7.0-rc1" }
+
+sabry = {path = "../../", features = ["lepty-scoping"]}
+
+[build-dependencies]
+sabry = {path = "../../", features = ["build", "lepty-scoping"]}
+define-styles = {path = "../define-styles"}
+
+[features]
+hydrate = ["leptos/hydrate"]
+ssr = [
+    "leptos/ssr",
+    "leptos_meta/ssr",
+    "leptos_router/ssr",
+]
+
+[package.metadata.sabry]
+css.minify = true
+# No need for bundle
+# css.bundle = "target/.sabry/target/bundle.css"

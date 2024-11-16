@@ -13,8 +13,10 @@ proc-macro = true
 
 [dependencies]
 sabry_procmacro_impl = {workspace = true}
+cfg-if = {version = "^1.0"}
 
 [features]
+nightly = []
 
 [package.metadata.docs.rs]
 all-features = true

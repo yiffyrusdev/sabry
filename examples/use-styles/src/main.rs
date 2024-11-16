@@ -17,7 +17,9 @@ styly!(pub const bundlemod {"
     }
 "});
 
-styly!(pub filemod:sass "src/main.sass");
+// relative path is available because 'nightly' feature flag is set.
+// If you don't - this will be "src/main.sass"
+styly!(pub const filemod:sass "./main.sass");
 
 fn main() {
     println!("someth class codemod styles: {}", bundlemod::someth);
@@ -28,5 +30,6 @@ fn main() {
     );
     println!("#fox id will be: {}", bundlemod::thefox);
     println!("Bundles const CSS will be: {}", BUNDLEMOD_CSS);
+    println!("Bundles const CSS from file will be: {}", FILEMOD_CSS); // false-positive from relative file.
     println!("Thats how we used the styles! Good luck!!");
 }

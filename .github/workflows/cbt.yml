@@ -1,26 +1,41 @@
 name: cargo basic build-test
 
 on:
-  push:
-    branches: ["window", "master"]
-  pull_request:
-    branches: ["window"]
+    push:
+        branches: ["window", "master"]
+    pull_request:
+        branches: ["window"]
 
 env:
-  CARGO_TERM_COLOR: always
+    CARGO_TERM_COLOR: always
 
 jobs:
-  build_and_test:
-    name: Sabry - latest
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        toolchain:
-          - stable
-          - nightly
-    steps:
-      - uses: actions/checkout@v4
-      - run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
-      - run: cargo build --verbose
-      - run: cargo test --verbose --all
-      - run: cargo test --verbose --all --all-features
+    build_and_test:
+        name: Sabry - latest
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                toolchain:
+                    - stable
+                    - nightly
+        steps:
+            - uses: actions/checkout@v4
+            - run: rustup update ${{ matrix.toolchain }} && rustup default ${{ matrix.toolchain }}
+            - run: cargo build --verbose
+            - run: cargo test --verbose --all
+            - run: cargo test --verbose --all --all-features
+
+    build_examples:
+        name: Sabry - latset - examples
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                example:
+                    - define-styles
+                    - use-styles
+                    - leptos-axum
+        steps:
+            - uses: actions/checkout@v4
+            - run: rustup update nightly && rustup default nightly
+            - run: cd examples/${{ matrix.example }}
+            - run: cargo build --verbose

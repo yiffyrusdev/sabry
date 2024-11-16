@@ -18,6 +18,7 @@ raffia = {version = "^0.9"}
 regex = {version = "^1.11"}
 
 [features]
+nightly = []
 
 [package.metadata.docs.rs]
 all-features = true

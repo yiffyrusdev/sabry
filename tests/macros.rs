@@ -111,7 +111,11 @@ mod build_tests {
     use std::fs;
 
     use insta::{glob, Settings};
-    use sabry::{usey, buildmagic::SabryBuilder, config::{BehavHashCollision, BehavSassModCollision, SabryConfig}};
+    use sabry::{
+        buildmagic::SabryBuilder,
+        config::{BehavHashCollision, BehavSassModCollision, SabryConfig},
+        usey,
+    };
 
     fn gen_config() -> SabryConfig {
         let mut config = SabryConfig::require().unwrap();

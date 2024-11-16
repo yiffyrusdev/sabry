@@ -974,7 +974,7 @@ checksum = "f3cb5ba0dc43242ce17de99c180e96db90b235b8a9fdc9543c96d2209116bd9f"
 
 [[package]]
 name = "sabry"
-version = "0.0.1-beta.2"
+version = "0.0.1"
 dependencies = [
  "sabry_intrnl",
  "sabry_procmacro",
@@ -982,7 +982,7 @@ dependencies = [
 
 [[package]]
 name = "sabry_intrnl"
-version = "0.0.1-beta.2"
+version = "0.0.1"
 dependencies = [
  "base64",
  "blake3",
@@ -1001,14 +1001,15 @@ dependencies = [
 
 [[package]]
 name = "sabry_procmacro"
-version = "0.0.1-beta.2"
+version = "0.0.1"
 dependencies = [
+ "cfg-if",
  "sabry_procmacro_impl",
 ]
 
 [[package]]
 name = "sabry_procmacro_impl"
-version = "0.0.1-beta.2"
+version = "0.0.1"
 dependencies = [
  "proc-macro2",
  "quote",

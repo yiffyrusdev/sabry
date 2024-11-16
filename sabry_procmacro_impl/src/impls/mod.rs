@@ -30,28 +30,29 @@ impl ArbitraryStyleBlock {
     pub fn code(&self) -> &str {
         &self.code
     }
-}
 
-impl Parse for ArbitraryStyleBlock {
-    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+    pub fn parse_syn(
+        input: syn::parse::ParseStream,
+        use_code_path_prefix: Option<PathBuf>,
+    ) -> syn::Result<Self> {
         let (code, span) = if let Ok(path_tok) = input.parse::<LitStr>() {
-            let path = path_tok.value();
-
-            let path = match PathBuf::from_str(&path) {
-                Ok(p) => p,
-                Err(_) => {
-                    return Err(syn::Error::new(
-                        path_tok.span(),
-                        format!("Could not read {} as a path: Infallible", path),
-                    ))
+            let path = if let Some(prefix) = use_code_path_prefix {
+                let p = path_tok.value();
+                if let Some(pp) = p.strip_prefix("./") {
+                    prefix.join(pp)
+                } else {
+                    PathBuf::from_str(&p).expect("Unable to convert path into PathBuf")
                 }
+            } else {
+                PathBuf::from_str(&path_tok.value()).expect("Unable to convert path into PathBuf")
             };
+
             let fullpath = match path.canonicalize() {
                 Ok(cp) => cp,
                 Err(e) => {
                     return Err(syn::Error::new(
                         path_tok.span(),
-                        format!("Could not use path {path:?}: {:?}", e.kind()),
+                        format!("Could not use path {path:?}: {:?}. If the path is relative and 'nightly' feature flag is set - this is likely false-positive", e.kind()),
                     ))
                 }
             };
@@ -83,6 +84,12 @@ impl Parse for ArbitraryStyleBlock {
         };
 
         Ok(Self { code, span })
+    }
+}
+
+impl Parse for ArbitraryStyleBlock {
+    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+        Self::parse_syn(input, None)
     }
 }
 

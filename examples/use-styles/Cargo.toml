@@ -6,10 +6,10 @@ rust-version = "1.82"
 publish = false
 
 [dependencies]
-sabry = {path = "../../"}
+sabry = {path = "../../", features = ["nightly"]}
 
 [build-dependencies]
-sabry = {path = "../../", features = ["build"]}
+sabry = {path = "../../", features = ["build", "nightly"]}
 define-styles = {path = "../define-styles"}
 
 [package.metadata.sabry]

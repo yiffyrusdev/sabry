@@ -2,7 +2,7 @@
 #![cfg_attr(feature = "nightly", feature(proc_macro_span))]
 
 use cfg_if::cfg_if;
-use proc_macro::{Span, TokenStream};
+use proc_macro::TokenStream;
 use sabry_procmacro_impl::impls::{
     scssy::scssy_macro_impl, styly::styly_macro_impl, usey::usey_macro_impl,
 };
@@ -38,6 +38,7 @@ use sabry_procmacro_impl::impls::{
 pub fn scssy(input: TokenStream) -> TokenStream {
     cfg_if! {
         if #[cfg(feature = "nightly")] {
+            use proc_macro::Span;
             let source_path = Span::call_site().source_file().path().parent().map(|p| p.to_owned());
         } else {
             let source_path = None;
@@ -107,6 +108,7 @@ pub fn scssy(input: TokenStream) -> TokenStream {
 pub fn styly(input: TokenStream) -> TokenStream {
     cfg_if! {
         if #[cfg(feature = "nightly")] {
+            use proc_macro::Span;
             let source_path = Span::call_site().source_file().path().parent().map(|p| p.to_owned());
         } else {
             let source_path = None;

@@ -19,10 +19,14 @@ styly!(pub const bundlemod {"
 
 styly!(pub filemod:sass "src/main.sass");
 
-fn main(){
+fn main() {
     println!("someth class codemod styles: {}", bundlemod::someth);
     println!("someth class filemod styles: {}", filemod::someth);
-    println!("someth-dark selector will be: {}", bundlemod::___dark(bundlemod::someth));
+    println!(
+        "someth-dark selector will be: {}",
+        bundlemod::___dark(bundlemod::someth)
+    );
     println!("#fox id will be: {}", bundlemod::thefox);
+    println!("Bundles const CSS will be: {}", BUNDLEMOD_CSS);
     println!("Thats how we used the styles! Good luck!!");
 }

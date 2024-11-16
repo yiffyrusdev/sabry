@@ -133,7 +133,7 @@ pub fn styly_macro_impl(input: TokenStream) -> TokenStream {
 
             if constant {
                 let compiler = CompilerAdapter::new(config.clone());
-                let css = match compiler.compile_module(ms.syntax.0, &ms.code.code) {
+                let css = match compiler.compile_module(ms.syntax.0, &scope.hashed_code) {
                     Ok(c) => c,
                     Err(e) => {
                         return syn::Error::new(

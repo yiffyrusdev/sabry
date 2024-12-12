@@ -1,0 +1,7 @@
+---
+source: tests/macros.rs
+assertion_line: 183
+input_file: tests/sabry_output/scopes/repeating_selector_scss.css
+snapshot_kind: text
+---
+.YYYksiQMfU3exD720ckMbA.el1{color:red}.YYYksiQMfU3exD720ckMbA.el1-mob{color:#00f}.YYYksiQMfU3exD720ckMbA.el1__blist{list-style:none}.YYYksiQMfU3exD720ckMbA.el2{color:#fff}.YYYksiQMfU3exD720ckMbA.el2-mob{color:#000}.YYYksiQMfU3exD720ckMbA.el2__blist{background:#fff}.YYYksiQMfU3exD720ckMbA.el2__blist-mob{background:#000}

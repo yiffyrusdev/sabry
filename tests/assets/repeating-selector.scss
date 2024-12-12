@@ -1,0 +1,24 @@
+.el1 {
+    color: red;
+    &-mob {
+        color: blue;
+    }
+
+    &__blist {
+        list-style: none;
+    }
+}
+
+.el2 {
+    color: white;
+    &-mob {
+        color: black;
+    }
+
+    &__blist {
+        background: white;
+        &-mob {
+            background: black;
+        }
+    }
+}

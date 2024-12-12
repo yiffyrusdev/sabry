@@ -1,5 +1,6 @@
 use std::path::PathBuf;
 
+use itertools::Itertools;
 use proc_macro2::{Span, TokenStream};
 use quote::quote;
 use sabry_intrnl::{
@@ -94,6 +95,7 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
                         interp
                     })
                 })
+                .unique()
                 .map(|s| {
                     let ident = apply_basic_rusty_member_gen_rules(&s);
                     let fnident = syn::parse_str::<Ident>(format!("_{ident}").as_str())
@@ -110,6 +112,7 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
             let scope_members = scope
                 .hashed_selectors
                 .iter()
+                .unique()
                 .filter_map(|hs| {
                     hs.html_ident.clone().map(|html| {
                         let name = match hs.sel {

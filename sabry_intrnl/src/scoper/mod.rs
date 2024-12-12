@@ -140,6 +140,7 @@ impl<'s> HashedScope<'s> {
 /// Struct which represents hashed selector inside of [HashedScope].
 ///
 /// Does not hold information about hash itself, as meant to be inside of scope.
+#[derive(PartialEq, Eq, Hash)]
 pub struct HashedSelector {
     /// Basic unrelated to hash info about this selector
     pub sel: ScopedSelector,
@@ -258,6 +259,7 @@ impl HashedSelector {
 }
 
 /// Just any unary CSS-ish selector
+#[derive(PartialEq, Eq, Hash)]
 pub struct ArbitrarySelector {
     /// CSS-ish identifier
     pub ident: String,
@@ -266,6 +268,7 @@ pub struct ArbitrarySelector {
 }
 
 /// Any unary CSS-ish selector, that's able to be scoped, and then hashed
+#[derive(PartialEq, Eq, Hash)]
 pub enum ScopedSelector {
     Class(ArbitrarySelector),
     Id(ArbitrarySelector),

@@ -82,6 +82,8 @@ styly!(module_usage_sass:sass "tests/assets/module-usage.sass");
 styly!(module_usage_scss:scss "tests/assets/module-usage.scss");
 styly!(use_forwarded_sass:sass "tests/assets/use-forwarded.sass");
 styly!(use_forwarded_scss:scss "tests/assets/use-forwarded.scss");
+styly!(repeating_selector_sass:sass "tests/assets/repeating-selector.sass");
+styly!(repeating_selector_scss:scss "tests/assets/repeating-selector.scss");
 
 #[test]
 fn ensure_inline_matches_file() {
@@ -154,9 +156,7 @@ mod build_tests {
 
     fn gen_builder() -> SabryBuilder {
         let config = gen_config();
-        let builder = SabryBuilder::new(config);
-
-        builder
+        SabryBuilder::new(config)
     }
 
     #[test]

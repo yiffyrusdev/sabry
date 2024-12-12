@@ -28,12 +28,7 @@ impl CompilerAdapter {
     ) -> Result<String, SabryCompilerError> {
         let options = grass::Options::from(&self.config).input_syntax(syntax.into());
 
-        let mut css = grass::from_string(code, &options)?;
-
-        css = match self.lightningcss(&css) {
-            Ok(c) => c,
-            Err(e) => return Err(e),
-        };
+        let css = self.lightningcss(&grass::from_string(code, &options)?)?;
 
         Ok(css)
     }

@@ -1,0 +1,7 @@
+---
+source: tests/macros.rs
+assertion_line: 183
+input_file: tests/sabry_output/scopes/repeating_selector_sass.css
+snapshot_kind: text
+---
+.rWkBO00R__2y_lbRfXlyg.el1{color:red}.rWkBO00R__2y_lbRfXlyg.el1-mob{color:#00f}.rWkBO00R__2y_lbRfXlyg.el1__blist{list-style:none}.rWkBO00R__2y_lbRfXlyg.el2{color:#fff}.rWkBO00R__2y_lbRfXlyg.el2-mob{color:#000}.rWkBO00R__2y_lbRfXlyg.el2__blist{background:#fff}.rWkBO00R__2y_lbRfXlyg.el2__blist-mob{background:#000}

@@ -16,6 +16,7 @@ quote = {version = "^1.0"}
 proc-macro2 = {version = "^1.0", features = ["span-locations"]}
 raffia = {version = "^0.9"}
 regex = {version = "^1.11"}
+itertools = {version = "^0.13"}
 
 [features]
 nightly = []

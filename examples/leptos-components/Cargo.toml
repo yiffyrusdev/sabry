@@ -9,9 +9,9 @@ publish = false
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-leptos = { version = "0.7.0-rc1" }
-leptos_meta = { version = "0.7.0-rc1" }
-leptos_router = { version = "0.7.0-rc1" }
+leptos = { version = "^0.7" }
+leptos_meta = { version = "^0.7" }
+leptos_router = { version = "^0.7" }
 
 sabry = {path = "../../", features = ["lepty-scoping"]}
 

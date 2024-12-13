@@ -1,5 +1,3 @@
-use sabry::styly;
-
 pub mod sass {
     use sabry::scssy;
 
@@ -75,15 +73,6 @@ pub mod scss {
     pub(crate) use module_inline_scss as module_inline_c;
     pub(crate) use module_scss as module_c;
 }
-
-styly!(sole_code_sass:sass "tests/assets/sole-code.sass");
-styly!(sole_code_scss:scss "tests/assets/sole-code.scss");
-styly!(module_usage_sass:sass "tests/assets/module-usage.sass");
-styly!(module_usage_scss:scss "tests/assets/module-usage.scss");
-styly!(use_forwarded_sass:sass "tests/assets/use-forwarded.sass");
-styly!(use_forwarded_scss:scss "tests/assets/use-forwarded.scss");
-styly!(repeating_selector_sass:sass "tests/assets/repeating-selector.sass");
-styly!(repeating_selector_scss:scss "tests/assets/repeating-selector.scss");
 
 #[test]
 fn ensure_inline_matches_file() {

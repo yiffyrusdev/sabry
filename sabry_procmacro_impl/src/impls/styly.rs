@@ -119,13 +119,14 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
                             ScopedSelector::Class(_) => "class",
                             ScopedSelector::Id(_) => "id",
                             ScopedSelector::Tag(_) => "tagname",
+                            ScopedSelector::Glob { .. } => "glob",
                         };
 
                         (name, hs.sel.gen_rusty_ident(), html, hs.css_ident.clone())
                     })
                 })
                 .map(|(name, ident, html, css)| {
-                    let docs = format!("'{}' {}. CSS selector '{}'", ident, name, css);
+                    let docs = format!("'{:?}' {}. CSS selector '{}'", ident, name, css);
                     quote! {
                         #[doc = #docs]
                         #[allow(non_upper_case_globals)]

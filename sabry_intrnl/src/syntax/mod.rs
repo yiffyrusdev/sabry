@@ -1,8 +1,8 @@
 use ostrta::OneSyntaxToRuleThemAll;
 use raffia::{
     ast::{
-        ClassSelector, CompoundSelector, IdSelector, NestingSelector, SimpleSelector, Statement,
-        Stylesheet, TypeSelector,
+        ClassSelector, CompoundSelector, IdSelector, NestingSelector, PseudoClassSelector,
+        SimpleSelector, Statement, Stylesheet, TypeSelector,
     },
     ParserBuilder,
 };
@@ -54,6 +54,27 @@ impl<'s> StylesheetAdapter<'s> {
 
     pub fn nesting_selectors(&self) -> Vec<NestingSelector<'s>> {
         self.selectors_by(|c| c.as_nesting().cloned())
+    }
+
+    /// special selector case searching for :g(whatever), :glob(whatever), :global(whatever)
+    pub fn glob_modified_selectors(&self) -> Vec<PseudoClassSelector<'s>> {
+        self.selectors_by(|c| {
+            let cps = match c.as_pseudo_class() {
+                Some(s) => s.clone(),
+                _ => return None,
+            };
+
+            let ident = match cps.name.as_literal().map(|r| r.raw) {
+                Some(i) => i,
+                _ => return None,
+            };
+
+            if ident == "global" {
+                Some(cps)
+            } else {
+                None
+            }
+        })
     }
 
     /// Return collected [Vec] of owned values modulo `T`, filtered by `F`.

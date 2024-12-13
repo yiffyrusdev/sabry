@@ -2,7 +2,7 @@ use std::fmt::Debug;
 
 use cfg_if::cfg_if;
 use hash::ScopeHash;
-use raffia::Spanned;
+use raffia::{Span, Spanned};
 use regex::Regex;
 
 use crate::{
@@ -109,7 +109,33 @@ impl<'s> HashedScope<'s> {
             .filter_map(|t| t.as_tag_name())
             .map(|c| HashedSelector::from_tag(&hash, c));
 
-        let mut hashed_selectors = classes.chain(ids).chain(tags).collect::<Vec<_>>();
+        // get global selectors
+        let globs = scope.adapter().glob_modified_selectors();
+        let globs = globs
+            .iter()
+            .filter_map(|g| {
+                // we do ignore the latter selectors from :global(a, b) because there's no clear decision:
+                // how should we treat :glob(a, b) c {}
+                // as `a c {}` `b c {}`
+                // or as `a, b c {}` ?
+                g.arg.clone().and_then(|a| {
+                    if let raffia::ast::PseudoClassSelectorArgKind::SelectorList(list) = a.kind {
+                        list.selectors
+                            .first()
+                            .cloned()
+                            .map(|fcl| (g.span.clone(), fcl.span.clone()))
+                    } else {
+                        None
+                    }
+                })
+            })
+            .map(|c| HashedSelector::from_glob_mod(&hash, c, scope.adapter().source()));
+
+        let mut hashed_selectors = classes
+            .chain(ids)
+            .chain(tags)
+            .chain(globs)
+            .collect::<Vec<_>>();
 
         // sorting by span start is important because of how hashed code construction works
         hashed_selectors.sort_by(|a, b| {
@@ -151,6 +177,18 @@ pub struct HashedSelector {
 }
 
 impl HashedSelector {
+    pub fn from_glob_mod(hash: &ScopeHash, sel: (Span, Span), source: &str) -> Self {
+        let sel = ScopedSelector::from_glob_mod(sel, source);
+        let css_ident = Self::make_hashed_css(&sel, hash);
+        let html_ident = Self::make_hashed_html(&sel, hash);
+
+        Self {
+            sel,
+            css_ident,
+            html_ident,
+        }
+    }
+
     /// Construct the [HashedSelector], with given hash and parsed class selector
     pub fn from_class(hash: &ScopeHash, sel: &raffia::ast::ClassSelector) -> Self {
         let sel = ScopedSelector::from_class(sel);
@@ -220,6 +258,7 @@ impl HashedSelector {
                     }
                 }
             }
+            ScopedSelector::Glob { raw, .. } => raw.clone(),
         }
     }
 
@@ -254,6 +293,7 @@ impl HashedSelector {
                 }
             }
             ScopedSelector::Tag(_) => None,
+            ScopedSelector::Glob { .. } => None,
         }
     }
 }
@@ -264,7 +304,7 @@ pub struct ArbitrarySelector {
     /// CSS-ish identifier
     pub ident: String,
     /// Span in original CSS code where it comes from
-    pub span: raffia::Span,
+    pub span: Span,
 }
 
 /// Any unary CSS-ish selector, that's able to be scoped, and then hashed
@@ -273,6 +313,11 @@ pub enum ScopedSelector {
     Class(ArbitrarySelector),
     Id(ArbitrarySelector),
     Tag(ArbitrarySelector),
+    Glob {
+        origin: ArbitrarySelector,
+        inner_span: Span,
+        raw: String,
+    },
 }
 
 impl ScopedSelector {
@@ -282,24 +327,40 @@ impl ScopedSelector {
             Self::Class(a) => a,
             Self::Id(a) => a,
             Self::Tag(a) => a,
+            Self::Glob { origin, .. } => origin,
         }
     }
 
     /// Generate rusty member ident based on selector type and CSS ident
-    pub fn gen_rusty_ident(&self) -> syn::Ident {
-        let basic = apply_basic_rusty_member_gen_rules(&self.as_arbitrary().ident);
+    pub fn gen_rusty_ident(&self) -> Option<syn::Ident> {
+        let arb = &self.as_arbitrary().ident;
+        let basic = apply_basic_rusty_member_gen_rules(arb);
 
         let ready = match self {
-            Self::Class(_) => basic,
-            Self::Id(_) => {
-                format!("the{basic}")
-            }
-            Self::Tag(_) => {
-                format!("any{basic}")
-            }
+            Self::Class(_) => Some(basic),
+            Self::Id(_) => Some(format!("the{basic}")),
+            Self::Tag(_) => Some(format!("any{basic}")),
+            Self::Glob { .. } => None,
         };
 
-        syn::parse_str::<syn::Ident>(&ready).expect("BUG: formed ident is not Rust Ident")
+        ready.map(|rs| {
+            syn::parse_str::<syn::Ident>(&rs).expect("BUG: formed ident is not Rust Ident")
+        })
+    }
+
+    /// Construct this from glob complex selector
+    pub fn from_glob_mod(s: (Span, Span), source: &str) -> Self {
+        let inner_span = s.1;
+        let origin_ident = source[s.0.start..s.0.end].to_owned();
+
+        Self::Glob {
+            origin: ArbitrarySelector {
+                span: s.0,
+                ident: origin_ident,
+            },
+            raw: source[inner_span.start..inner_span.end].to_owned(),
+            inner_span,
+        }
     }
 
     /// Construct this from class selector
@@ -482,7 +543,7 @@ mod test {
             .hashed_selectors
             .iter()
             .map(|s| s.sel.gen_rusty_ident())
-            .map(|i| i.to_string())
+            .flat_map(|i| i.map(|is| is.to_string()))
             .collect::<HashSet<_>>();
 
         assert_eq!(expect_ident_names, sels);

@@ -1,7 +1,117 @@
 ---
 source: tests/macros.rs
-assertion_line: 170
+assertion_line: 172
 input_file: tests/sabry_output/scopes/module_usage_sass.css
 snapshot_kind: text
 ---
-.n5vGKZlIscA58H8d7ZMOhSw.coated{color:#fff;background-color:green}.n5vGKZlIscA58H8d7ZMOhSw.coated:after{content:"Colored";color:#000;background-color:#00f}.n5vGKZlIscA58H8d7ZMOhSw.coated:after:hover{-ms-transform:scale(2);transform:scale(2)}.n5vGKZlIscA58H8d7ZMOhSw.coated:hover{-ms-transform:translate(10%);transform:translate(10%)}.n5vGKZlIscA58H8d7ZMOhSw.coated-dark{color:#c6c6c6;background-color:#0ff}.n5vGKZlIscA58H8d7ZMOhSw.coated-dark:after{content:"Colored";color:red;background-color:#00f}.n5vGKZlIscA58H8d7ZMOhSw.coated-dark:after:hover{-ms-transform:scale(2);transform:scale(2)}.n5vGKZlIscA58H8d7ZMOhSw.coated-dark:hover{-ms-transform:translate(10%);transform:translate(10%)}.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw{color:#c6c6c6;background-color:#0ff}.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw:after{content:"Colored";color:#00f;background-color:#00f}.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw:after:hover{-ms-transform:scale(2);transform:scale(2)}.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw:hover{-ms-transform:translate(10%);transform:translate(10%)}.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw img.n5vGKZlIscA58H8d7ZMOhSw{color:#fff;background-color:green}.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw img.n5vGKZlIscA58H8d7ZMOhSw:after{content:"Colored";color:#000;background-color:#00f}.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw img.n5vGKZlIscA58H8d7ZMOhSw:after:hover{-ms-transform:scale(2);transform:scale(2)}.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw img.n5vGKZlIscA58H8d7ZMOhSw:hover{-ms-transform:translate(10%);transform:translate(10%)}.n5vGKZlIscA58H8d7ZMOhSw.coated span.n5vGKZlIscA58H8d7ZMOhSw{color:#c6c6c6;background-color:#0ff;display:block}.n5vGKZlIscA58H8d7ZMOhSw.coated span.n5vGKZlIscA58H8d7ZMOhSw:after{content:"Colored";color:green;background-color:#00f}.n5vGKZlIscA58H8d7ZMOhSw.coated span.n5vGKZlIscA58H8d7ZMOhSw:after:hover{-ms-transform:scale(2);transform:scale(2)}.n5vGKZlIscA58H8d7ZMOhSw.coated span.n5vGKZlIscA58H8d7ZMOhSw:hover{-ms-transform:translate(10%);transform:translate(10%)}
+.n5vGKZlIscA58H8d7ZMOhSw.coated {
+  color: #c6c6c6;
+  background-color: #0ff;
+  color: #fff;
+  background-color: green;
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated:after {
+  content: "Colored";
+  color: green;
+  background-color: #00f;
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated:after:hover {
+  transform: scale(2);
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated:hover {
+  transform: translateX(10%);
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated:after {
+  content: "Colored";
+  color: #000;
+  background-color: #00f;
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated:after:hover {
+  transform: scale(2);
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated:hover {
+  transform: translateX(10%);
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated-dark {
+  color: #c6c6c6;
+  background-color: #0ff;
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated-dark:after {
+  content: "Colored";
+  color: red;
+  background-color: #00f;
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated-dark:after:hover {
+  transform: scale(2);
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated-dark:hover {
+  transform: translateX(10%);
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw {
+  color: #c6c6c6;
+  background-color: #0ff;
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw:after {
+  content: "Colored";
+  color: #00f;
+  background-color: #00f;
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw:after:hover {
+  transform: scale(2);
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw:hover {
+  transform: translateX(10%);
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw img.n5vGKZlIscA58H8d7ZMOhSw {
+  color: #fff;
+  background-color: green;
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw img.n5vGKZlIscA58H8d7ZMOhSw:after {
+  content: "Colored";
+  color: #000;
+  background-color: #00f;
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw img.n5vGKZlIscA58H8d7ZMOhSw:after:hover {
+  transform: scale(2);
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw img.n5vGKZlIscA58H8d7ZMOhSw:hover {
+  transform: translateX(10%);
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated span.n5vGKZlIscA58H8d7ZMOhSw {
+  color: #c6c6c6;
+  background-color: #0ff;
+  display: block;
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated span.n5vGKZlIscA58H8d7ZMOhSw:after {
+  content: "Colored";
+  color: green;
+  background-color: #00f;
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated span.n5vGKZlIscA58H8d7ZMOhSw:after:hover {
+  transform: scale(2);
+}
+
+.n5vGKZlIscA58H8d7ZMOhSw.coated span.n5vGKZlIscA58H8d7ZMOhSw:hover {
+  transform: translateX(10%);
+}

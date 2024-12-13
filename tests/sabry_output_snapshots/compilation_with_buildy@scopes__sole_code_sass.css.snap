@@ -1,7 +1,34 @@
 ---
 source: tests/macros.rs
-assertion_line: 170
+assertion_line: 172
 input_file: tests/sabry_output/scopes/sole_code_sass.css
 snapshot_kind: text
 ---
-.smfXzGrnTs2kl9jPP0nk6w.fuzz{background-color:red;display:block}.smfXzGrnTs2kl9jPP0nk6w.fuzz-dark{color:#fff;background-color:#000}.smfXzGrnTs2kl9jPP0nk6w.fuzz-dark a.smfXzGrnTs2kl9jPP0nk6w{text-transform:uppercase}.smfXzGrnTs2kl9jPP0nk6w.fuzz-dark a.smfXzGrnTs2kl9jPP0nk6w img.smfXzGrnTs2kl9jPP0nk6w{position:absolute;top:0;left:10rem}.smfXzGrnTs2kl9jPP0nk6w.fuzz span.smfXzGrnTs2kl9jPP0nk6w{grid-template-areas:"a b c""d e f""x x x";display:block;position:relative}
+.smfXzGrnTs2kl9jPP0nk6w.fuzz {
+  background-color: red;
+  display: block;
+}
+
+.smfXzGrnTs2kl9jPP0nk6w.fuzz-dark {
+  background-color: #000;
+  color: #fff;
+}
+
+.smfXzGrnTs2kl9jPP0nk6w.fuzz-dark a.smfXzGrnTs2kl9jPP0nk6w {
+  text-transform: uppercase;
+}
+
+.smfXzGrnTs2kl9jPP0nk6w.fuzz-dark a.smfXzGrnTs2kl9jPP0nk6w img.smfXzGrnTs2kl9jPP0nk6w {
+  position: absolute;
+  top: 0;
+  left: 10rem;
+}
+
+.smfXzGrnTs2kl9jPP0nk6w.fuzz span.smfXzGrnTs2kl9jPP0nk6w {
+  position: relative;
+  display: grid;
+  grid-template-areas: "a b c"
+                       "d e f"
+                       "x x x";
+  display: block;
+}

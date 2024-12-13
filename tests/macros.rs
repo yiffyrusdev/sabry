@@ -112,7 +112,7 @@ mod build_tests {
         let mut config = SabryConfig::require().unwrap();
         config.css.bundle = Some("tests/sabry_output/bundle.css".into());
         config.css.scopes = Some("tests/sabry_output/scopes".into());
-        config.css.minify = true;
+        config.css.minify = false;
         config.css.prelude = Some(vec!["tests/assets/prelude.css".into()]);
 
         config.sass.prelude = Some(vec![

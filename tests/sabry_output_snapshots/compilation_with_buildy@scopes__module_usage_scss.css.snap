@@ -1,7 +1,117 @@
 ---
 source: tests/macros.rs
-assertion_line: 170
+assertion_line: 172
 input_file: tests/sabry_output/scopes/module_usage_scss.css
 snapshot_kind: text
 ---
-.n6ROVrVzYikGtxgKBYy11kA.coated{color:#fff;background-color:green}.n6ROVrVzYikGtxgKBYy11kA.coated:after{content:"Colored";color:#000;background-color:#00f}.n6ROVrVzYikGtxgKBYy11kA.coated:after:hover{-ms-transform:scale(2);transform:scale(2)}.n6ROVrVzYikGtxgKBYy11kA.coated:hover{-ms-transform:translate(10%);transform:translate(10%)}.n6ROVrVzYikGtxgKBYy11kA.coated-dark{color:#c6c6c6;background-color:#0ff}.n6ROVrVzYikGtxgKBYy11kA.coated-dark:after{content:"Colored";color:red;background-color:#00f}.n6ROVrVzYikGtxgKBYy11kA.coated-dark:after:hover{-ms-transform:scale(2);transform:scale(2)}.n6ROVrVzYikGtxgKBYy11kA.coated-dark:hover{-ms-transform:translate(10%);transform:translate(10%)}.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA{color:#c6c6c6;background-color:#0ff}.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA:after{content:"Colored";color:#00f;background-color:#00f}.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA:after:hover{-ms-transform:scale(2);transform:scale(2)}.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA:hover{-ms-transform:translate(10%);transform:translate(10%)}.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA{color:#fff;background-color:green}.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA:after{content:"Colored";color:#000;background-color:#00f}.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA:after:hover{-ms-transform:scale(2);transform:scale(2)}.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA:hover{-ms-transform:translate(10%);transform:translate(10%)}.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA{color:#c6c6c6;background-color:#0ff;display:block}.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA:after{content:"Colored";color:green;background-color:#00f}.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA:after:hover{-ms-transform:scale(2);transform:scale(2)}.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA:hover{-ms-transform:translate(10%);transform:translate(10%)}
+.n6ROVrVzYikGtxgKBYy11kA.coated {
+  color: #c6c6c6;
+  background-color: #0ff;
+  color: #fff;
+  background-color: green;
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated:after {
+  content: "Colored";
+  color: green;
+  background-color: #00f;
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated:after:hover {
+  transform: scale(2);
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated:hover {
+  transform: translateX(10%);
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated:after {
+  content: "Colored";
+  color: #000;
+  background-color: #00f;
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated:after:hover {
+  transform: scale(2);
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated:hover {
+  transform: translateX(10%);
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated-dark {
+  color: #c6c6c6;
+  background-color: #0ff;
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated-dark:after {
+  content: "Colored";
+  color: red;
+  background-color: #00f;
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated-dark:after:hover {
+  transform: scale(2);
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated-dark:hover {
+  transform: translateX(10%);
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA {
+  color: #c6c6c6;
+  background-color: #0ff;
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA:after {
+  content: "Colored";
+  color: #00f;
+  background-color: #00f;
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA:after:hover {
+  transform: scale(2);
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA:hover {
+  transform: translateX(10%);
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA {
+  color: #fff;
+  background-color: green;
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA:after {
+  content: "Colored";
+  color: #000;
+  background-color: #00f;
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA:after:hover {
+  transform: scale(2);
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA:hover {
+  transform: translateX(10%);
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA {
+  color: #c6c6c6;
+  background-color: #0ff;
+  display: block;
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA:after {
+  content: "Colored";
+  color: green;
+  background-color: #00f;
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA:after:hover {
+  transform: scale(2);
+}
+
+.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA:hover {
+  transform: translateX(10%);
+}

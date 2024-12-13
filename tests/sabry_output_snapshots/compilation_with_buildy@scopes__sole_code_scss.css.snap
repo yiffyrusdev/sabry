@@ -1,7 +1,34 @@
 ---
 source: tests/macros.rs
-assertion_line: 170
+assertion_line: 172
 input_file: tests/sabry_output/scopes/sole_code_scss.css
 snapshot_kind: text
 ---
-.FT5yVVwswyLvNU3dIk0qw.fuzz{background-color:red;display:block}.FT5yVVwswyLvNU3dIk0qw.fuzz-dark{color:#fff;background-color:#000}.FT5yVVwswyLvNU3dIk0qw.fuzz-dark a.FT5yVVwswyLvNU3dIk0qw{text-transform:uppercase}.FT5yVVwswyLvNU3dIk0qw.fuzz-dark a.FT5yVVwswyLvNU3dIk0qw img.FT5yVVwswyLvNU3dIk0qw{position:absolute;top:0;left:10rem}.FT5yVVwswyLvNU3dIk0qw.fuzz span.FT5yVVwswyLvNU3dIk0qw{grid-template-areas:"a b c""d e f""x x x";display:block;position:relative}
+.FT5yVVwswyLvNU3dIk0qw.fuzz {
+  background-color: red;
+  display: block;
+}
+
+.FT5yVVwswyLvNU3dIk0qw.fuzz-dark {
+  background-color: #000;
+  color: #fff;
+}
+
+.FT5yVVwswyLvNU3dIk0qw.fuzz-dark a.FT5yVVwswyLvNU3dIk0qw {
+  text-transform: uppercase;
+}
+
+.FT5yVVwswyLvNU3dIk0qw.fuzz-dark a.FT5yVVwswyLvNU3dIk0qw img.FT5yVVwswyLvNU3dIk0qw {
+  position: absolute;
+  top: 0;
+  left: 10rem;
+}
+
+.FT5yVVwswyLvNU3dIk0qw.fuzz span.FT5yVVwswyLvNU3dIk0qw {
+  position: relative;
+  display: grid;
+  grid-template-areas: "a b c"
+                       "d e f"
+                       "x x x";
+  display: block;
+}

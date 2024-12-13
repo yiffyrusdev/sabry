@@ -1,7 +1,38 @@
 ---
 source: tests/macros.rs
-assertion_line: 184
+assertion_line: 172
 input_file: tests/sabry_output/scopes/global_scss.css
 snapshot_kind: text
 ---
-.qbRV6eFWg6fUikzGqcGvZg.p1{color:#fff;font-size:10px}.qbRV6eFWg6fUikzGqcGvZg.p1-dark{color:#000}html.mob .qbRV6eFWg6fUikzGqcGvZg.p1{font-size:1rem}html.mob .qbRV6eFWg6fUikzGqcGvZg.p1-dark{color:green}html.dark .qbRV6eFWg6fUikzGqcGvZg.p1{color:purple}whatever .qbRV6eFWg6fUikzGqcGvZg.p1{background:#ff0}
+.wZIQboPSLZ8aKu0MjXHwYg.p1 {
+  font-size: 10px;
+  color: #fff;
+}
+
+.wZIQboPSLZ8aKu0MjXHwYg.p1-dark {
+  color: #000;
+}
+
+html.mob .wZIQboPSLZ8aKu0MjXHwYg.p1 {
+  font-size: 1rem;
+}
+
+html.mob .wZIQboPSLZ8aKu0MjXHwYg.p1-dark {
+  color: green;
+}
+
+ie some.wZIQboPSLZ8aKu0MjXHwYg html.mob .wZIQboPSLZ8aKu0MjXHwYg.p1 {
+  border: 1px;
+}
+
+html.dark .wZIQboPSLZ8aKu0MjXHwYg.p1 {
+  color: orange;
+}
+
+whatever .wZIQboPSLZ8aKu0MjXHwYg.p1 {
+  background: #ff0;
+}
+
+ooops whatever .wZIQboPSLZ8aKu0MjXHwYg.p1 {
+  border: none;
+}

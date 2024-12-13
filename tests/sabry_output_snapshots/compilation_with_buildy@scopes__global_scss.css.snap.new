@@ -1,7 +1,0 @@
----
-source: tests/macros.rs
-assertion_line: 172
-input_file: tests/sabry_output/scopes/global_scss.css
-snapshot_kind: text
----
-.wZIQboPSLZ8aKu0MjXHwYg.p1{color:#fff;font-size:10px}.wZIQboPSLZ8aKu0MjXHwYg.p1-dark{color:#000}html.mob .wZIQboPSLZ8aKu0MjXHwYg.p1{font-size:1rem}html.mob .wZIQboPSLZ8aKu0MjXHwYg.p1-dark{color:green}ie some.wZIQboPSLZ8aKu0MjXHwYg html.mob .wZIQboPSLZ8aKu0MjXHwYg.p1{border:1px}html.dark .wZIQboPSLZ8aKu0MjXHwYg.p1{color:orange}whatever .wZIQboPSLZ8aKu0MjXHwYg.p1{background:#ff0}ooops whatever .wZIQboPSLZ8aKu0MjXHwYg.p1{border:none}

@@ -15,7 +15,7 @@ proc-macro2 = {version = "^1.0"}
 raffia = {version = "^0.9"}
 regex = {version = "^1.11"}
 grass = {version = "^0.13"}
-lightningcss = {version = "1.0.0-alpha.59"}
+lightningcss = {version = "1.0.0-alpha.61"}
 blake3 = {version = "^1.5"}
 base64 = {version = "^0.22"}
 

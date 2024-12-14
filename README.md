@@ -372,8 +372,8 @@ fn component() -> impl IntoView {
             "Head"
             <img src="whatever"/>
         </h1>
-        <ul class=scope::breadcumbs>
-            <li class=scope::___item(scope::breadcumbs)>
+        <ul class="breadcumbs">
+            <li class="breadcumbs__item">
                 "Home page"
             </li>
         </ul>
@@ -385,6 +385,7 @@ That will perform *much* better:
 
 - All scope members - like `scope::breadcumbs` - wont contain repeating scope hash, just the original class/id selector
     - So instead of scope members (which [aren't](https://github.com/yiffyrusdev/sabry/issues/2) autocompleted for sass-in-the-rust yet) you could just write bare selectors, as you do, for example, with svelte: `<li class="breadcumbs__item">`
+    - You'll still have the rusty mod generated: its just the `scope::breadcumbs` is the `"breadcumbs"` without the hash
 - You will not encounter [the catch](#scoping) with nested tagname selectors
 
 Also, this isn't really exclusive leptos-supporting feature. It just changes scoping behavour.

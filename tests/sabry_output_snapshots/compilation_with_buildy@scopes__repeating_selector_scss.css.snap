@@ -4,30 +4,46 @@ assertion_line: 172
 input_file: tests/sabry_output/scopes/repeating_selector_scss.css
 snapshot_kind: text
 ---
-.YYYksiQMfU3exD720ckMbA.el1 {
+.n9m9Me_zRl6xP8NIGObY_A.el1 {
   color: red;
 }
 
-.YYYksiQMfU3exD720ckMbA.el1-mob {
+.n9m9Me_zRl6xP8NIGObY_A.el1-mob {
   color: #00f;
 }
 
-.YYYksiQMfU3exD720ckMbA.el1__blist {
+.n9m9Me_zRl6xP8NIGObY_A.el1__blist {
   list-style: none;
 }
 
-.YYYksiQMfU3exD720ckMbA.el2 {
+.n9m9Me_zRl6xP8NIGObY_A.el1.n9m9Me_zRl6xP8NIGObY_A.sub {
+  margin: 0;
+}
+
+.n9m9Me_zRl6xP8NIGObY_A.bus .n9m9Me_zRl6xP8NIGObY_A.el1 {
+  padding: 0;
+}
+
+.n9m9Me_zRl6xP8NIGObY_A.el2 {
   color: #fff;
 }
 
-.YYYksiQMfU3exD720ckMbA.el2-mob {
+.n9m9Me_zRl6xP8NIGObY_A.el2-mob {
   color: #000;
 }
 
-.YYYksiQMfU3exD720ckMbA.el2__blist {
+.n9m9Me_zRl6xP8NIGObY_A.el2__blist {
   background: #fff;
 }
 
-.YYYksiQMfU3exD720ckMbA.el2__blist-mob {
+.n9m9Me_zRl6xP8NIGObY_A.el2__blist-mob {
   background: #000;
+}
+
+.n9m9Me_zRl6xP8NIGObY_A.el2.n9m9Me_zRl6xP8NIGObY_A.sub {
+  margin: 0;
+}
+
+.n9m9Me_zRl6xP8NIGObY_A.el2 .n9m9Me_zRl6xP8NIGObY_A.bus {
+  margin: 0;
 }

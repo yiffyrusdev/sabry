@@ -112,7 +112,8 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
             let scope_members = scope
                 .hashed_selectors
                 .iter()
-                .unique()
+                // not pretty sure about the best way to do this
+                .unique_by(|hs| hs.sel.as_arbitrary().ident.clone())
                 .filter_map(|hs| {
                     hs.html_ident.clone().map(|html| {
                         let name = match hs.sel {

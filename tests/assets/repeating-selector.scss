@@ -7,6 +7,13 @@
     &__blist {
         list-style: none;
     }
+
+    &.sub {
+        margin: 0;
+    }
+    .bus & {
+        padding: 0;
+    }
 }
 
 .el2 {
@@ -20,5 +27,13 @@
         &-mob {
             background: black;
         }
+    }
+
+    &.sub {
+        margin: 0;
+    }
+
+    .bus {
+        margin: 0;
     }
 }

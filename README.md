@@ -4,11 +4,11 @@
 
 \* sabry isn't "syntactically awesome", it refers to SASS abbr expansion.
 
-> **Project status** - early, good enough for my team's non-critical "for-fun" pre-production, on demand. WIP features have no ETA. I'm pretty happy with ergonomics and taste of the crate, and I'll do my best to keep DX the way it is between minor versions - but there's no guarantee on backwards-compatibility and no refunds if something breaks.
+> **Project status** - early, my team uses it now and again in production, and the most of features/fixes do come on demand. I'm pretty happy with ergonomics and taste of the crate, and I'll do my best to keep DX the way it is between minor versions - but there's no guarantee on backwards-compatibility and no refunds if something breaks.
 >
 > "master" branch is what's currently on crates.io
 >
-> each version ever been on crates.io (except the latest release) is available in "r_x.x.x" branch
+> each version ever been on crates.io (except the latest release) is available in "vX.X.X" branch
 >
 > the latest-trashy state is in the "window" branch
 
@@ -729,23 +729,12 @@ Not any valid CSS selector is a valid rust identifier. In general this section s
 *(sorted by my own priority)*, "dones" are excluded
 
 - [x] Somehow achieve the autocompletion for scopes. The problem is explained in details [here](https://github.com/yiffyrusdev/sabry/issues/2)
-    - [ ] some weird unrelated stuff I can see in autocompletion
-- [ ] Crates of styled components - currently the only way to create them seems to be const styly.
-    - [ ] CSS support
-    - [x] Allow relative path selection (with 'nightly' feature on nightly rust)
-        - [ ] Somehow get rid of false-positives AND retain proper autocompletion
+    - [x] some weird unrelated stuff I can see in autocompletion (still investigating btw)
+- [ ] Support for direct CSS syntax
 - [ ] Currently the crate causes "dependency inheritance" infection. We cant get rid of it, however should be doable to at least get rid of flag inheritance
-- [ ] Use sass-in-rust without quoted styles for variable injection:
-    ```rust, ignore
-    let myvar = "content";
-    styly!(scope {
-        .c::after {
-            content: somehow(myvar);
-        }
-    })
-    ```
-- [ ] There are some strange parsing errors, seems like a bug, however very hard to reproduce. Have to investigate. Maybe do more tests.
-- [ ] Experience with cargo-leptos is fine, and we do use it, however its a bit "raughy". Need to do something about it.
+- [ ] Experience with cargo-leptos is fine, and we do use it, however its a bit "raughy". Need to do something about it:
+    - [ ] We have to save file twice with cargo leptos for changed styles to take effect
+    - [ ] Seems like turning on the "hashing" with leptos requires a hard-restart of cargo-leptos
 
 ## Contributions
 

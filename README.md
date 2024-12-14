@@ -18,9 +18,7 @@
 
 At first, I'll show how this crate "tastes". With SABRY, its in your power to:
 
-<table>
-<tr>
-<td>
+<hr/>
 
 Write arbitrary SASS/SCSS code and ship it *as a crate* however you please: with modules, with feature flags, etc. Say "bye" to manual copying, cli-tools and consts.
 
@@ -28,10 +26,7 @@ Write arbitrary SASS/SCSS code and ship it *as a crate* however you please: with
 sabry::scssy!(tokens {"@mixin colored{color: red;}"});
 ```
 
-</td>
-</tr>
-<tr>
-<td>
+<hr/>
 
 Get the *(almost)* proper autocompletion for your scope from rust-analyzer
 
@@ -42,10 +37,7 @@ scope::cls1;
 scope::theid1;
 ```
 
-</td>
-</tr>
-<tr>
-<td>
+<hr/>
 
 Code your SASS in separate files to get proper syntax highlighting, or do sass-in-the-rust to keep things in one place
 
@@ -54,22 +46,18 @@ sabry::styly!(component {".btn {color: green;}"});
 sabry::styly!(extras "tests/assets/mixin-module.scss");
 ```
 
-</td>
-</tr>
-<tr>
-<td>
+<hr/>
 
 Depend on styles with cargo, at build time, which brings all the rusty sweeties in: versions, updates, cratesio, local registries, workspaces, etc.
 
 ```toml
-[build-dependencies]
-tgk_brandstyle = {version = "0.0.1", features = ["utils"]}
+[build-dependencies.your_styles]
+registry = "your_registry_isnt_that_cool"
+version = "^0.1"
+features = ["darkmode", "mobile"]
 ```
 
-</td>
-</tr>
-<tr>
-<td>
+<hr/>
 
 `@use` your style-crates in sass code *naturally*
 
@@ -80,10 +68,7 @@ sabry::styly!(breadbadge {"
 "});
 ```
 
-</td>
-</tr>
-<tr>
-<td>
+<hr/>
 
 Keep things as private and modular as you wish
 
@@ -100,10 +85,7 @@ sabry::styly!(dogs {"#howl {border: none;}"});
 }
 ```
 
-</td>
-</tr>
-<tr>
-<td>
+<hr/>
 
 Compile all the sweet SASS/SCSS into the optimized CSS bundle, ship it in CSS shunks or even include the compiled style into the binary
 
@@ -112,9 +94,7 @@ sabry::styly!(cssbundle {".c1 {color: white;}"});
 sabry::styly!(const binary {".c2 {color: black;}"});
 ```
 
-</td>
-</tr>
-</table>
+<hr/>
 
 Sabry will gladly:
 
@@ -160,7 +140,7 @@ scssy!(styles {"
     }
 "});
 ```
-*\* Unlike most of other crates that do sass-in-the-rust, sabry currently does not allow unquoted sass/scss. You still have to write it in a string-quotes. Unquoted sass/scss is reserved for the future, where we shall introduce variable injection.*
+*\* Unlike most of other crates that do sass-in-the-rust, sabry currently does not allow unquoted sass/scss. You still have to write it in a string-quotes. Unquoted sass/scss is reserved for the future, where, hopefully, I'll find more exciting usage for it. In the meantime it does look like Zed, for example, still highlights your code (:*
 
 Now you can build and see two ready for export macros: `mixins!` and `styles!`.
 These are usefull on their own, as invocation of `mixins!()` or `styles!()` - both shall give you the code literal.
@@ -272,6 +252,68 @@ detected by sabry.
 - If you want to write styles in separate SASS/SCSS files, you need the nightly rust and the 'nightly' feature flag set
 for sabry, so you can use styles from relative paths `styly!(const comp "./style.scss")`
     - Which will give you an error from rust-analyzer wether file exists or not. However, if the path is correct, it will build fine.
+
+<details>
+<summary>I'd suggest something like this</summary>
+
+```rust,ignore
+// lib.rs
+pub mod utils;
+pub mod form;
+
+pub const fn css() -> &'static str {
+    concatcp!(utils::css(), form::css())
+}
+```
+
+```rust,ignore
+// utils.rs
+use sabry::styly;
+
+styly!(pub const scope:scss {"
+    .whatever {
+        &__code {}
+        &[you-please] {}
+    }
+"});
+
+styly!(pub const another:scss {"
+    .whatever {
+        &__code {}
+        &[you-please] {}
+    }
+"});
+
+pub const fn css() -> &'static str {
+    concatcp!(SCOPE, ANOTHER)
+}
+```
+
+```rust,ignore
+// form.rs
+use sabry::styly;
+
+styly!(pub const scope:scss {"
+    .whatever {
+        &__code {}
+        &[you-please] {}
+    }
+"});
+
+styly!(pub const another:scss {"
+    .whatever {
+        &__code {}
+        &[you-please] {}
+    }
+"});
+
+pub const fn css() -> &'static str {
+    concatcp!(SCOPE, ANOTHER)
+}
+```
+So I'd say - do the const function back-propogation and let the consumer decide how to include the CSS of the component crate.
+
+</details>
 
 ### Leptos specials
 

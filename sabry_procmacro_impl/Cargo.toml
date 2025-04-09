@@ -9,14 +9,13 @@ authors.workspace = true
 license.workspace = true
 
 [dependencies]
-sabry_intrnl = {workspace = true}
+sabry_intrnl = { workspace = true }
 
-syn = {version = "^2.0", features = ["parsing"]}
-quote = {version = "^1.0"}
-proc-macro2 = {version = "^1.0", features = ["span-locations"]}
-raffia = {version = "^0.9"}
-regex = {version = "^1.11"}
-itertools = {version = "^0.13"}
+syn = { version = "^2", features = ["parsing"] }
+quote = { version = "^1" }
+proc-macro2 = { version = "^1", features = ["span-locations"] }
+regex = { version = "^1" }
+itertools = { version = "^0.14" }
 
 [features]
 nightly = []

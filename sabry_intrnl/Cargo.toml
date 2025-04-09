@@ -9,20 +9,18 @@ authors.workspace = true
 license.workspace = true
 
 [dependencies]
-syn = {version = "^2.0"}
-quote = {version = "^1.0"}
-proc-macro2 = {version = "^1.0"}
-raffia = {version = "^0.9"}
-regex = {version = "^1.11"}
-grass = {version = "^0.13"}
-lightningcss = {version = "1.0.0-alpha.61"}
-blake3 = {version = "^1.5"}
-base64 = {version = "^0.22"}
+syn = { version = "^2" }
+raffia = { version = "^0.9" }
+regex = { version = "^1" }
+grass = { version = "^0.13" }
+lightningcss = { version = "1.0.0-alpha.65" }
+blake3 = { version = "^1.5" }
+base64 = { version = "^0.22" }
 
-thiserror = {version = "^1.0"}
-serde = {version = "^1.0", features = ["derive"]}
-toml = {version = "^0.8"}
-cfg-if = {version = "^1.0"}
+thiserror = { version = "^2" }
+serde = { version = "^1", features = ["derive"] }
+toml = { version = "^0.8" }
+cfg-if = { version = "^1" }
 
 [features]
 lepty-scoping = []

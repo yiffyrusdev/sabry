@@ -12,8 +12,8 @@ license.workspace = true
 proc-macro = true
 
 [dependencies]
-sabry_procmacro_impl = {workspace = true}
-cfg-if = {version = "^1.0"}
+sabry_procmacro_impl = { workspace = true }
+cfg-if = { version = "^1" }
 
 [features]
 nightly = []

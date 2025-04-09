@@ -1,22 +1,16 @@
 [workspace]
 resolver = "2"
-members = [
-    "sabry_procmacro",
-    "sabry_procmacro_impl",
-    "sabry_intrnl",
-]
-exclude = [
-    "examples"
-]
+members = ["sabry_procmacro", "sabry_procmacro_impl", "sabry_intrnl"]
+exclude = ["examples"]
 
 [workspace.dependencies]
-sabry_intrnl = {path = "sabry_intrnl", version = "0.0.3-alpha.2" }
-sabry_procmacro = {path = "sabry_procmacro", version = "0.0.3-alpha.2" }
-sabry_procmacro_impl = {path = "sabry_procmacro_impl", version = "0.0.3-alpha.2" }
-sabry_build = {path = "sabry_build", version = "0.0.3-alpha.2" }
+sabry_intrnl = { path = "sabry_intrnl", version = "0.0.3" }
+sabry_procmacro = { path = "sabry_procmacro", version = "0.0.3" }
+sabry_procmacro_impl = { path = "sabry_procmacro_impl", version = "0.0.3" }
+sabry_build = { path = "sabry_build", version = "0.0.3" }
 
 [workspace.package]
-version = "0.0.3-alpha.2"
+version = "0.0.3"
 edition = "2021"
 rust-version = "1.78"
 authors = ["Svyatoslav Pushkarev <yiffyrusdev@yandex.ru>"]
@@ -37,31 +31,21 @@ license.workspace = true
 publish.workspace = true
 
 [dependencies]
-sabry_procmacro = {workspace = true, optional = true}
-sabry_build = {workspace = true, optional = true}
-sabry_intrnl = {workspace = true}
+sabry_procmacro = { workspace = true, optional = true }
+sabry_build = { workspace = true, optional = true }
+sabry_intrnl = { workspace = true }
 
 [dev-dependencies]
-leptos = {version = "0.7.0-gamma3"}
-insta = {version = "^1.41", features = ["glob"]}
+leptos = { version = "0.7.0-gamma3" }
+insta = { version = "^1.41", features = ["glob"] }
 
 [features]
 default = ["procmacro"]
-lepty-scoping = [
-    "sabry_intrnl/lepty-scoping"
-]
-procmacro = [
-    "dep:sabry_procmacro"
-]
-build = [
-    "dep:sabry_build"
-]
-net-files = [
-    "sabry_build/net-files"
-]
-nightly = [
-    "sabry_procmacro?/nightly"
-]
+lepty-scoping = ["sabry_intrnl/lepty-scoping"]
+procmacro = ["dep:sabry_procmacro"]
+build = ["dep:sabry_build"]
+net-files = ["sabry_build/net-files"]
+nightly = ["sabry_procmacro?/nightly"]
 internals = []
 
 [package.metadata.docs.rs]

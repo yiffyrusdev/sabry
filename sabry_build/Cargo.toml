@@ -9,13 +9,13 @@ authors.workspace = true
 license.workspace = true
 
 [dependencies]
-sabry_intrnl = {workspace = true}
-sabry_procmacro_impl = {workspace = true}
+sabry_intrnl = { workspace = true }
+sabry_procmacro_impl = { workspace = true }
 
-syn = {version = "^2.0", features = ["visit", "derive", "parsing", "full"]}
-proc-macro2 = {version = "^1.0", features = ["span-locations"]}
-thiserror = {version = "^1.0"}
-walkdir = {version = "^2.5"}
+syn = { version = "^2", features = ["visit", "derive", "parsing", "full"] }
+proc-macro2 = { version = "^1", features = ["span-locations"] }
+thiserror = { version = "^2" }
+walkdir = { version = "^2" }
 
 [features]
 net-files = []

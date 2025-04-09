@@ -4,13 +4,13 @@ members = ["sabry_procmacro", "sabry_procmacro_impl", "sabry_intrnl"]
 exclude = ["examples"]
 
 [workspace.dependencies]
-sabry_intrnl = { path = "sabry_intrnl", version = "0.0.3" }
-sabry_procmacro = { path = "sabry_procmacro", version = "0.0.3" }
-sabry_procmacro_impl = { path = "sabry_procmacro_impl", version = "0.0.3" }
-sabry_build = { path = "sabry_build", version = "0.0.3" }
+sabry_intrnl = { path = "sabry_intrnl", version = "0.0.4" }
+sabry_procmacro = { path = "sabry_procmacro", version = "0.0.4" }
+sabry_procmacro_impl = { path = "sabry_procmacro_impl", version = "0.0.4" }
+sabry_build = { path = "sabry_build", version = "0.0.4" }
 
 [workspace.package]
-version = "0.0.3"
+version = "0.0.4"
 edition = "2021"
 rust-version = "1.78"
 authors = ["Svyatoslav Pushkarev <yiffyrusdev@yandex.ru>"]

@@ -4,5 +4,5 @@ There is very low probability, that you should depend on this crate, instead do:
 
 ```rust,ignore
 [dependencies]
-sabry = {version = "0.0.2"}
+sabry = {version = "0.0.4"}
 ```

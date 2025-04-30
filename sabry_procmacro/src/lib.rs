@@ -1,6 +1,8 @@
 #![doc = include_str!("../README.md")]
 #![cfg_attr(feature = "nightly", feature(proc_macro_span))]
 
+use std::str::FromStr;
+
 use cfg_if::cfg_if;
 use proc_macro::TokenStream;
 use sabry_procmacro_impl::impls::{
@@ -39,7 +41,10 @@ pub fn scssy(input: TokenStream) -> TokenStream {
     cfg_if! {
         if #[cfg(feature = "nightly")] {
             use proc_macro::Span;
-            let source_path = Span::call_site().source_file().path().parent().map(|p| p.to_owned());
+            use std::path::PathBuf;
+            let source_path = Some(PathBuf::from_str(
+                &Span::call_site().file()).expect("&str to be Infallible converted into PathBuf")
+            );
         } else {
             let source_path = None;
         }
@@ -109,7 +114,10 @@ pub fn styly(input: TokenStream) -> TokenStream {
     cfg_if! {
         if #[cfg(feature = "nightly")] {
             use proc_macro::Span;
-            let source_path = Span::call_site().source_file().path().parent().map(|p| p.to_owned());
+            use std::path::PathBuf;
+            let source_path = Some(PathBuf::from_str(
+                &Span::call_site().file()).expect("&str to be Infallible converted into PathBuf")
+            );
         } else {
             let source_path = None;
         }

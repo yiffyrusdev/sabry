@@ -10,7 +10,6 @@ license.workspace = true
 
 [dependencies]
 sabry_intrnl = { workspace = true }
-
 syn = { version = "^2", features = ["parsing"] }
 quote = { version = "^1" }
 proc-macro2 = { version = "^1", features = ["span-locations"] }

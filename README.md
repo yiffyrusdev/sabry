@@ -88,6 +88,10 @@ Compile all the sweet SASS/SCSS into the optimized CSS bundle, ship it in CSS sh
 
 ```rust
 sabry::styly!(cssbundle {".c1 {color: white;}"});
+```
+
+```rust,ignore
+// requires `const-scoping` feature
 sabry::styly!(const binary {".c2 {color: black;}"});
 ```
 
@@ -158,7 +162,7 @@ And create a style scope wherever you want:
 // breadbadgelist.rs
 use sabry::styly;
 
-styly!(const styles {"
+styly!(styles {"
     .badges {
         display: flex;
         &__list {
@@ -173,9 +177,7 @@ styly!(const styles {"
 /* Now you can use all scoped selectors: */
 let badges_scoped_class = styles::badges;
 let wolf_scoped_id = styles::thewolf;
-let badges__list_scoped_class = styles::___list(styles::badges);
 ```
-> That `const` usage is covered in the [following](#constant-styly-scopes) section. In this example we dont invoke sabry build-magic, so, to be as close to real life as possible, I used a const.
 
 Every selector, if that does make sense, now available for you as a member of `styles` scope. In this example - `styles::badges`, `styles::thewolf` and `styles::_list()`. More about scoping and member names you can read [here](#styly-scopes).
 
@@ -267,6 +269,7 @@ pub const fn css() -> &'static str {
 // utils.rs
 use sabry::styly;
 
+// required `const-scoping` feature
 styly!(pub const scope:scss {"
     .whatever {
         &__code {}
@@ -274,6 +277,7 @@ styly!(pub const scope:scss {"
     }
 "});
 
+// requires `const-scoping` feature
 styly!(pub const another:scss {"
     .whatever {
         &__code {}
@@ -290,6 +294,7 @@ pub const fn css() -> &'static str {
 // form.rs
 use sabry::styly;
 
+// requires `const-scoping` feature
 styly!(pub const scope:scss {"
     .whatever {
         &__code {}
@@ -297,6 +302,7 @@ styly!(pub const scope:scss {"
     }
 "});
 
+// requires `const-scoping` feature
 styly!(pub const another:scss {"
     .whatever {
         &__code {}
@@ -539,6 +545,9 @@ use sabry::styly;
 
 styly!(private_fox {".fur {color: red; &-dark {color: black;}}"});
 styly!(pub public_fox {".fur {color: red; &-dark {color: black;}}"});
+```
+```rust,ignore
+// requires `const-scoping` feature
 styly!(pub const pub_compiletime_fox:sass {"
     .fur
         color: red
@@ -546,6 +555,7 @@ styly!(pub const pub_compiletime_fox:sass {"
             color: black
 "});
 ```
+
 Every of those calls will produce the styling scope as a module. Differences are explained right below.
 
 In general the scope does look like this:
@@ -582,7 +592,7 @@ As you've seen above, scope doe not contain any style code by itself. That's the
 
 However you could still compile styles into the artifact by simply adding the `const` to the macro call:
 
-```rust
+```rust,ignore
 // Requires `const-scoping` feature
 sabry::styly!(const scope "tests/assets/mixin-module.scss");
 ```
@@ -720,12 +730,15 @@ Not any valid CSS selector is a valid rust identifier. In general this section s
 
 **lepty-scoping** - overhauls the scope generation logic, best suitable for the leptos. Check out the [section](#leptos-specials) and an [example](https://github.com/yiffyrusdev/sabry/tree/master/examples/leptos-axum)
 
+**const-scoping** - unlocks `styly!(const scope...` compile-time SASS->CSS generation, which seems to break WASM builds without special treatment (https://docs.rs/getrandom/latest/getrandom/#webassembly-support). Idk why, but it started to happen just recently
+
 **nightly** - allows relative path selection with `scssy!` and `styly!` macros. However rust-analyzer will raise false-positives for reachable files as well.
 
 ## WIP
 
 *(sorted by my own priority)*, "dones" are excluded
 
+- [ ] Why does `const scope` break WASM build? Everything was fine untill recent. This feature isn't top-priority, I dont personally use it, but still curious
 - [x] Somehow achieve the autocompletion for scopes. The problem is explained in details [here](https://github.com/yiffyrusdev/sabry/issues/2)
     - [x] some weird unrelated stuff I can see in autocompletion (still investigating btw)
 - [ ] Support for direct CSS syntax

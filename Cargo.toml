@@ -5,10 +5,10 @@ exclude = ["examples"]
 
 [workspace.dependencies]
 ## Workspace
-sabry_intrnl = { path = "sabry_intrnl", version = "0.0.5" }
-sabry_procmacro = { path = "sabry_procmacro", version = "0.0.5" }
-sabry_procmacro_impl = { path = "sabry_procmacro_impl", version = "0.0.5" }
-sabry_build = { path = "sabry_build", version = "0.0.5" }
+sabry_intrnl = { path = "sabry_intrnl", version = "0.0.6-rc.1" }
+sabry_procmacro = { path = "sabry_procmacro", version = "0.0.6-rc.1" }
+sabry_procmacro_impl = { path = "sabry_procmacro_impl", version = "0.0.6-rc.1" }
+sabry_build = { path = "sabry_build", version = "0.0.6-rc.1" }
 ## Package
 ## Package
 lightningcss.version = "1.0.0-alpha.65"
@@ -33,7 +33,7 @@ quote.version = "^1"
 syn.version = "^2"
 
 [workspace.package]
-version = "0.0.5"
+version = "0.0.6-rc.1"
 edition = "2021"
 rust-version = "1.78"
 authors = ["Svyatoslav Pushkarev <yiffyrusdev@yandex.ru>"]

@@ -9,21 +9,30 @@ authors.workspace = true
 license.workspace = true
 
 [dependencies]
-syn = { version = "^2" }
-raffia = { version = "^0.9" }
-regex = { version = "^1" }
-grass = { version = "^0.13" }
-lightningcss = { version = "1.0.0-alpha.65" }
-blake3 = { version = "^1.5" }
-base64 = { version = "^0.22" }
+syn.workspace = true
+raffia.workspace = true
+regex.workspace = true
+regex.optional = true
+grass.workspace = true
+grass.optional = true
+lightningcss.workspace = true
+lightningcss.features = ["grid"]
+lightningcss.optional = true
+blake3.workspace = true
+blake3.optional = true
+base64.workspace = true
+base64.optional = true
 
-thiserror = { version = "^2" }
-serde = { version = "^1", features = ["derive"] }
-toml = { version = "^0.8" }
-cfg-if = { version = "^1" }
+thiserror.workspace = true
+serde.workspace = true
+serde.features = ["derive"]
+toml.workspace = true
+cfg-if.workspace = true
 
 [features]
 lepty-scoping = []
+scope = ["dep:blake3", "dep:base64", "dep:regex"]
+compile = ["dep:lightningcss", "dep:grass"]
 
 [package.metadata.docs.rs]
 all-features = true

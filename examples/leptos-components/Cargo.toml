@@ -13,19 +13,19 @@ leptos = { version = "^0.7" }
 leptos_meta = { version = "^0.7" }
 leptos_router = { version = "^0.7" }
 
-sabry = {path = "../../", features = ["lepty-scoping"]}
+sabry = { path = "../../", features = ["lepty-scoping", "const-scoping"] }
 
 [build-dependencies]
-sabry = {path = "../../", features = ["build", "lepty-scoping"]}
-define-styles = {path = "../define-styles"}
+sabry = { path = "../../", features = [
+    "build",
+    "lepty-scoping",
+    "const-scoping",
+] }
+define-styles = { path = "../define-styles" }
 
 [features]
 hydrate = ["leptos/hydrate"]
-ssr = [
-    "leptos/ssr",
-    "leptos_meta/ssr",
-    "leptos_router/ssr",
-]
+ssr = ["leptos/ssr", "leptos_meta/ssr", "leptos_router/ssr"]
 
 [package.metadata.sabry]
 css.minify = true

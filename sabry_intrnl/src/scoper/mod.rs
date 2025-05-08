@@ -3,12 +3,8 @@ use std::fmt::Debug;
 use cfg_if::cfg_if;
 use hash::ScopeHash;
 use raffia::{Span, Spanned};
-use regex::Regex;
 
-use crate::{
-    config::SabryHashConfig,
-    syntax::{ostrta::OneSyntaxToRuleThemAll, StylesheetAdapter},
-};
+use crate::syntax::{ostrta::OneSyntaxToRuleThemAll, StylesheetAdapter};
 
 pub mod hash;
 
@@ -56,7 +52,11 @@ impl<'s> ArbitraryScope<'s> {
     /// Consume arbitrary scope and create a [HashedScope] in its basis
     ///
     /// This function calls [HashedScope::new] under the hood
-    pub fn hashed(self, config: &SabryHashConfig) -> Result<HashedScope<'s>, ScopeError> {
+    #[cfg(feature = "scope")]
+    pub fn hashed(
+        self,
+        config: &crate::config::SabryHashConfig,
+    ) -> Result<HashedScope<'s>, ScopeError> {
         let hash = ScopeHash::new(&self, config);
         HashedScope::new(hash, self)
     }
@@ -332,6 +332,7 @@ impl ScopedSelector {
     }
 
     /// Generate rusty member ident based on selector type and CSS ident
+    #[cfg(feature = "scope")]
     pub fn gen_rusty_ident(&self) -> Option<syn::Ident> {
         let arb = &self.as_arbitrary().ident;
         let basic = apply_basic_rusty_member_gen_rules(arb);
@@ -401,8 +402,9 @@ impl ScopedSelector {
     }
 }
 
+#[cfg(feature = "scope")]
 pub fn apply_basic_rusty_member_gen_rules(source: &str) -> String {
-    let omit_regex = Regex::new(r"(^\-)|(\-$)|[^a-zA-Z0-9\-\_]")
+    let omit_regex = regex::Regex::new(r"(^\-)|(\-$)|[^a-zA-Z0-9\-\_]")
         .expect("BUG: can not build omition regex for rusty member generation");
 
     // omit forbidden chars

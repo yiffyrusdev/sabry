@@ -36,7 +36,7 @@ pub fn scssy_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
     }
 
     let sourcesass = code.to_string();
-    let macro_doc = format!("Arbitrary {:?} code declared with `scssy!`. Pretty usable in tandem with `usey!` and `buildy` at build time", syntax);
+    let macro_doc = format!("Arbitrary {syntax:?} code declared with `scssy!`. Pretty usable in tandem with `usey!` and `buildy` at build time");
 
     quote! {
         #[doc = #macro_doc]

@@ -1,10 +1,10 @@
 use std::path::PathBuf;
 
+use cfg_if::cfg_if;
 use itertools::Itertools;
 use proc_macro2::{Span, TokenStream};
 use quote::quote;
 use sabry_intrnl::{
-    compiler::CompilerAdapter,
     config::SabryConfig,
     scoper::{apply_basic_rusty_member_gen_rules, ArbitraryScope, ScopedSelector},
 };
@@ -38,10 +38,7 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
         Err(e) => {
             return syn::Error::new(
                 Span::call_site(),
-                format!(
-                    "Could not read sabry configuration required by this macro: {:?}",
-                    e
-                ),
+                format!("Could not read sabry configuration required by this macro: {e:?}",),
             )
             .to_compile_error()
         }
@@ -63,7 +60,7 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
         Err(e) => {
             return syn::Error::new(
                 Span::call_site(),
-                format!("Could not generate scope: {:?}", e),
+                format!("Could not generate scope: {e:?}"),
             )
             .to_compile_error()
         }
@@ -127,7 +124,7 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
                     })
                 })
                 .map(|(name, ident, html, css)| {
-                    let docs = format!("'{:?}' {}. CSS selector '{}'", ident, name, css);
+                    let docs = format!("'{ident:?}' {name}. CSS selector '{css}'");
                     quote! {
                         #[doc = #docs]
                         #[allow(non_upper_case_globals)]
@@ -142,33 +139,44 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
             let wrp_docs = format!("wrapper class for '{}' scope. If you have any tagname selectors - they should live as children of element with this class applied.", &scope_ident);
 
             if constant {
-                let compiler = CompilerAdapter::new(config.clone());
-                let css = match compiler.compile_module(ms.syntax.0, &scope.hashed_code) {
-                    Ok(c) => c,
-                    Err(e) => {
-                        return syn::Error::new(
-                            ms.code.span,
-                            format!("Could not compile const inline: {e:?}"),
+                cfg_if! {
+                    if #[cfg(feature = "const-compile")] {
+                        use sabry_intrnl::compiler::CompilerAdapter;
+                        let compiler = CompilerAdapter::new(config.clone());
+                        let css = match compiler.compile_module(ms.syntax.0, &scope.hashed_code) {
+                            Ok(c) => c,
+                            Err(e) => {
+                                return syn::Error::new(
+                                    ms.code.span,
+                                    format!("Could not compile const inline: {e:?}"),
+                                )
+                                .to_compile_error()
+                            }
+                        };
+
+                        let const_docs = format!("The compiled CSS style for {} scope", &scope_ident);
+                        let const_wrapper_ident = syn::parse_str::<Ident>(
+                            format!("{}_CSS", &scope_ident.to_string().to_uppercase()).as_str(),
                         )
-                        .to_compile_error()
-                    }
-                };
+                        .expect("BUG: We just converted valid Ident to string and uppercased");
 
-                let const_docs = format!("The compiled CSS style for {} scope", &scope_ident);
-                let const_wrapper_ident = syn::parse_str::<Ident>(
-                    format!("{}_CSS", &scope_ident.to_string().to_uppercase()).as_str(),
-                )
-                .expect("BUG: We just converted valid Ident to string and uppercased");
-
-                quote! {
-                    #[doc = #const_docs]
-                    #scope_vis const #const_wrapper_ident: &str = #css ;
-                    #[doc = #wrp_docs]
-                    #scope_vis const #scope_wrapper_ident : &str = #scope_hash ;
-                    #[doc = #mod_docs]
-                    #scope_vis mod #scope_ident {
-                        #(#scope_members)*
-                        #(#special_nesting_members)*
+                        quote! {
+                            #[doc = #const_docs]
+                            #scope_vis const #const_wrapper_ident: &str = #css ;
+                            #[doc = #wrp_docs]
+                            #scope_vis const #scope_wrapper_ident : &str = #scope_hash ;
+                            #[doc = #mod_docs]
+                            #scope_vis mod #scope_ident {
+                                #(#scope_members)*
+                                #(#special_nesting_members)*
+                            }
+                        }
+                    } else {
+                        return syn::Error::new(
+                            Span::call_site(),
+                            "`styly!(const scope...` requires `experimental-const-scoping` feature flag",
+                        )
+                        .to_compile_error();
                     }
                 }
             } else {

@@ -12,11 +12,12 @@ license.workspace = true
 proc-macro = true
 
 [dependencies]
-sabry_procmacro_impl = { workspace = true }
-cfg-if = { version = "^1" }
+sabry_procmacro_impl.workspace = true
+cfg-if.workspace = true
 
 [features]
 nightly = []
+const-compile = ["sabry_procmacro_impl/const-compile"]
 
 [package.metadata.docs.rs]
 all-features = true

@@ -199,6 +199,7 @@ impl SabryLightTargets {
     }
 }
 
+#[cfg(feature = "compile")]
 impl From<SabryLightTargets> for lightningcss::targets::Browsers {
     fn from(value: SabryLightTargets) -> Self {
         Self {

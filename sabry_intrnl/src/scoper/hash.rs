@@ -1,15 +1,14 @@
-use base64::Engine;
-
-use crate::config::SabryHashConfig;
-
-use super::{apply_basic_rusty_member_gen_rules, ArbitraryScope};
-
 /// Convenience wrapper for String-being-a-hash
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct ScopeHash(String);
 
 impl ScopeHash {
-    pub fn new(scope: &ArbitraryScope, config: &SabryHashConfig) -> Self {
+    #[cfg(feature = "scope")]
+    pub fn new(scope: &super::ArbitraryScope, config: &crate::config::SabryHashConfig) -> Self {
+        use base64::Engine;
+
+        use crate::scoper::apply_basic_rusty_member_gen_rules;
+
         let mut hasher = blake3::Hasher::new();
 
         if config.use_scope_name {

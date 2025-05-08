@@ -8,9 +8,6 @@
 >
 > "master" branch is what's currently on crates.io
 >
-> each version ever been on crates.io (except the latest release) is available in "vX.X.X" branch
->
-> the latest-trashy state is in the "window" branch
 
 [![Crates.io](https://img.shields.io/crates/v/sabry.svg)](https://crates.io/crates/sabry)
 [![Docs.rs](https://img.shields.io/docsrs/sabry/latest.svg)](https://docs.rs/sabry)
@@ -586,6 +583,7 @@ As you've seen above, scope doe not contain any style code by itself. That's the
 However you could still compile styles into the artifact by simply adding the `const` to the macro call:
 
 ```rust
+// Requires `const-scoping` feature
 sabry::styly!(const scope "tests/assets/mixin-module.scss");
 ```
 Which results in following:

@@ -4,10 +4,33 @@ members = ["sabry_procmacro", "sabry_procmacro_impl", "sabry_intrnl"]
 exclude = ["examples"]
 
 [workspace.dependencies]
+## Workspace
 sabry_intrnl = { path = "sabry_intrnl", version = "0.0.5" }
 sabry_procmacro = { path = "sabry_procmacro", version = "0.0.5" }
 sabry_procmacro_impl = { path = "sabry_procmacro_impl", version = "0.0.5" }
 sabry_build = { path = "sabry_build", version = "0.0.5" }
+## Package
+## Package
+lightningcss.version = "1.0.0-alpha.65"
+lightningcss.default-features = false
+grass.version = "^0.13"
+grass.default-features = false
+raffia.version = "^0.9"
+#/
+serde.version = "^1"
+toml.version = "^0.8"
+blake3.version = "^1"
+base64.version = "^0.22"
+regex.version = "^1"
+#/
+itertools.version = "^0.14"
+walkdir.version = "^2"
+#/
+cfg-if.version = "^1"
+thiserror.version = "^2"
+proc-macro2.version = "^1"
+quote.version = "^1"
+syn.version = "^2"
 
 [workspace.package]
 version = "0.0.5"
@@ -31,6 +54,7 @@ license.workspace = true
 publish.workspace = true
 
 [dependencies]
+## Workspace
 sabry_procmacro = { workspace = true, optional = true }
 sabry_build = { workspace = true, optional = true }
 sabry_intrnl = { workspace = true }
@@ -42,6 +66,7 @@ insta = { version = "^1.41", features = ["glob"] }
 [features]
 default = ["procmacro"]
 lepty-scoping = ["sabry_intrnl/lepty-scoping"]
+const-scoping = ["sabry_procmacro?/const-compile"]
 procmacro = ["dep:sabry_procmacro"]
 build = ["dep:sabry_build"]
 net-files = ["sabry_build/net-files"]

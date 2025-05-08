@@ -34,6 +34,7 @@ impl TryFrom<raffia::Syntax> for OneSyntaxToRuleThemAll {
     }
 }
 
+#[cfg(feature = "compile")]
 impl TryFrom<grass::InputSyntax> for OneSyntaxToRuleThemAll {
     type Error = ();
     fn try_from(value: grass::InputSyntax) -> Result<Self, Self::Error> {
@@ -54,6 +55,7 @@ impl From<OneSyntaxToRuleThemAll> for raffia::Syntax {
     }
 }
 
+#[cfg(feature = "compile")]
 impl From<OneSyntaxToRuleThemAll> for grass::InputSyntax {
     fn from(value: OneSyntaxToRuleThemAll) -> Self {
         match value {

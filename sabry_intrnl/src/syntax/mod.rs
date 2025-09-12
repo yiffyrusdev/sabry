@@ -1,8 +1,8 @@
 use ostrta::OneSyntaxToRuleThemAll;
 use raffia::{
     ast::{
-        ClassSelector, CompoundSelector, IdSelector, NestingSelector, PseudoClassSelector,
-        SimpleSelector, Statement, Stylesheet, TypeSelector,
+        ClassSelector, ComplexSelectorChild, CompoundSelector, IdSelector, InterpolableIdent,
+        NestingSelector, PseudoClassSelector, SimpleSelector, Statement, Stylesheet, TypeSelector,
     },
     ParserBuilder,
 };
@@ -41,38 +41,49 @@ impl<'s> StylesheetAdapter<'s> {
     }
 
     pub fn class_selectors(&self) -> Vec<ClassSelector<'s>> {
-        self.selectors_by(|c| c.as_class().cloned())
+        self.selectors_by(|c| match c {
+            SimpleSelector::Class(sel) => Some(sel),
+            _ => None,
+        })
     }
 
     pub fn id_selectors(&self) -> Vec<IdSelector<'s>> {
-        self.selectors_by(|c| c.as_id().cloned())
+        self.selectors_by(|c| match c {
+            SimpleSelector::Id(sel) => Some(sel),
+            _ => None,
+        })
     }
 
     pub fn type_selectors(&self) -> Vec<TypeSelector<'s>> {
-        self.selectors_by(|c| c.as_type().cloned())
+        self.selectors_by(|c| match c {
+            SimpleSelector::Type(sel) => Some(sel),
+            _ => None,
+        })
     }
 
     pub fn nesting_selectors(&self) -> Vec<NestingSelector<'s>> {
-        self.selectors_by(|c| c.as_nesting().cloned())
+        self.selectors_by(|c| match c {
+            SimpleSelector::Nesting(sel) => Some(sel),
+            _ => None,
+        })
     }
 
     /// special selector case searching for :g(whatever), :glob(whatever), :global(whatever)
     pub fn glob_modified_selectors(&self) -> Vec<PseudoClassSelector<'s>> {
         self.selectors_by(|c| {
-            let cps = match c.as_pseudo_class() {
-                Some(s) => s.clone(),
+            let cps = match c {
+                SimpleSelector::PseudoClass(sel) => sel,
                 _ => return None,
             };
 
-            let ident = match cps.name.as_literal().map(|r| r.raw) {
-                Some(i) => i,
-                _ => return None,
-            };
-
-            if ident == "global" {
-                Some(cps)
-            } else {
-                None
+            match &cps.name {
+                InterpolableIdent::Literal(lit) => match lit.raw {
+                    "g" => Some(cps),
+                    "glob" => Some(cps),
+                    "global" => Some(cps),
+                    _ => None,
+                },
+                _ => None,
             }
         })
     }
@@ -106,21 +117,27 @@ impl<'s> StylesheetAdapter<'s> {
         // 4 - Danik
         // 5 - Yiffy
         // 8 - Danik
-        c.filter_map(|s| s.as_qualified_rule().cloned())
-            .flat_map(|q| {
-                let thissels = q
-                    .selector
-                    .selectors
-                    .iter()
-                    .flat_map(|sel| &sel.children)
-                    .filter_map(|sc| sc.as_compound_selector())
-                    .cloned();
+        c.filter_map(|s| match s {
+            Statement::QualifiedRule(stmt) => Some(stmt),
+            _ => None,
+        })
+        .flat_map(|q| {
+            let thissels = q
+                .selector
+                .selectors
+                .iter()
+                .flat_map(|sel| &sel.children)
+                .filter_map(|sc| match sc {
+                    ComplexSelectorChild::CompoundSelector(sel) => Some(sel),
+                    _ => None,
+                })
+                .cloned();
 
-                let blockstmt = q.block.statements.iter().cloned();
-                Self::selectors_of(blockstmt)
-                    .chain(thissels)
-                    .collect::<Vec<_>>()
-            })
+            let blockstmt = q.block.statements.iter().cloned();
+            Self::selectors_of(blockstmt)
+                .chain(thissels)
+                .collect::<Vec<_>>()
+        })
     }
 }
 
@@ -128,7 +145,10 @@ impl<'s> StylesheetAdapter<'s> {
 mod test {
     use std::collections::HashSet;
 
-    use raffia::Spanned;
+    use raffia::{
+        ast::{InterpolableIdent, TypeSelector},
+        Spanned,
+    };
 
     use crate::syntax::ostrta::OneSyntaxToRuleThemAll;
 
@@ -191,20 +211,32 @@ div#id2
         let classes = adp
             .class_selectors()
             .iter()
-            .filter_map(|c| c.name.as_literal().map(|l| l.raw))
+            .filter_map(|c| match &c.name {
+                InterpolableIdent::Literal(lit) => Some(lit.raw),
+                _ => None,
+            })
             .collect::<HashSet<_>>();
 
         let ids = adp
             .id_selectors()
             .iter()
-            .filter_map(|i| i.name.as_literal().map(|l| l.raw))
+            .filter_map(|i| match &i.name {
+                InterpolableIdent::Literal(lit) => Some(lit.raw),
+                _ => None,
+            })
             .collect::<HashSet<_>>();
 
         let tags = adp
             .type_selectors()
             .iter()
-            .filter_map(|t| t.as_tag_name())
-            .filter_map(|t| t.name.name.as_literal().map(|l| l.raw))
+            .filter_map(|t| match t {
+                TypeSelector::TagName(tag) => Some(tag),
+                _ => None,
+            })
+            .filter_map(|t| match &t.name.name {
+                InterpolableIdent::Literal(lit) => Some(lit.raw),
+                _ => None,
+            })
             .collect::<HashSet<_>>();
 
         assert_eq!(expect_classes, classes);
@@ -217,20 +249,32 @@ div#id2
         let classes = adp
             .class_selectors()
             .iter()
-            .filter_map(|c| c.name.as_literal().map(|l| l.raw))
+            .filter_map(|c| match &c.name {
+                InterpolableIdent::Literal(lit) => Some(lit.raw),
+                _ => None,
+            })
             .collect::<HashSet<_>>();
 
         let ids = adp
             .id_selectors()
             .iter()
-            .filter_map(|i| i.name.as_literal().map(|l| l.raw))
+            .filter_map(|i| match &i.name {
+                InterpolableIdent::Literal(lit) => Some(lit.raw),
+                _ => None,
+            })
             .collect::<HashSet<_>>();
 
         let tags = adp
             .type_selectors()
             .iter()
-            .filter_map(|t| t.as_tag_name())
-            .filter_map(|t| t.name.name.as_literal().map(|l| l.raw))
+            .filter_map(|t| match t {
+                TypeSelector::TagName(tag) => Some(tag),
+                _ => None,
+            })
+            .filter_map(|t| match &t.name.name {
+                InterpolableIdent::Literal(lit) => Some(lit.raw),
+                _ => None,
+            })
             .collect::<HashSet<_>>();
 
         assert_eq!(expect_classes, classes);

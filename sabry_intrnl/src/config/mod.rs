@@ -217,31 +217,21 @@ impl From<SabryLightTargets> for lightningcss::targets::Browsers {
 }
 
 /// \[package.metadata.sabry.sass\].module_name_collision option
-#[derive(Deserialize, Clone, Copy)]
+#[derive(Default, Deserialize, Clone, Copy)]
 #[serde(rename_all = "lowercase")]
 pub enum BehavSassModCollision {
+    #[default]
     Merge,
     Error,
 }
 
-impl Default for BehavSassModCollision {
-    fn default() -> Self {
-        Self::Merge
-    }
-}
-
 /// \[package.metadata.sabry.hash\].collision option
-#[derive(Deserialize, Clone, Copy)]
+#[derive(Default, Deserialize, Clone, Copy)]
 #[serde(rename_all = "lowercase")]
 pub enum BehavHashCollision {
-    Error,
+    #[default]
     Ignore,
-}
-
-impl Default for BehavHashCollision {
-    fn default() -> Self {
-        Self::Ignore
-    }
+    Error,
 }
 
 #[cfg(test)]

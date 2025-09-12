@@ -1,3 +1,5 @@
+use raffia::ast::InterpolableIdent;
+
 /// Convenience wrapper for String-being-a-hash
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct ScopeHash(String);
@@ -30,7 +32,10 @@ impl ScopeHash {
                 .iter()
                 .map(|s| &s.name)
                 .chain(ids.iter().map(|i| &i.name))
-                .map(|ident| ident.as_literal())
+                .map(|ident| match ident {
+                    InterpolableIdent::Literal(lit) => Some(lit),
+                    _ => None,
+                })
                 .filter_map(|mbl| mbl.map(|l| l.raw))
                 .collect::<String>();
 

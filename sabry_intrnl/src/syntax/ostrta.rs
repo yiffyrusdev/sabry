@@ -1,15 +1,10 @@
 /// Convenience unification entrypoint
 /// to make friends with all the different syntax-consumers
-#[derive(Debug, Clone, Copy)]
+#[derive(Default, Debug, Clone, Copy)]
 pub enum OneSyntaxToRuleThemAll {
-    Sass,
+    #[default]
     Scss,
-}
-
-impl Default for OneSyntaxToRuleThemAll {
-    fn default() -> Self {
-        Self::Scss
-    }
+    Sass,
 }
 
 impl TryFrom<&str> for OneSyntaxToRuleThemAll {

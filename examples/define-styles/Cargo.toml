@@ -2,8 +2,8 @@
 name = "define-styles"
 version = "0.0.0"
 edition = "2021"
-rust-version = "1.82"
+rust-version = "1.88"
 publish = false
 
 [dependencies]
-sabry = {path = "../../", features = ["nightly"]}
+sabry = { path = "../../", features = ["nightly"] }

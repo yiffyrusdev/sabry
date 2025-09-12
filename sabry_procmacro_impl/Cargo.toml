@@ -11,6 +11,7 @@ license.workspace = true
 [dependencies]
 sabry_intrnl.workspace = true
 sabry_intrnl.features = ["scope"]
+raffia.workspace = true
 syn.workspace = true
 syn.features = ["parsing"]
 quote.workspace = true

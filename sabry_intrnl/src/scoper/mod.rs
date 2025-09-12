@@ -1,8 +1,10 @@
 use std::fmt::Debug;
 
-use cfg_if::cfg_if;
 use hash::ScopeHash;
-use raffia::{Span, Spanned};
+use raffia::{
+    ast::{InterpolableIdent, TypeSelector},
+    Span, Spanned,
+};
 
 use crate::syntax::{ostrta::OneSyntaxToRuleThemAll, StylesheetAdapter};
 
@@ -106,7 +108,10 @@ impl<'s> HashedScope<'s> {
         let tags = scope.adapter().type_selectors();
         let tags = tags
             .iter()
-            .filter_map(|t| t.as_tag_name())
+            .filter_map(|t| match t {
+                TypeSelector::TagName(tag) => Some(tag),
+                _ => None,
+            })
             .map(|c| HashedSelector::from_tag(&hash, c));
 
         // get global selectors
@@ -234,29 +239,17 @@ impl HashedSelector {
     /// whats this function returns will be usable in HTML with to_hashed_html_def()
     pub fn make_hashed_css(value: &ScopedSelector, hash: &ScopeHash) -> String {
         match value {
-            // Class scoping is done with class composition
             ScopedSelector::Class(a) => {
+                // Class scoping is done by composition
                 format!("{}.{}", hash.as_str(), a.ident)
             }
-            // As we dont want to use two HTML props for a single ID,
-            // ID scoping is done with id modification
-            ScopedSelector::Id(a) => {
-                cfg_if! {
-                    if #[cfg(feature = "lepty-scoping")] {
-                        format!("{}.{}", a.ident, hash.as_str())
-                    } else {
-                        format!("{}-{}", hash.as_str(), a.ident)
-                    }
-                }
-            }
             ScopedSelector::Tag(a) => {
-                cfg_if! {
-                    if #[cfg(feature = "lepty-scoping")] {
-                        format!("{}.{}", a.ident, hash.as_str())
-                    } else {
-                        format!(".{} {}", hash.as_str(), a.ident)
-                    }
-                }
+                // Tag scoping is done by composition
+                format!("{}.{}", a.ident, hash.as_str())
+            }
+            ScopedSelector::Id(a) => {
+                // ID scoping is done by class composition
+                format!("{}.{}", a.ident, hash.as_str())
             }
             ScopedSelector::Glob { raw, .. } => raw.clone(),
         }
@@ -267,31 +260,15 @@ impl HashedSelector {
     /// Cooperates with the [HashedSelector::make_hashed_css], so
     /// whats this function returns will be usable in CSS with to_hashed_code()
     ///
-    /// Not every hashed selector is presentable for HTML-ish use: like `div`, in that case
-    /// returns [None]
-    pub fn make_hashed_html(value: &ScopedSelector, _hash: &ScopeHash) -> Option<String> {
+    /// Since 0.0.6 all scoping is done via classes, so this function
+    /// persists for bw-compat for everything except for class.
+    ///
+    /// Global and Tag selectors are never transformed;
+    pub fn make_hashed_html(value: &ScopedSelector, hash: &ScopeHash) -> Option<String> {
         match value {
             // Class scoping is done with class composition
-            ScopedSelector::Class(a) => {
-                cfg_if! {
-                    if #[cfg(feature = "lepty-scoping")] {
-                        Some(a.ident.to_string())
-                    } else {
-                        Some(format!("{} {}", _hash.as_str(), a.ident))
-                    }
-                }
-            }
-            // As we dont want to use two HTML props for a single ID,
-            // ID scoping is done with id modification
-            ScopedSelector::Id(a) => {
-                cfg_if! {
-                    if #[cfg(feature = "lepty-scoping")] {
-                        Some(a.ident.to_string())
-                    } else {
-                        Some(format!("{}-{}", _hash.as_str(), a.ident))
-                    }
-                }
-            }
+            ScopedSelector::Class(a) => Some(format!("{} {}", a.ident, hash.as_str())),
+            ScopedSelector::Id(id) => Some(id.ident.clone()),
             ScopedSelector::Tag(_) => None,
             ScopedSelector::Glob { .. } => None,
         }
@@ -366,10 +343,9 @@ impl ScopedSelector {
 
     /// Construct this from class selector
     pub fn from_class(s: &raffia::ast::ClassSelector) -> Self {
-        let lit = s
-            .name
-            .as_literal()
-            .expect("BUG: class selector is not a literal");
+        let InterpolableIdent::Literal(lit) = &s.name else {
+            panic!("BUG: class selector was not a literal")
+        };
         Self::Class(ArbitrarySelector {
             ident: lit.raw.to_string(),
             span: lit.span().clone(),
@@ -378,10 +354,9 @@ impl ScopedSelector {
 
     /// Construct this from id selector
     pub fn from_id(s: &raffia::ast::IdSelector) -> Self {
-        let lit = s
-            .name
-            .as_literal()
-            .expect("BUG: id selector is not a literal");
+        let InterpolableIdent::Literal(lit) = &s.name else {
+            panic!("BUG: id selector was not a literal")
+        };
         Self::Id(ArbitrarySelector {
             ident: lit.raw.to_string(),
             span: lit.span().clone(),
@@ -390,11 +365,9 @@ impl ScopedSelector {
 
     /// Construct this from tagname selector
     pub fn from_tag(s: &raffia::ast::TagNameSelector) -> Self {
-        let lit = s
-            .name
-            .name
-            .as_literal()
-            .expect("BUG: tag selector is not a literal");
+        let InterpolableIdent::Literal(lit) = &s.name.name else {
+            panic!("BUG: tag selector was not a literal")
+        };
         Self::Tag(ArbitrarySelector {
             ident: lit.raw.to_string(),
             span: lit.span().clone(),
@@ -439,7 +412,6 @@ pub fn apply_basic_rusty_member_gen_rules(source: &str) -> String {
 mod test {
     use std::collections::HashSet;
 
-    use cfg_if::cfg_if;
     use syn::Ident;
 
     use crate::{
@@ -456,33 +428,33 @@ mod test {
             ".cls1{color:red; &-dark{color: black;} #id1 {color:green;} div {color:blue;}} .cls3#id2{color: black;}";
         let hash = ScopeHash::test_init("F2kf8nMs".into());
 
-        cfg_if! {
-            if #[cfg(feature = "lepty-scoping")]{
-                let expect_code = ".F2kf8nMs.cls1{color:red; &-dark{color: black;} #id1.F2kf8nMs {color:green;} div.F2kf8nMs {color:blue;}} .F2kf8nMs.cls3#id2.F2kf8nMs{color: black;}";
-            } else {
-                let expect_code = ".F2kf8nMs.cls1{color:red; &-dark{color: black;} #F2kf8nMs-id1 {color:green;} .F2kf8nMs div {color:blue;}} .F2kf8nMs.cls3#F2kf8nMs-id2{color: black;}";
-            }
-        }
+        //cfg_if! {
+        //if #[cfg(feature = "lepty-scoping")]{
+        let expect_code = ".F2kf8nMs.cls1{color:red; &-dark{color: black;} #id1.F2kf8nMs {color:green;} div.F2kf8nMs {color:blue;}} .F2kf8nMs.cls3#id2.F2kf8nMs{color: black;}";
+        //} else {
+        //    let expect_code = ".F2kf8nMs.cls1{color:red; &-dark{color: black;} #F2kf8nMs-id1 {color:green;} .F2kf8nMs div {color:blue;}} .F2kf8nMs.cls3#F2kf8nMs-id2{color: black;}";
+        //}
+        //}
 
-        cfg_if! {
-            if #[cfg(feature = "lepty-scoping")] {
-                let expect_selector_htmls = HashSet::from([
-                    "cls1".to_string(),
-                    "id1".to_string(),
-                    "cls3".to_string(),
-                    "id2".to_string(),
-                    "".to_string(), // comes from `div` which has no html hashed code, still want to check presense
-                ]);
-            } else {
-                let expect_selector_htmls = HashSet::from([
-                    "F2kf8nMs cls1".to_string(),
-                    "F2kf8nMs-id1".to_string(),
-                    "F2kf8nMs cls3".to_string(),
-                    "F2kf8nMs-id2".to_string(),
-                    "".to_string(), // comes from `div` which has no html hashed code, still want to check presense
-                ]);
-            }
-        }
+        // cfg_if! {
+        // if #[cfg(feature = "lepty-scoping")] {
+        let expect_selector_htmls = HashSet::from([
+            "cls1".to_string(),
+            "id1".to_string(),
+            "cls3".to_string(),
+            "id2".to_string(),
+            "".to_string(), // comes from `div` which has no html hashed code, still want to check presense
+        ]);
+        // } else {
+        // let expect_selector_htmls = HashSet::from([
+        // "F2kf8nMs cls1".to_string(),
+        // "F2kf8nMs-id1".to_string(),
+        // "F2kf8nMs cls3".to_string(),
+        // "F2kf8nMs-id2".to_string(),
+        // "".to_string(), // comes from `div` which has no html hashed code, still want to check presense
+        // ]);
+        // }
+        //}
 
         let scope = ArbitraryScope::from_source(
             OneSyntaxToRuleThemAll::Scss,

@@ -2,15 +2,15 @@
 name = "use-styles"
 version = "0.0.0"
 edition = "2021"
-rust-version = "1.82"
+rust-version = "1.88"
 publish = false
 
 [dependencies]
-sabry = {path = "../../", features = ["nightly"]}
+sabry = { path = "../../", features = ["nightly"] }
 
 [build-dependencies]
-sabry = {path = "../../", features = ["build", "nightly"]}
-define-styles = {path = "../define-styles"}
+sabry = { path = "../../", features = ["build", "nightly"] }
+define-styles = { path = "../define-styles" }
 
 [package.metadata.sabry]
 css.bundle = "target/static/style.css"
@@ -21,4 +21,4 @@ hash.size = 6
 hash.collision = "error"
 
 [package.metadata.sabry.lightningcss]
-targets = {chrome = "120", firefox = "120", ie = "8"}
+targets = { chrome = "120", firefox = "120", ie = "8" }

@@ -84,10 +84,17 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
                 .iter()
                 .filter_map(|ns| {
                     ns.suffix.clone().and_then(|s| {
-                        let interp = s
-                            .as_sass_interpolated()
-                            .and_then(|i| i.elements.first())
-                            .and_then(|e| e.as_static().map(|s| s.raw.to_string()));
+                        let interp = match s {
+                            raffia::ast::InterpolableIdent::SassInterpolated(int) => Some(int),
+                            _ => None,
+                        };
+
+                        let interp = interp.and_then(|i| match i.elements.first() {
+                            Some(raffia::ast::SassInterpolatedIdentElement::Static(i)) => {
+                                Some(i.raw.to_string())
+                            }
+                            _ => None,
+                        });
 
                         interp
                     })
@@ -102,6 +109,10 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
 
                     quote! {
                         #[doc = #doc]
+                        #[deprecated(
+                            since = "0.0.6",
+                            note = "All scoping is done by directly applying hash classes to elements now - this is useless for everything except of classes"
+                        )]
                         pub fn #fnident(c: &str) -> String {format!(#formatstr)}
                     }
                 });
@@ -120,23 +131,35 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
                             ScopedSelector::Glob { .. } => "glob",
                         };
 
-                        (name, hs.sel.gen_rusty_ident(), html, hs.css_ident.clone())
+                        (
+                            name,
+                            hs.sel.gen_rusty_ident(),
+                            html,
+                            hs.css_ident.clone(),
+                        )
                     })
                 })
                 .map(|(name, ident, html, css)| {
                     let docs = format!("'{ident:?}' {name}. CSS selector '{css}'");
                     quote! {
                         #[doc = #docs]
+                        #[deprecated(
+                            since = "0.0.6",
+                            note = "All scoping is done by directly applying hash classes to elements now - this is useless for everything except of classes"
+                        )]
                         #[allow(non_upper_case_globals)]
                         pub const #ident : &str = #html ;
                     }
                 });
 
             let mod_docs = format!(
-                "'{}' style scope. The wrapper class for scoped tagnames is {}",
+                "'{}' style scope. The hash class is `{}`",
                 &scope_ident, &scope_wrapper_ident
             );
-            let wrp_docs = format!("wrapper class for '{}' scope. If you have any tagname selectors - they should live as children of element with this class applied.", &scope_ident);
+            let wrp_docs = format!(
+                "hash class for '{}' scope. All HTML elements should have this class applied",
+                &scope_ident
+            );
 
             if constant {
                 cfg_if! {

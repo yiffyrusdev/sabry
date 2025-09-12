@@ -16,7 +16,6 @@ regex.optional = true
 grass.workspace = true
 grass.optional = true
 lightningcss.workspace = true
-lightningcss.features = ["grid"]
 lightningcss.optional = true
 blake3.workspace = true
 blake3.optional = true
@@ -30,7 +29,6 @@ toml.workspace = true
 cfg-if.workspace = true
 
 [features]
-lepty-scoping = []
 scope = ["dep:blake3", "dep:base64", "dep:regex"]
 compile = ["dep:lightningcss", "dep:grass"]
 

@@ -1,5 +1,3 @@
-use raffia::ast::InterpolableIdent;
-
 /// Convenience wrapper for String-being-a-hash
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct ScopeHash(String);
@@ -8,6 +6,7 @@ impl ScopeHash {
     #[cfg(feature = "scope")]
     pub fn new(scope: &super::ArbitraryScope, config: &crate::config::SabryHashConfig) -> Self {
         use base64::Engine;
+        use raffia::ast::InterpolableIdent;
 
         use crate::scoper::apply_basic_rusty_member_gen_rules;
 

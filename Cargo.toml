@@ -1,6 +1,11 @@
 [workspace]
 resolver = "2"
-members = ["sabry_procmacro", "sabry_procmacro_impl", "sabry_intrnl"]
+members = [
+    "sabry_procmacro",
+    "sabry_procmacro_impl",
+    "sabry_intrnl",
+    "sabry_build",
+]
 exclude = ["examples"]
 
 [workspace.dependencies]

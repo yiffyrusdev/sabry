@@ -1,10 +1,10 @@
 use std::{fmt::Debug, fs, path::PathBuf, str::FromStr};
 
 use proc_macro2::{Span, TokenStream};
-use quote::{quote, ToTokens, TokenStreamExt};
+use quote::{ToTokens, TokenStreamExt, quote};
 use regex::Regex;
 use sabry_intrnl::syntax::ostrta::OneSyntaxToRuleThemAll;
-use syn::{braced, parse::Parse, Ident, LitStr, Token};
+use syn::{Ident, LitStr, Token, braced, parse::Parse};
 
 pub mod scssy;
 pub mod styly;
@@ -31,20 +31,15 @@ impl ArbitraryStyleBlock {
         &self.code
     }
 
-    pub fn parse_syn(
-        input: syn::parse::ParseStream,
-        use_code_path_prefix: Option<PathBuf>,
-    ) -> syn::Result<Self> {
+    pub fn parse_syn(input: syn::parse::ParseStream, path_prefix: PathBuf) -> syn::Result<Self> {
         let (code, span) = if let Ok(path_tok) = input.parse::<LitStr>() {
-            let path = if let Some(prefix) = use_code_path_prefix {
+            let path = {
                 let p = path_tok.value();
                 if let Some(pp) = p.strip_prefix("./") {
-                    prefix.join(pp)
+                    path_prefix.join(pp)
                 } else {
-                    PathBuf::from_str(&p).expect("Unable to convert path into PathBuf")
+                    PathBuf::from_str(&p).unwrap() // infallible
                 }
-            } else {
-                PathBuf::from_str(&path_tok.value()).expect("Unable to convert path into PathBuf")
             };
 
             let fullpath = match path.canonicalize() {
@@ -52,8 +47,11 @@ impl ArbitraryStyleBlock {
                 Err(e) => {
                     return Err(syn::Error::new(
                         path_tok.span(),
-                        format!("Could not use path {path:?}: {:?}. If the path is relative and 'nightly' feature flag is set - this is likely false-positive", e.kind()),
-                    ))
+                        format!(
+                            "Could not use path {path:?}: {:?}. If the path is relative and 'nightly' feature flag is set - this is likely false-positive",
+                            e.kind()
+                        ),
+                    ));
                 }
             };
 
@@ -63,7 +61,7 @@ impl ArbitraryStyleBlock {
                     return Err(syn::Error::new(
                         path_tok.span(),
                         format!("Could not read file at {fullpath:?}"),
-                    ))
+                    ));
                 }
             };
             let code = String::from_utf8_lossy(&iofile).to_string();
@@ -79,17 +77,14 @@ impl ArbitraryStyleBlock {
                 let c = ident_regex.replace_all(&c, "\n").to_string();
                 (c, stream.span())
             } else {
-                return Err(syn::Error::new(s.span(), "Use \"\" within the braces to specify your SASS/SCSS. Unquoted style syntax is reserved for the future. Unquoted SCSS/SASS doesnt make sense though, as you won't benefit from it in rust file.\n\ntip: use `{\"style\"}` instead of `{style}`"));
+                return Err(syn::Error::new(
+                    s.span(),
+                    "Use \"\" within the braces to specify your SASS/SCSS. Unquoted style syntax is reserved for the future. Unquoted SCSS/SASS doesnt make sense though, as you won't benefit from it in rust file.\n\ntip: use `{\"style\"}` instead of `{style}`",
+                ));
             }
         };
 
         Ok(Self { code, span })
-    }
-}
-
-impl Parse for ArbitraryStyleBlock {
-    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-        Self::parse_syn(input, None)
     }
 }
 
@@ -146,58 +141,5 @@ impl Parse for ArbitraryStyleSyntax {
                 ),
             )),
         }
-    }
-}
-
-#[cfg(test)]
-mod test {
-    #[test]
-    fn arbitrary_style_block_sass() {
-        use super::ArbitraryStyleBlock;
-
-        let code = "
-    #a
-        co: red
-    .sel
-        co: white
-    &-dark
-        & > div
-            co: blue";
-        let expect_code = "
-#a
-    co: red
-.sel
-    co: white
-&-dark
-    & > div
-        co: blue";
-        let input = format!("{{\"{code}\"}}");
-        let block = syn::parse_str::<ArbitraryStyleBlock>(&input).unwrap();
-
-        assert_eq!(expect_code, block.code);
-    }
-
-    #[test]
-    fn arbitrary_style_block_scss() {
-        use super::ArbitraryStyleBlock;
-
-        let code = "
-    #a {
-        c: r;
-    }
-    .b.c {
-        c: 'into';
-    }";
-        let expect_code = "
-#a {
-    c: r;
-}
-.b.c {
-    c: 'into';
-}";
-        let input = format!("{{\"{code}\"}}");
-        let block = syn::parse_str::<ArbitraryStyleBlock>(&input).unwrap();
-
-        assert_eq!(expect_code, block.code)
     }
 }

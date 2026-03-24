@@ -6,11 +6,11 @@ use proc_macro2::{Span, TokenStream};
 use quote::quote;
 use sabry_intrnl::{
     config::SabryConfig,
-    scoper::{apply_basic_rusty_member_gen_rules, ArbitraryScope, ScopedSelector},
+    scoper::{ArbitraryScope, ScopedSelector, sanitize_css_member},
 };
 use syn::{
-    parse::{Parse, ParseStream},
     Ident, Token,
+    parse::{Parse, ParseStream},
 };
 
 use super::{ArbitraryStyleBlock, ArbitraryStyleSyntax};
@@ -32,7 +32,7 @@ use super::{ArbitraryStyleBlock, ArbitraryStyleSyntax};
 ///
 /// The machine-readable output may also be forced by use `machine_readable: true` arg on `parse_macro_syntax` function
 /// without modifying tokenstream
-pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> TokenStream {
+pub fn styly_macro_impl(input: TokenStream, source_path: PathBuf) -> TokenStream {
     let config = match SabryConfig::require() {
         Ok(c) => c,
         Err(e) => {
@@ -40,7 +40,7 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
                 Span::call_site(),
                 format!("Could not read sabry configuration required by this macro: {e:?}",),
             )
-            .to_compile_error()
+            .to_compile_error();
         }
     };
     let ms = match parse_macro_syntax(input, source_path) {
@@ -62,7 +62,7 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
                 Span::call_site(),
                 format!("Could not generate scope: {e:?}"),
             )
-            .to_compile_error()
+            .to_compile_error();
         }
     };
 
@@ -101,7 +101,7 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
                 })
                 .unique()
                 .map(|s| {
-                    let ident = apply_basic_rusty_member_gen_rules(&s);
+                    let ident = sanitize_css_member(&s);
                     let fnident = syn::parse_str::<Ident>(format!("_{ident}").as_str())
                         .expect("BUG: invalid ident for nesting selector formed");
                     let formatstr = format!("{{c}}{}", &s);
@@ -223,7 +223,7 @@ pub fn styly_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
 // reusable function, that does not return tokenstream for machine-processing at build time
 pub fn parse_macro_syntax(
     input: TokenStream,
-    source_path: Option<PathBuf>,
+    source_path: PathBuf,
 ) -> Result<MacroSyntax, syn::Error> {
     syn::parse::Parser::parse2(
         |input: ParseStream<'_>| MacroSyntax::parse_syn(input, source_path),
@@ -263,18 +263,11 @@ pub struct MacroSyntax {
 }
 
 impl MacroSyntax {
-    pub fn parse_syn(
-        input: syn::parse::ParseStream,
-        source_path: Option<PathBuf>,
-    ) -> syn::Result<Self> {
+    pub fn parse_syn(input: syn::parse::ParseStream, source_path: PathBuf) -> syn::Result<Self> {
         let mut generator = input.parse::<ScopeGenerator>()?;
         let scope = input.parse::<Ident>()?;
         let syntax = input.parse::<ArbitraryStyleSyntax>()?;
-        let code = if source_path.is_some() {
-            ArbitraryStyleBlock::parse_syn(input, source_path)
-        } else {
-            input.parse::<ArbitraryStyleBlock>()
-        }?;
+        let code = ArbitraryStyleBlock::parse_syn(input, source_path)?;
 
         if input.parse::<Token![#]>().is_ok() {
             generator = ScopeGenerator::MachineReadable
@@ -286,11 +279,5 @@ impl MacroSyntax {
             syntax,
             code,
         })
-    }
-}
-
-impl Parse for MacroSyntax {
-    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-        Self::parse_syn(input, None)
     }
 }

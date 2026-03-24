@@ -2,11 +2,11 @@ use std::fmt::Debug;
 
 use hash::ScopeHash;
 use raffia::{
-    ast::{InterpolableIdent, TypeSelector},
     Span, Spanned,
+    ast::{InterpolableIdent, TypeSelector},
 };
 
-use crate::syntax::{ostrta::OneSyntaxToRuleThemAll, StylesheetAdapter};
+use crate::syntax::{StylesheetAdapter, ostrta::OneSyntaxToRuleThemAll};
 
 pub mod hash;
 
@@ -312,7 +312,7 @@ impl ScopedSelector {
     #[cfg(feature = "scope")]
     pub fn gen_rusty_ident(&self) -> Option<syn::Ident> {
         let arb = &self.as_arbitrary().ident;
-        let basic = apply_basic_rusty_member_gen_rules(arb);
+        let basic = sanitize_css_member(arb);
 
         let ready = match self {
             Self::Class(_) => Some(basic),
@@ -376,34 +376,35 @@ impl ScopedSelector {
 }
 
 #[cfg(feature = "scope")]
-pub fn apply_basic_rusty_member_gen_rules(source: &str) -> String {
-    let omit_regex = regex::Regex::new(r"(^\-)|(\-$)|[^a-zA-Z0-9\-\_]")
-        .expect("BUG: can not build omition regex for rusty member generation");
-
-    // omit forbidden chars
-    let cleaned = omit_regex.replace_all(source, "").to_string();
-
-    // other not-so-obvious rules
-    let mut target = String::with_capacity(cleaned.len());
+pub fn sanitize_css_member(source: &str) -> String {
+    let mut target = String::with_capacity(source.len());
     let mut next_uppercase: bool = false;
-    for (i, c) in cleaned.chars().enumerate() {
+    for (i, c) in source
+        .chars()
+        .filter(|c| c.is_alphanumeric() || *c == '-')
+        .enumerate()
+    {
         // first gidit is prepended with 'n'
         if i == 0 && c.is_numeric() {
             target.push('n');
             target.push(c);
             continue;
         }
-        // dash is omitted and next is uppercase if may be
+
+        // dash is omitted, replacing the next char with its uppercase
         if c == '-' {
             next_uppercase = true;
             continue;
         }
-        target.push(if next_uppercase {
+
+        let char = if next_uppercase {
             next_uppercase = false;
             c.to_ascii_uppercase()
         } else {
             c
-        });
+        };
+
+        target.push(char);
     }
     target
 }
@@ -416,7 +417,7 @@ mod test {
 
     use crate::{
         config::SabryHashConfig,
-        scoper::{hash::ScopeHash, HashedScope},
+        scoper::{HashedScope, hash::ScopeHash},
         syntax::ostrta::OneSyntaxToRuleThemAll,
     };
 
@@ -424,20 +425,11 @@ mod test {
 
     #[test]
     fn scope_hash_codegen() {
-        let code =
-            ".cls1{color:red; &-dark{color: black;} #id1 {color:green;} div {color:blue;}} .cls3#id2{color: black;}";
+        let code = ".cls1{color:red; &-dark{color: black;} #id1 {color:green;} div {color:blue;}} .cls3#id2{color: black;}";
         let hash = ScopeHash::test_init("F2kf8nMs".into());
 
-        //cfg_if! {
-        //if #[cfg(feature = "lepty-scoping")]{
         let expect_code = ".F2kf8nMs.cls1{color:red; &-dark{color: black;} #id1.F2kf8nMs {color:green;} div.F2kf8nMs {color:blue;}} .F2kf8nMs.cls3#id2.F2kf8nMs{color: black;}";
-        //} else {
-        //    let expect_code = ".F2kf8nMs.cls1{color:red; &-dark{color: black;} #F2kf8nMs-id1 {color:green;} .F2kf8nMs div {color:blue;}} .F2kf8nMs.cls3#F2kf8nMs-id2{color: black;}";
-        //}
-        //}
 
-        // cfg_if! {
-        // if #[cfg(feature = "lepty-scoping")] {
         let expect_selector_htmls = HashSet::from([
             "cls1".to_string(),
             "id1".to_string(),
@@ -445,16 +437,6 @@ mod test {
             "id2".to_string(),
             "".to_string(), // comes from `div` which has no html hashed code, still want to check presense
         ]);
-        // } else {
-        // let expect_selector_htmls = HashSet::from([
-        // "F2kf8nMs cls1".to_string(),
-        // "F2kf8nMs-id1".to_string(),
-        // "F2kf8nMs cls3".to_string(),
-        // "F2kf8nMs-id2".to_string(),
-        // "".to_string(), // comes from `div` which has no html hashed code, still want to check presense
-        // ]);
-        // }
-        //}
 
         let scope = ArbitraryScope::from_source(
             OneSyntaxToRuleThemAll::Scss,

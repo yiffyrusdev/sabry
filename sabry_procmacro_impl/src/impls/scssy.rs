@@ -3,10 +3,7 @@ use std::path::PathBuf;
 use proc_macro2::TokenStream;
 use quote::quote;
 use sabry_intrnl::scoper::ArbitraryScope;
-use syn::{
-    parse::{Parse, ParseStream},
-    Ident,
-};
+use syn::{Ident, parse::ParseStream};
 
 use super::{ArbitraryStyleBlock, ArbitraryStyleSyntax};
 
@@ -16,7 +13,7 @@ use super::{ArbitraryStyleBlock, ArbitraryStyleSyntax};
 /// `$syntax`: sass/scss
 ///
 /// `$code`: intended to be valid based on $syntax
-pub fn scssy_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> TokenStream {
+pub fn scssy_macro_impl(input: TokenStream, source_path: PathBuf) -> TokenStream {
     let MacroSyntax {
         ident,
         syntax,
@@ -36,7 +33,9 @@ pub fn scssy_macro_impl(input: TokenStream, source_path: Option<PathBuf>) -> Tok
     }
 
     let sourcesass = code.to_string();
-    let macro_doc = format!("Arbitrary {syntax:?} code declared with `scssy!`. Pretty usable in tandem with `usey!` and `buildy` at build time");
+    let macro_doc = format!(
+        "Arbitrary {syntax:?} code declared with `scssy!`. Pretty usable in tandem with `usey!` and `buildy` at build time"
+    );
 
     quote! {
         #[doc = #macro_doc]
@@ -55,17 +54,11 @@ pub struct MacroSyntax {
 }
 
 impl MacroSyntax {
-    pub fn parse_syn(
-        input: syn::parse::ParseStream,
-        source_path: Option<PathBuf>,
-    ) -> syn::Result<Self> {
+    pub fn parse_syn(input: syn::parse::ParseStream, source_path: PathBuf) -> syn::Result<Self> {
         let ident = input.parse::<Ident>()?;
         let syntax = input.parse::<ArbitraryStyleSyntax>()?;
 
-        let code = match source_path {
-            Some(sp) => ArbitraryStyleBlock::parse_syn(input, Some(sp))?,
-            None => input.parse::<ArbitraryStyleBlock>()?,
-        };
+        let code = ArbitraryStyleBlock::parse_syn(input, source_path)?;
 
         Ok(Self {
             ident,
@@ -75,11 +68,11 @@ impl MacroSyntax {
     }
 }
 
-impl Parse for MacroSyntax {
-    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-        Self::parse_syn(input, None)
-    }
-}
+// impl Parse for MacroSyntax {
+//     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+//         Self::parse_syn(input, None)
+//     }
+// }
 
 #[cfg(test)]
 mod test {}

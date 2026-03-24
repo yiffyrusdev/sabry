@@ -1,9 +1,8 @@
 #![doc = include_str!("../README.md")]
-#![cfg_attr(feature = "nightly", feature(proc_macro_span))]
 
+use std::path::PathBuf;
 use std::str::FromStr;
 
-use cfg_if::cfg_if;
 use proc_macro::TokenStream;
 use sabry_procmacro_impl::impls::{
     scssy::scssy_macro_impl, styly::styly_macro_impl, usey::usey_macro_impl,
@@ -38,17 +37,8 @@ use sabry_procmacro_impl::impls::{
 ///
 #[proc_macro]
 pub fn scssy(input: TokenStream) -> TokenStream {
-    cfg_if! {
-        if #[cfg(feature = "nightly")] {
-            use proc_macro::Span;
-            use std::path::PathBuf;
-            let source_path = Some(PathBuf::from_str(
-                &Span::call_site().file()).expect("&str to be Infallible converted into PathBuf")
-            );
-        } else {
-            let source_path = None;
-        }
-    }
+    let source_path =
+        PathBuf::from_str(&proc_macro::Span::call_site().file()).expect("Irrefutable result");
     scssy_macro_impl(input.into(), source_path).into()
 }
 
@@ -111,18 +101,8 @@ pub fn scssy(input: TokenStream) -> TokenStream {
 /// ```
 #[proc_macro]
 pub fn styly(input: TokenStream) -> TokenStream {
-    cfg_if! {
-        if #[cfg(feature = "nightly")] {
-            use proc_macro::Span;
-            use std::path::PathBuf;
-            let source_path = Some(PathBuf::from_str(
-                &Span::call_site().file()).expect("&str to be Infallible converted into PathBuf")
-            );
-        } else {
-            let source_path = None;
-        }
-    }
-
+    let source_path =
+        PathBuf::from_str(&proc_macro::Span::call_site().file()).expect("Irrefutable result");
     styly_macro_impl(input.into(), source_path).into()
 }
 

@@ -1,5 +1,5 @@
 [workspace]
-resolver = "2"
+resolver = "3"
 members = [
     "sabry_procmacro",
     "sabry_procmacro_impl",
@@ -8,42 +8,41 @@ members = [
 ]
 exclude = ["examples"]
 
+[workspace.package]
+version = "0.0.6"
+edition = "2024"
+rust-version = "1.88"
+authors = ["Svyatoslav Pushkarev <yiffyrusdev@yandex.ru>"]
+repository = "https://github.com/yiffyrusdev/sabry"
+license = "MIT"
+publish = true
+
 [workspace.dependencies]
 ## Workspace
 sabry_intrnl = { path = "sabry_intrnl", version = "0.0.6" }
 sabry_procmacro = { path = "sabry_procmacro", version = "0.0.6" }
 sabry_procmacro_impl = { path = "sabry_procmacro_impl", version = "0.0.6" }
 sabry_build = { path = "sabry_build", version = "0.0.6" }
-#/
-lightningcss.version = "1.0.0-alpha.67"
+## CSS
+lightningcss.version = "1.0.0-alpha.71"
 lightningcss.default-features = false
 grass.version = "^0.13"
 grass.default-features = false
-raffia.version = "^0.11"
-#/
+raffia.version = "^0.12"
+## Marshall
 serde.version = "^1"
-toml.version = "^0.9"
-blake3.version = "^1"
+toml.version = "^1"
 base64.version = "^0.22"
 regex.version = "^1"
-#/
+## Util
 itertools.version = "^0.14"
 walkdir.version = "^2"
-#/
+## Codegen
 cfg-if.version = "^1"
 thiserror.version = "^2"
 proc-macro2.version = "^1"
 quote.version = "^1"
 syn.version = "^2"
-
-[workspace.package]
-version = "0.0.6"
-edition = "2021"
-rust-version = "1.88"
-authors = ["Svyatoslav Pushkarev <yiffyrusdev@yandex.ru>"]
-repository = "https://github.com/yiffyrusdev/sabry"
-license = "MIT"
-publish = true
 
 [package]
 name = "sabry"
@@ -73,7 +72,6 @@ const-scoping = ["sabry_procmacro?/const-compile"]
 procmacro = ["dep:sabry_procmacro"]
 build = ["dep:sabry_build"]
 net-files = ["sabry_build/net-files"]
-nightly = ["sabry_procmacro?/nightly"]
 internals = []
 
 [package.metadata.docs.rs]

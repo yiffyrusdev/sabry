@@ -7,19 +7,20 @@ impl ScopeHash {
     pub fn new(scope: &super::ArbitraryScope, config: &crate::config::SabryHashConfig) -> Self {
         use base64::Engine;
         use raffia::ast::InterpolableIdent;
+        use std::hash::Hasher;
 
-        use crate::scoper::apply_basic_rusty_member_gen_rules;
+        use crate::scoper::sanitize_css_member;
 
-        let mut hasher = blake3::Hasher::new();
+        let mut hasher = std::hash::DefaultHasher::new();
 
         if config.use_scope_name {
-            hasher.update(scope.name.to_string().as_bytes());
+            hasher.write(scope.name.to_string().as_bytes());
         }
         if config.use_code_text {
-            hasher.update(scope.adapter().source().as_bytes());
+            hasher.write(scope.adapter().source().as_bytes());
         }
         if config.use_code_size {
-            hasher.update(&scope.adapter().source().len().to_ne_bytes());
+            hasher.write(&scope.adapter().source().len().to_ne_bytes());
         }
         if config.use_item_names {
             let classes = scope.adapter().class_selectors();
@@ -38,22 +39,13 @@ impl ScopeHash {
                 .filter_map(|mbl| mbl.map(|l| l.raw))
                 .collect::<String>();
 
-            hasher.update(merged_items.as_bytes());
+            hasher.write(merged_items.as_bytes());
         }
 
-        let size = if config.size >= blake3::OUT_LEN {
-            blake3::OUT_LEN
-        } else {
-            config.size
-        };
+        let hash = hasher.finish().to_be_bytes();
 
-        let hash = hasher.finalize();
-        let hash = hash.as_bytes();
-
-        //? This isn't right. "size" is size of hash in symbols.
-        // naaah, its fine :D (Dan)
-        let hash = base64::prelude::BASE64_URL_SAFE_NO_PAD.encode(&hash[..size]);
-        let hash = apply_basic_rusty_member_gen_rules(&hash);
+        let hash = base64::prelude::BASE64_URL_SAFE_NO_PAD.encode(hash);
+        let hash = sanitize_css_member(&hash);
 
         Self(hash)
     }

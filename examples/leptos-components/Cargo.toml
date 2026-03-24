@@ -2,16 +2,16 @@
 name = "leptos-components"
 version = "0.1.0"
 rust-version = "1.88"
-edition = "2021"
+edition = "2024"
 publish = false
 
 [lib]
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-leptos = { version = "^0.7" }
-leptos_meta = { version = "^0.7" }
-leptos_router = { version = "^0.7" }
+leptos.version = "^0.8"
+leptos_meta.version = "^0.8"
+leptos_router.version = "^0.8"
 
 sabry = { path = "../../", features = ["const-scoping"] }
 

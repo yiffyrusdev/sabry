@@ -11,14 +11,10 @@ license.workspace = true
 [dependencies]
 syn.workspace = true
 raffia.workspace = true
-regex.workspace = true
-regex.optional = true
 grass.workspace = true
 grass.optional = true
 lightningcss.workspace = true
 lightningcss.optional = true
-blake3.workspace = true
-blake3.optional = true
 base64.workspace = true
 base64.optional = true
 
@@ -29,7 +25,7 @@ toml.workspace = true
 cfg-if.workspace = true
 
 [features]
-scope = ["dep:blake3", "dep:base64", "dep:regex"]
+scope = ["dep:base64"]
 compile = ["dep:lightningcss", "dep:grass"]
 
 [package.metadata.docs.rs]

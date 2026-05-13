@@ -1,3 +1,10 @@
+> **Repository moved**
+>
+> On GithHub this repository is now a [push-mirror](https://source.spushk.ru/rustyworks/sabry)
+> and will be removed from GH at 07-2026
+>
+> Crate will remain maintained
+
 # 🧙🏻 SABRY - Syntactically Awesome, But RustY
 
 **Y**et another **R**usty **B**oilerplate-free **A**gnostic **S**tyling crate, which brings your SASS/SCSS style into Rust. Written by a fox this time.

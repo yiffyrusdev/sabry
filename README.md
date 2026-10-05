@@ -128,7 +128,7 @@ The only need is the dependency
 #Cargo.toml
 
 [dependencies]
-sabry = {version = "0.0.6"}
+sabry = {version = "0.0.7"}
 ```
 And a proc-macro
 ```rust
@@ -161,7 +161,7 @@ Depend on sabry
 # Cargo.toml
 
 [dependencies]
-sabry = {version = "0.0.6"}
+sabry = {version = "0.0.7"}
 ```
 And create a style scope wherever you want:
 ```rust
@@ -199,10 +199,10 @@ To be able to compile all styles sabry also needs the *build* feature flag:
 # Cargo.toml
 
 [dependencies]
-sabry = {version = "0.0.6"}
+sabry = {version = "0.0.7"}
 
 [build-dependencies]
-sabry = {version = "0.0.6", features = ["build"]}
+sabry = {version = "0.0.7", features = ["build"]}
 ```
 > If you do use some non-default feature flags make sure to keep them in sync between sabry-dependency and sabry-build-dependency.
 

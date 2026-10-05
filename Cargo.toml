@@ -11,7 +11,7 @@ exclude = ["examples"]
 [workspace.package]
 version = "0.0.7"
 edition = "2024"
-rust-version = "1.88"
+rust-version = "1.89"
 authors = ["Svyatoslav Pushkarev <yiffyrusdev@yandex.ru>"]
 repository = "https://github.com/yiffyrusdev/sabry"
 license = "MIT"
@@ -28,14 +28,14 @@ lightningcss.version = "1.0.0-alpha.72"
 lightningcss.default-features = false
 grass.version = "^0.13"
 grass.default-features = false
-raffia.version = "^0.12"
+raffia.version = "^0.13"
 ## Marshall
 serde.version = "^1"
 toml.version = "^1"
 base64.version = "^0.23"
 regex.version = "^1"
 ## Util
-itertools.version = "^0.14"
+itertools.version = "^0.15"
 walkdir.version = "^2"
 ## Codegen
 cfg-if.version = "^1"

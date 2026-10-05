@@ -1,0 +1,52 @@
+[graph]
+targets = [
+    {triple = "x86_64-unknown-linux-gnu"},
+]
+all-features = false
+no-default-features = false
+
+[output]
+feature-depth = 1
+
+[advisories]
+db-urls = ["https://github.com/rustsec/advisory-db"]
+ignore = []
+
+[licenses]
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-2-Clause",
+    "CC0-1.0",
+    "Unlicense",
+    "Unicode-3.0",
+]
+confidence-threshold = 0.8
+exceptions = []
+
+[licenses.private]
+ignore = true
+registries = []
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+highlight = "simplest-path"
+workspace-default-features = "allow"
+external-default-features = "allow"
+allow = []
+allow-workspace = false
+deny = []
+skip-tree = []
+
+[sources]
+unknown-registry = "warn"
+unknown-git = "warn"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []
+
+[sources.allow-org]
+github = []
+gitlab = []
+bitbucket = []

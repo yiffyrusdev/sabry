@@ -2,6 +2,7 @@
 rust-toolchain.toml
 .vscode
 .profile
+.envrc
 /Cargo.lock
 /tests/sabry_intermediate
 /tests/sabry_output

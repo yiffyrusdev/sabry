@@ -6,4 +6,5 @@ rust-version = "1.88"
 publish = false
 
 [dependencies]
-sabry = { path = "../../", features = ["nightly"] }
+sabry.path = "../../"
+sabry.features = ["nightly"]

@@ -30,31 +30,32 @@ thiserror = "^1"
 tracing.version = "0.1"
 tracing.optional = true
 http = "^1"
-
 # sabry with sass
-sabry = { path = "../../" }
-
+sabry.path = "../../"
 # our component library
-leptos-components = { path = "../leptos-components" }
+leptos-components.version = "0.0.0"
+leptos-components.path = "../leptos-components"
 
 [build-dependencies]
 # sabry for build with sass
-sabry = { path = "../../", features = ["build"] }
+sabry.path = "../../"
+sabry.features = ["build"]
 # lets depend on our styles
-define-styles = { path = "../define-styles" }
+define-styles.version = "0.0.0"
+define-styles.path = "../define-styles"
 
 [features]
 hydrate = ["leptos/hydrate"]
 ssr = [
-    "dep:axum",
-    "dep:tokio",
-    "dep:tower",
-    "dep:tower-http",
-    "dep:leptos_axum",
-    "leptos/ssr",
-    "leptos_meta/ssr",
-    "leptos_router/ssr",
-    "dep:tracing",
+  "dep:axum",
+  "dep:tokio",
+  "dep:tower",
+  "dep:tower-http",
+  "dep:leptos_axum",
+  "leptos/ssr",
+  "leptos_meta/ssr",
+  "leptos_router/ssr",
+  "dep:tracing",
 ]
 
 [package.metadata.sabry]

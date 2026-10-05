@@ -377,35 +377,43 @@ impl ScopedSelector {
 
 #[cfg(feature = "scope")]
 pub fn sanitize_css_member(source: &str) -> String {
-    let mut target = String::with_capacity(source.len());
-    let mut next_uppercase: bool = false;
-    for (i, c) in source
-        .chars()
-        .filter(|c| c.is_alphanumeric() || *c == '-')
-        .enumerate()
-    {
-        // first gidit is prepended with 'n'
-        if i == 0 && c.is_numeric() {
-            target.push('n');
-            target.push(c);
-            continue;
+    let mut target = String::with_capacity(source.len() + 1);
+
+    for part in source.split('-').filter(|p| !p.is_empty()) {
+        let mut chars = part.chars().filter(|c| c.is_ascii() && c.is_alphanumeric());
+        match (chars.next(), chars.next()) {
+            (None, None) => continue,
+            (Some(f), None) => {
+                target.push(f);
+                continue;
+            }
+            (Some(f), Some(s)) => {
+                target.push(f.to_ascii_uppercase());
+                target.push(s);
+            }
+            (None, Some(s)) => {
+                target.push(s);
+                continue;
+            }
         }
 
-        // dash is omitted, replacing the next char with its uppercase
-        if c == '-' {
-            next_uppercase = true;
-            continue;
-        }
-
-        let char = if next_uppercase {
-            next_uppercase = false;
-            c.to_ascii_uppercase()
-        } else {
-            c
-        };
-
-        target.push(char);
+        chars.for_each(|c| target.push(c));
     }
+
+    match target.chars().next() {
+        Some(c) if c.is_numeric() => {
+            target.insert(0, 'n');
+        }
+        Some(c) => {
+            target.replace_range(..1, &c.to_ascii_lowercase().to_string());
+        }
+        _ => {
+            /* has to produce valid rust ident */
+            target.clear();
+            target.push_str("unknown");
+        }
+    }
+
     target
 }
 

@@ -89,14 +89,12 @@ pub fn styly_macro_impl(input: TokenStream, source_path: PathBuf) -> TokenStream
                             _ => None,
                         };
 
-                        let interp = interp.and_then(|i| match i.elements.first() {
+                        interp.and_then(|i| match i.elements.first() {
                             Some(raffia::ast::SassInterpolatedIdentElement::Static(i)) => {
                                 Some(i.raw.to_string())
                             }
                             _ => None,
-                        });
-
-                        interp
+                        })
                     })
                 })
                 .unique()

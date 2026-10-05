@@ -1,30 +1,30 @@
 [package]
 name = "sabry_procmacro_impl"
-description = "Sabry proc-macro internals reusable outside of proc-macro context"
 version.workspace = true
-repository.workspace = true
+authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
-authors.workspace = true
+description = "Sabry proc-macro internals reusable outside of proc-macro context"
+repository.workspace = true
 license.workspace = true
-
-[dependencies]
-sabry_intrnl.workspace = true
-sabry_intrnl.features = ["scope"]
-raffia.workspace = true
-syn.workspace = true
-syn.features = ["parsing"]
-quote.workspace = true
-proc-macro2.workspace = true
-proc-macro2.features = ["span-locations"]
-regex.workspace = true
-itertools.workspace = true
-cfg-if.workspace = true
-
-[features]
-nightly = []
-const-compile = ["sabry_intrnl/compile"]
 
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+cfg-if.workspace = true
+itertools.workspace = true
+proc-macro2.workspace = true
+proc-macro2.features = ["span-locations"]
+quote.workspace = true
+raffia.workspace = true
+regex.workspace = true
+sabry_intrnl.workspace = true
+sabry_intrnl.features = ["scope"]
+syn.workspace = true
+syn.features = ["parsing"]
+
+[features]
+const-compile = ["sabry_intrnl/compile"]
+nightly = []

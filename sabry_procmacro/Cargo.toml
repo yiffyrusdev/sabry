@@ -1,12 +1,16 @@
 [package]
 name = "sabry_procmacro"
-description = "Sabry proc-macro declarations"
 version.workspace = true
-repository.workspace = true
+authors.workspace = true
 edition.workspace = true
 rust-version.workspace = true
-authors.workspace = true
+description = "Sabry proc-macro declarations"
+repository.workspace = true
 license.workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
 
 [lib]
 proc-macro = true
@@ -16,7 +20,4 @@ sabry_procmacro_impl.workspace = true
 
 [features]
 const-compile = ["sabry_procmacro_impl/const-compile"]
-
-[package.metadata.docs.rs]
-all-features = true
-rustdoc-args = ["--cfg", "docsrs"]
+nightly = ["sabry_procmacro_impl/nightly"]

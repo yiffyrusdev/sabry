@@ -37,8 +37,11 @@ use sabry_procmacro_impl::impls::{
 ///
 #[proc_macro]
 pub fn scssy(input: TokenStream) -> TokenStream {
-    let source_path =
-        PathBuf::from_str(&proc_macro::Span::call_site().file()).expect("Irrefutable result");
+    let source_path = PathBuf::from_str(&proc_macro::Span::call_site().file())
+        .expect("Irrefutable result")
+        .parent()
+        .expect("The scssy procmacro callsite source file has no parent dir")
+        .to_owned();
     scssy_macro_impl(input.into(), source_path).into()
 }
 

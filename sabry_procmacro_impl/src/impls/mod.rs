@@ -48,7 +48,7 @@ impl ArbitraryStyleBlock {
                     return Err(syn::Error::new(
                         path_tok.span(),
                         format!(
-                            "Could not use path {path:?}: {:?}. If the path is relative and 'nightly' feature flag is set - this is likely false-positive",
+                            "Could not use path {path:?}: {:?}. If the path is relative, nightly rust has to be used and `nightly` feature flag has to be set",
                             e.kind()
                         ),
                     ));

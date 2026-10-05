@@ -1,15 +1,15 @@
 [workspace]
 resolver = "3"
 members = [
-    "sabry_procmacro",
-    "sabry_procmacro_impl",
-    "sabry_intrnl",
-    "sabry_build",
+  "sabry_procmacro",
+  "sabry_procmacro_impl",
+  "sabry_intrnl",
+  "sabry_build",
 ]
 exclude = ["examples"]
 
 [workspace.package]
-version = "0.0.6"
+version = "0.0.7"
 edition = "2024"
 rust-version = "1.88"
 authors = ["Svyatoslav Pushkarev <yiffyrusdev@yandex.ru>"]
@@ -19,12 +19,12 @@ publish = true
 
 [workspace.dependencies]
 ## Workspace
-sabry_intrnl = { path = "sabry_intrnl", version = "0.0.6" }
-sabry_procmacro = { path = "sabry_procmacro", version = "0.0.6" }
-sabry_procmacro_impl = { path = "sabry_procmacro_impl", version = "0.0.6" }
-sabry_build = { path = "sabry_build", version = "0.0.6" }
+sabry_intrnl = { path = "sabry_intrnl", version = "0.0.7" }
+sabry_procmacro = { path = "sabry_procmacro", version = "0.0.7" }
+sabry_procmacro_impl = { path = "sabry_procmacro_impl", version = "0.0.7" }
+sabry_build = { path = "sabry_build", version = "0.0.7" }
 ## CSS
-lightningcss.version = "1.0.0-alpha.71"
+lightningcss.version = "1.0.0-alpha.72"
 lightningcss.default-features = false
 grass.version = "^0.13"
 grass.default-features = false
@@ -32,7 +32,7 @@ raffia.version = "^0.12"
 ## Marshall
 serde.version = "^1"
 toml.version = "^1"
-base64.version = "^0.22"
+base64.version = "^0.23"
 regex.version = "^1"
 ## Util
 itertools.version = "^0.14"
@@ -42,7 +42,7 @@ cfg-if.version = "^1"
 thiserror.version = "^2"
 proc-macro2.version = "^1"
 quote.version = "^1"
-syn.version = "^2"
+syn.version = "^3"
 
 [package]
 name = "sabry"
@@ -73,6 +73,7 @@ procmacro = ["dep:sabry_procmacro"]
 build = ["dep:sabry_build"]
 net-files = ["sabry_build/net-files"]
 internals = []
+nightly = ["sabry_procmacro?/nightly"]
 
 [package.metadata.docs.rs]
 all-features = true

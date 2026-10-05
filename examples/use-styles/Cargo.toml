@@ -6,11 +6,15 @@ rust-version = "1.88"
 publish = false
 
 [dependencies]
-sabry = { path = "../../", features = ["nightly"] }
+sabry.version = "0.0.7"
+sabry.path = "../../"
+sabry.features = ["nightly"]
 
 [build-dependencies]
-sabry = { path = "../../", features = ["build", "nightly"] }
-define-styles = { path = "../define-styles" }
+sabry.path = "../../"
+sabry.features = ["build"]
+define-styles.version = "0.0.0"
+define-styles.path = "../define-styles"
 
 [package.metadata.sabry]
 css.bundle = "target/static/style.css"

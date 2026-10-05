@@ -50,14 +50,19 @@ impl<'ast> Visit<'ast> for StylyVisitor {
                     node.mac.span()
                 )
             });
-            let macro_data =
-                styly::parse_macro_syntax(body, self.path.parent().map(|p| p.to_owned()))
-                    .unwrap_or_else(|e| {
-                        panic!(
-                            "could not parse `styly!` macro at {:?}: {e:?}",
-                            node.mac.span()
-                        )
-                    });
+            let source_path = self.path.parent().unwrap_or_else(|| {
+                panic!(
+                    "could not find source_file at {:?}: none parent exists",
+                    node.mac.span()
+                )
+            });
+            let macro_data = styly::parse_macro_syntax(body, source_path.to_owned())
+                .unwrap_or_else(|e| {
+                    panic!(
+                        "could not parse `styly!` macro at {:?}: {e:?}",
+                        node.mac.span()
+                    )
+                });
             self.found_stylys.push(macro_data);
         }
     }

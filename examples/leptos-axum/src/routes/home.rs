@@ -10,19 +10,19 @@ pub fn Route() -> impl IntoView {
 
     view! {class = STYLE,
         <leptos_components::Aside/> // lets use our component
-        <section class=style::table>
+        <section class="table">
             <h2>"Welcome to Leptos"</h2>
-            <h2 class="">
+            <h2>
                 "This head is styled with lepty-scopes feature"
                 <br/>
-                <span class="">"And this child too!"</span>
+                <span>"And this child too!"</span>
             </h2>
 
-            <button class=style::btn on:click=on_click>"Ima CRAZY button, clicked: " {count} " times!"</button>
-            <button class=style::_dark(style::btn) on:click=on_click>"Ima CRAZY button, clicked: " {count} " times!"</button>
-            <span class=style::card>"DISCLAIMER:"</span>
-            <p class=style::pocwarn>"This isn't a design example! Its just proof of sabry's capabilities."</p>
-            <p class=style::pocwarn>"Plz dont make websites/apps which look like this page :D"</p>
+            <button class="btn" on:click=on_click>"Ima CRAZY button, clicked: " {count} " times!"</button>
+            <button class="btn btn-dark" on:click=on_click>"Ima CRAZY button, clicked: " {count} " times!"</button>
+            <span class="card">"DISCLAIMER:"</span>
+            <p class="pocwarn">"This isn't a design example! Its just proof of sabry's capabilities."</p>
+            <p class="pocwarn">"Plz dont make websites/apps which look like this page :D"</p>
         </section>
     }
 }

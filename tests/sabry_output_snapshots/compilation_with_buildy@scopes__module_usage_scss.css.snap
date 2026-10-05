@@ -1,117 +1,115 @@
 ---
 source: tests/macros.rs
-assertion_line: 172
 input_file: tests/sabry_output/scopes/module_usage_scss.css
-snapshot_kind: text
 ---
-.n6ROVrVzYikGtxgKBYy11kA.coated {
+.mMNbTGLet9k.coated {
   color: #c6c6c6;
   background-color: #0ff;
   color: #fff;
   background-color: green;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated:after {
+.mMNbTGLet9k.coated:after {
   content: "Colored";
   color: green;
   background-color: #00f;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated:after:hover {
+.mMNbTGLet9k.coated:after:hover {
   transform: scale(2);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated:hover {
+.mMNbTGLet9k.coated:hover {
   transform: translateX(10%);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated:after {
+.mMNbTGLet9k.coated:after {
   content: "Colored";
   color: #000;
   background-color: #00f;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated:after:hover {
+.mMNbTGLet9k.coated:after:hover {
   transform: scale(2);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated:hover {
+.mMNbTGLet9k.coated:hover {
   transform: translateX(10%);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark {
+.mMNbTGLet9k.coated-dark {
   color: #c6c6c6;
   background-color: #0ff;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark:after {
+.mMNbTGLet9k.coated-dark:after {
   content: "Colored";
   color: red;
   background-color: #00f;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark:after:hover {
+.mMNbTGLet9k.coated-dark:after:hover {
   transform: scale(2);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark:hover {
+.mMNbTGLet9k.coated-dark:hover {
   transform: translateX(10%);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k {
   color: #c6c6c6;
   background-color: #0ff;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA:after {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k:after {
   content: "Colored";
   color: #00f;
   background-color: #00f;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA:after:hover {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k:after:hover {
   transform: scale(2);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA:hover {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k:hover {
   transform: translateX(10%);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k img.mMNbTGLet9k {
   color: #fff;
   background-color: green;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA:after {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k img.mMNbTGLet9k:after {
   content: "Colored";
   color: #000;
   background-color: #00f;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA:after:hover {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k img.mMNbTGLet9k:after:hover {
   transform: scale(2);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA:hover {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k img.mMNbTGLet9k:hover {
   transform: translateX(10%);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA {
+.mMNbTGLet9k.coated span.mMNbTGLet9k {
   color: #c6c6c6;
   background-color: #0ff;
   display: block;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA:after {
+.mMNbTGLet9k.coated span.mMNbTGLet9k:after {
   content: "Colored";
   color: green;
   background-color: #00f;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA:after:hover {
+.mMNbTGLet9k.coated span.mMNbTGLet9k:after:hover {
   transform: scale(2);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA:hover {
+.mMNbTGLet9k.coated span.mMNbTGLet9k:hover {
   transform: translateX(10%);
 }

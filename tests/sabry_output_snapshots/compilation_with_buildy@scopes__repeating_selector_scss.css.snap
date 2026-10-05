@@ -1,49 +1,47 @@
 ---
 source: tests/macros.rs
-assertion_line: 172
 input_file: tests/sabry_output/scopes/repeating_selector_scss.css
-snapshot_kind: text
 ---
-.n9m9Me_zRl6xP8NIGObY_A.el1 {
+.wCmhvw6X7vw.el1 {
   color: red;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el1-mob {
+.wCmhvw6X7vw.el1-mob {
   color: #00f;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el1__blist {
+.wCmhvw6X7vw.el1__blist {
   list-style: none;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el1.n9m9Me_zRl6xP8NIGObY_A.sub {
+.wCmhvw6X7vw.el1.wCmhvw6X7vw.sub {
   margin: 0;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.bus .n9m9Me_zRl6xP8NIGObY_A.el1 {
+.wCmhvw6X7vw.bus .wCmhvw6X7vw.el1 {
   padding: 0;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el2 {
+.wCmhvw6X7vw.el2 {
   color: #fff;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el2-mob {
+.wCmhvw6X7vw.el2-mob {
   color: #000;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el2__blist {
+.wCmhvw6X7vw.el2__blist {
   background: #fff;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el2__blist-mob {
+.wCmhvw6X7vw.el2__blist-mob {
   background: #000;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el2.n9m9Me_zRl6xP8NIGObY_A.sub {
+.wCmhvw6X7vw.el2.wCmhvw6X7vw.sub {
   margin: 0;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el2 .n9m9Me_zRl6xP8NIGObY_A.bus {
+.wCmhvw6X7vw.el2 .wCmhvw6X7vw.bus {
   margin: 0;
 }

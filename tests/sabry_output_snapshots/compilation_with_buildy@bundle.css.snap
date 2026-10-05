@@ -1,358 +1,357 @@
 ---
 source: tests/macros.rs
-assertion_line: 172
 input_file: tests/sabry_output/bundle.css
 ---
-.wZIQboPSLZ8aKu0MjXHwYg.p1 {
+.n4aLPsz0DYTE.p1 {
   font-size: 10px;
   color: #fff;
 }
 
-.wZIQboPSLZ8aKu0MjXHwYg.p1-dark {
+.n4aLPsz0DYTE.p1-dark {
   color: #000;
 }
 
-html.mob .wZIQboPSLZ8aKu0MjXHwYg.p1 {
+html.mob .n4aLPsz0DYTE.p1 {
   font-size: 1rem;
 }
 
-html.mob .wZIQboPSLZ8aKu0MjXHwYg.p1-dark {
+html.mob .n4aLPsz0DYTE.p1-dark {
   color: green;
 }
 
-ie some.wZIQboPSLZ8aKu0MjXHwYg html.mob .wZIQboPSLZ8aKu0MjXHwYg.p1 {
+ie some.n4aLPsz0DYTE html.mob .n4aLPsz0DYTE.p1 {
   border: 1px;
 }
 
-html.dark .wZIQboPSLZ8aKu0MjXHwYg.p1 {
+html.dark .n4aLPsz0DYTE.p1 {
   color: orange;
 }
 
-whatever .wZIQboPSLZ8aKu0MjXHwYg.p1 {
+whatever .n4aLPsz0DYTE.p1 {
   background: #ff0;
 }
 
-ooops whatever .wZIQboPSLZ8aKu0MjXHwYg.p1 {
+ooops whatever .n4aLPsz0DYTE.p1 {
   border: none;
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated {
+.nKenbAxSNs.coated {
   color: #c6c6c6;
   background-color: #0ff;
   color: #fff;
   background-color: green;
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated:after {
+.nKenbAxSNs.coated:after {
   content: "Colored";
   color: green;
   background-color: #00f;
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated:after:hover {
+.nKenbAxSNs.coated:after:hover {
   transform: scale(2);
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated:hover {
+.nKenbAxSNs.coated:hover {
   transform: translateX(10%);
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated:after {
+.nKenbAxSNs.coated:after {
   content: "Colored";
   color: #000;
   background-color: #00f;
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated:after:hover {
+.nKenbAxSNs.coated:after:hover {
   transform: scale(2);
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated:hover {
+.nKenbAxSNs.coated:hover {
   transform: translateX(10%);
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated-dark {
+.nKenbAxSNs.coated-dark {
   color: #c6c6c6;
   background-color: #0ff;
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated-dark:after {
+.nKenbAxSNs.coated-dark:after {
   content: "Colored";
   color: red;
   background-color: #00f;
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated-dark:after:hover {
+.nKenbAxSNs.coated-dark:after:hover {
   transform: scale(2);
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated-dark:hover {
+.nKenbAxSNs.coated-dark:hover {
   transform: translateX(10%);
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw {
+.nKenbAxSNs.coated-dark a.nKenbAxSNs {
   color: #c6c6c6;
   background-color: #0ff;
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw:after {
+.nKenbAxSNs.coated-dark a.nKenbAxSNs:after {
   content: "Colored";
   color: #00f;
   background-color: #00f;
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw:after:hover {
+.nKenbAxSNs.coated-dark a.nKenbAxSNs:after:hover {
   transform: scale(2);
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw:hover {
+.nKenbAxSNs.coated-dark a.nKenbAxSNs:hover {
   transform: translateX(10%);
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw img.n5vGKZlIscA58H8d7ZMOhSw {
+.nKenbAxSNs.coated-dark a.nKenbAxSNs img.nKenbAxSNs {
   color: #fff;
   background-color: green;
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw img.n5vGKZlIscA58H8d7ZMOhSw:after {
+.nKenbAxSNs.coated-dark a.nKenbAxSNs img.nKenbAxSNs:after {
   content: "Colored";
   color: #000;
   background-color: #00f;
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw img.n5vGKZlIscA58H8d7ZMOhSw:after:hover {
+.nKenbAxSNs.coated-dark a.nKenbAxSNs img.nKenbAxSNs:after:hover {
   transform: scale(2);
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated-dark a.n5vGKZlIscA58H8d7ZMOhSw img.n5vGKZlIscA58H8d7ZMOhSw:hover {
+.nKenbAxSNs.coated-dark a.nKenbAxSNs img.nKenbAxSNs:hover {
   transform: translateX(10%);
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated span.n5vGKZlIscA58H8d7ZMOhSw {
+.nKenbAxSNs.coated span.nKenbAxSNs {
   color: #c6c6c6;
   background-color: #0ff;
   display: block;
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated span.n5vGKZlIscA58H8d7ZMOhSw:after {
+.nKenbAxSNs.coated span.nKenbAxSNs:after {
   content: "Colored";
   color: green;
   background-color: #00f;
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated span.n5vGKZlIscA58H8d7ZMOhSw:after:hover {
+.nKenbAxSNs.coated span.nKenbAxSNs:after:hover {
   transform: scale(2);
 }
 
-.n5vGKZlIscA58H8d7ZMOhSw.coated span.n5vGKZlIscA58H8d7ZMOhSw:hover {
+.nKenbAxSNs.coated span.nKenbAxSNs:hover {
   transform: translateX(10%);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated {
+.mMNbTGLet9k.coated {
   color: #c6c6c6;
   background-color: #0ff;
   color: #fff;
   background-color: green;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated:after {
+.mMNbTGLet9k.coated:after {
   content: "Colored";
   color: green;
   background-color: #00f;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated:after:hover {
+.mMNbTGLet9k.coated:after:hover {
   transform: scale(2);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated:hover {
+.mMNbTGLet9k.coated:hover {
   transform: translateX(10%);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated:after {
+.mMNbTGLet9k.coated:after {
   content: "Colored";
   color: #000;
   background-color: #00f;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated:after:hover {
+.mMNbTGLet9k.coated:after:hover {
   transform: scale(2);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated:hover {
+.mMNbTGLet9k.coated:hover {
   transform: translateX(10%);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark {
+.mMNbTGLet9k.coated-dark {
   color: #c6c6c6;
   background-color: #0ff;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark:after {
+.mMNbTGLet9k.coated-dark:after {
   content: "Colored";
   color: red;
   background-color: #00f;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark:after:hover {
+.mMNbTGLet9k.coated-dark:after:hover {
   transform: scale(2);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark:hover {
+.mMNbTGLet9k.coated-dark:hover {
   transform: translateX(10%);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k {
   color: #c6c6c6;
   background-color: #0ff;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA:after {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k:after {
   content: "Colored";
   color: #00f;
   background-color: #00f;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA:after:hover {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k:after:hover {
   transform: scale(2);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA:hover {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k:hover {
   transform: translateX(10%);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k img.mMNbTGLet9k {
   color: #fff;
   background-color: green;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA:after {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k img.mMNbTGLet9k:after {
   content: "Colored";
   color: #000;
   background-color: #00f;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA:after:hover {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k img.mMNbTGLet9k:after:hover {
   transform: scale(2);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated-dark a.n6ROVrVzYikGtxgKBYy11kA img.n6ROVrVzYikGtxgKBYy11kA:hover {
+.mMNbTGLet9k.coated-dark a.mMNbTGLet9k img.mMNbTGLet9k:hover {
   transform: translateX(10%);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA {
+.mMNbTGLet9k.coated span.mMNbTGLet9k {
   color: #c6c6c6;
   background-color: #0ff;
   display: block;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA:after {
+.mMNbTGLet9k.coated span.mMNbTGLet9k:after {
   content: "Colored";
   color: green;
   background-color: #00f;
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA:after:hover {
+.mMNbTGLet9k.coated span.mMNbTGLet9k:after:hover {
   transform: scale(2);
 }
 
-.n6ROVrVzYikGtxgKBYy11kA.coated span.n6ROVrVzYikGtxgKBYy11kA:hover {
+.mMNbTGLet9k.coated span.mMNbTGLet9k:hover {
   transform: translateX(10%);
 }
 
-.rWkBO00R__2y_lbRfXlyg.el1 {
+.xm0JxM8Vqpg.el1 {
   color: red;
 }
 
-.rWkBO00R__2y_lbRfXlyg.el1-mob {
+.xm0JxM8Vqpg.el1-mob {
   color: #00f;
 }
 
-.rWkBO00R__2y_lbRfXlyg.el1__blist {
+.xm0JxM8Vqpg.el1__blist {
   list-style: none;
 }
 
-.rWkBO00R__2y_lbRfXlyg.el2 {
+.xm0JxM8Vqpg.el2 {
   color: #fff;
 }
 
-.rWkBO00R__2y_lbRfXlyg.el2-mob {
+.xm0JxM8Vqpg.el2-mob {
   color: #000;
 }
 
-.rWkBO00R__2y_lbRfXlyg.el2__blist {
+.xm0JxM8Vqpg.el2__blist {
   background: #fff;
 }
 
-.rWkBO00R__2y_lbRfXlyg.el2__blist-mob {
+.xm0JxM8Vqpg.el2__blist-mob {
   background: #000;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el1 {
+.wCmhvw6X7vw.el1 {
   color: red;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el1-mob {
+.wCmhvw6X7vw.el1-mob {
   color: #00f;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el1__blist {
+.wCmhvw6X7vw.el1__blist {
   list-style: none;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el1.n9m9Me_zRl6xP8NIGObY_A.sub {
+.wCmhvw6X7vw.el1.wCmhvw6X7vw.sub {
   margin: 0;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.bus .n9m9Me_zRl6xP8NIGObY_A.el1 {
+.wCmhvw6X7vw.bus .wCmhvw6X7vw.el1 {
   padding: 0;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el2 {
+.wCmhvw6X7vw.el2 {
   color: #fff;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el2-mob {
+.wCmhvw6X7vw.el2-mob {
   color: #000;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el2__blist {
+.wCmhvw6X7vw.el2__blist {
   background: #fff;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el2__blist-mob {
+.wCmhvw6X7vw.el2__blist-mob {
   background: #000;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el2.n9m9Me_zRl6xP8NIGObY_A.sub {
+.wCmhvw6X7vw.el2.wCmhvw6X7vw.sub {
   margin: 0;
 }
 
-.n9m9Me_zRl6xP8NIGObY_A.el2 .n9m9Me_zRl6xP8NIGObY_A.bus {
+.wCmhvw6X7vw.el2 .wCmhvw6X7vw.bus {
   margin: 0;
 }
 
-.smfXzGrnTs2kl9jPP0nk6w.fuzz {
+.vnm6NZhBSSY.fuzz {
   background-color: red;
   display: block;
 }
 
-.smfXzGrnTs2kl9jPP0nk6w.fuzz-dark {
+.vnm6NZhBSSY.fuzz-dark {
   background-color: #000;
   color: #fff;
 }
 
-.smfXzGrnTs2kl9jPP0nk6w.fuzz-dark a.smfXzGrnTs2kl9jPP0nk6w {
+.vnm6NZhBSSY.fuzz-dark a.vnm6NZhBSSY {
   text-transform: uppercase;
 }
 
-.smfXzGrnTs2kl9jPP0nk6w.fuzz-dark a.smfXzGrnTs2kl9jPP0nk6w img.smfXzGrnTs2kl9jPP0nk6w {
+.vnm6NZhBSSY.fuzz-dark a.vnm6NZhBSSY img.vnm6NZhBSSY {
   position: absolute;
   top: 0;
   left: 10rem;
 }
 
-.smfXzGrnTs2kl9jPP0nk6w.fuzz span.smfXzGrnTs2kl9jPP0nk6w {
+.vnm6NZhBSSY.fuzz span.vnm6NZhBSSY {
   position: relative;
   display: grid;
   grid-template-areas: "a b c"
@@ -361,27 +360,27 @@ ooops whatever .wZIQboPSLZ8aKu0MjXHwYg.p1 {
   display: block;
 }
 
-.FT5yVVwswyLvNU3dIk0qw.fuzz {
+.n3N0gcUIyf7I.fuzz {
   background-color: red;
   display: block;
 }
 
-.FT5yVVwswyLvNU3dIk0qw.fuzz-dark {
+.n3N0gcUIyf7I.fuzz-dark {
   background-color: #000;
   color: #fff;
 }
 
-.FT5yVVwswyLvNU3dIk0qw.fuzz-dark a.FT5yVVwswyLvNU3dIk0qw {
+.n3N0gcUIyf7I.fuzz-dark a.n3N0gcUIyf7I {
   text-transform: uppercase;
 }
 
-.FT5yVVwswyLvNU3dIk0qw.fuzz-dark a.FT5yVVwswyLvNU3dIk0qw img.FT5yVVwswyLvNU3dIk0qw {
+.n3N0gcUIyf7I.fuzz-dark a.n3N0gcUIyf7I img.n3N0gcUIyf7I {
   position: absolute;
   top: 0;
   left: 10rem;
 }
 
-.FT5yVVwswyLvNU3dIk0qw.fuzz span.FT5yVVwswyLvNU3dIk0qw {
+.n3N0gcUIyf7I.fuzz span.n3N0gcUIyf7I {
   position: relative;
   display: grid;
   grid-template-areas: "a b c"
@@ -390,226 +389,226 @@ ooops whatever .wZIQboPSLZ8aKu0MjXHwYg.p1 {
   display: block;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated {
+.dGuHauwffw.coated {
   color: #c6c6c6;
   background-color: #0ff;
   color: #fff;
   background-color: green;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated:after {
+.dGuHauwffw.coated:after {
   content: "Colored";
   color: green;
   background-color: #00f;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated:after:hover {
+.dGuHauwffw.coated:after:hover {
   transform: scale(2);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated:hover {
+.dGuHauwffw.coated:hover {
   transform: translateX(10%);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated:after {
+.dGuHauwffw.coated:after {
   content: "Colored";
   color: #000;
   background-color: #00f;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated:after:hover {
+.dGuHauwffw.coated:after:hover {
   transform: scale(2);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated:hover {
+.dGuHauwffw.coated:hover {
   transform: translateX(10%);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark {
+.dGuHauwffw.coated-dark {
   color: #c6c6c6;
   background-color: #0ff;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark:after {
+.dGuHauwffw.coated-dark:after {
   content: "Colored";
   color: red;
   background-color: #00f;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark:after:hover {
+.dGuHauwffw.coated-dark:after:hover {
   transform: scale(2);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark:hover {
+.dGuHauwffw.coated-dark:hover {
   transform: translateX(10%);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA {
+.dGuHauwffw.coated-dark a.dGuHauwffw {
   color: #c6c6c6;
   background-color: #0ff;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA:after {
+.dGuHauwffw.coated-dark a.dGuHauwffw:after {
   content: "Colored";
   color: #00f;
   background-color: #00f;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA:after:hover {
+.dGuHauwffw.coated-dark a.dGuHauwffw:after:hover {
   transform: scale(2);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA:hover {
+.dGuHauwffw.coated-dark a.dGuHauwffw:hover {
   transform: translateX(10%);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA img.qK4fsMeZRSTGObSesXXRBA {
+.dGuHauwffw.coated-dark a.dGuHauwffw img.dGuHauwffw {
   color: #fff;
   background-color: green;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA img.qK4fsMeZRSTGObSesXXRBA:after {
+.dGuHauwffw.coated-dark a.dGuHauwffw img.dGuHauwffw:after {
   content: "Colored";
   color: #000;
   background-color: #00f;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA img.qK4fsMeZRSTGObSesXXRBA:after:hover {
+.dGuHauwffw.coated-dark a.dGuHauwffw img.dGuHauwffw:after:hover {
   transform: scale(2);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA img.qK4fsMeZRSTGObSesXXRBA:hover {
+.dGuHauwffw.coated-dark a.dGuHauwffw img.dGuHauwffw:hover {
   transform: translateX(10%);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated span.qK4fsMeZRSTGObSesXXRBA {
+.dGuHauwffw.coated span.dGuHauwffw {
   color: #c6c6c6;
   background-color: #0ff;
   display: block;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated span.qK4fsMeZRSTGObSesXXRBA:after {
+.dGuHauwffw.coated span.dGuHauwffw:after {
   content: "Colored";
   color: green;
   background-color: #00f;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated span.qK4fsMeZRSTGObSesXXRBA:after:hover {
+.dGuHauwffw.coated span.dGuHauwffw:after:hover {
   transform: scale(2);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated span.qK4fsMeZRSTGObSesXXRBA:hover {
+.dGuHauwffw.coated span.dGuHauwffw:hover {
   transform: translateX(10%);
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated {
+.h9QvS1beJbo.coated {
   color: #c6c6c6;
   background-color: #0ff;
   color: #fff;
   background-color: green;
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated:after {
+.h9QvS1beJbo.coated:after {
   content: "Colored";
   color: green;
   background-color: #00f;
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated:after:hover {
+.h9QvS1beJbo.coated:after:hover {
   transform: scale(2);
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated:hover {
+.h9QvS1beJbo.coated:hover {
   transform: translateX(10%);
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated:after {
+.h9QvS1beJbo.coated:after {
   content: "Colored";
   color: #000;
   background-color: #00f;
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated:after:hover {
+.h9QvS1beJbo.coated:after:hover {
   transform: scale(2);
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated:hover {
+.h9QvS1beJbo.coated:hover {
   transform: translateX(10%);
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated-dark {
+.h9QvS1beJbo.coated-dark {
   color: #c6c6c6;
   background-color: #0ff;
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated-dark:after {
+.h9QvS1beJbo.coated-dark:after {
   content: "Colored";
   color: red;
   background-color: #00f;
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated-dark:after:hover {
+.h9QvS1beJbo.coated-dark:after:hover {
   transform: scale(2);
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated-dark:hover {
+.h9QvS1beJbo.coated-dark:hover {
   transform: translateX(10%);
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated-dark a.FMHIHNH4_QHxbUqdVmS1A {
+.h9QvS1beJbo.coated-dark a.h9QvS1beJbo {
   color: #c6c6c6;
   background-color: #0ff;
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated-dark a.FMHIHNH4_QHxbUqdVmS1A:after {
+.h9QvS1beJbo.coated-dark a.h9QvS1beJbo:after {
   content: "Colored";
   color: #00f;
   background-color: #00f;
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated-dark a.FMHIHNH4_QHxbUqdVmS1A:after:hover {
+.h9QvS1beJbo.coated-dark a.h9QvS1beJbo:after:hover {
   transform: scale(2);
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated-dark a.FMHIHNH4_QHxbUqdVmS1A:hover {
+.h9QvS1beJbo.coated-dark a.h9QvS1beJbo:hover {
   transform: translateX(10%);
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated-dark a.FMHIHNH4_QHxbUqdVmS1A img.FMHIHNH4_QHxbUqdVmS1A {
+.h9QvS1beJbo.coated-dark a.h9QvS1beJbo img.h9QvS1beJbo {
   color: #fff;
   background-color: green;
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated-dark a.FMHIHNH4_QHxbUqdVmS1A img.FMHIHNH4_QHxbUqdVmS1A:after {
+.h9QvS1beJbo.coated-dark a.h9QvS1beJbo img.h9QvS1beJbo:after {
   content: "Colored";
   color: #000;
   background-color: #00f;
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated-dark a.FMHIHNH4_QHxbUqdVmS1A img.FMHIHNH4_QHxbUqdVmS1A:after:hover {
+.h9QvS1beJbo.coated-dark a.h9QvS1beJbo img.h9QvS1beJbo:after:hover {
   transform: scale(2);
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated-dark a.FMHIHNH4_QHxbUqdVmS1A img.FMHIHNH4_QHxbUqdVmS1A:hover {
+.h9QvS1beJbo.coated-dark a.h9QvS1beJbo img.h9QvS1beJbo:hover {
   transform: translateX(10%);
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated span.FMHIHNH4_QHxbUqdVmS1A {
+.h9QvS1beJbo.coated span.h9QvS1beJbo {
   color: #c6c6c6;
   background-color: #0ff;
   display: block;
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated span.FMHIHNH4_QHxbUqdVmS1A:after {
+.h9QvS1beJbo.coated span.h9QvS1beJbo:after {
   content: "Colored";
   color: green;
   background-color: #00f;
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated span.FMHIHNH4_QHxbUqdVmS1A:after:hover {
+.h9QvS1beJbo.coated span.h9QvS1beJbo:after:hover {
   transform: scale(2);
 }
 
-.FMHIHNH4_QHxbUqdVmS1A.coated span.FMHIHNH4_QHxbUqdVmS1A:hover {
+.h9QvS1beJbo.coated span.h9QvS1beJbo:hover {
   transform: translateX(10%);
 }

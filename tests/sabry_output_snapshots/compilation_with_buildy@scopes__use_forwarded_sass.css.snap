@@ -1,117 +1,115 @@
 ---
 source: tests/macros.rs
-assertion_line: 172
 input_file: tests/sabry_output/scopes/use_forwarded_sass.css
-snapshot_kind: text
 ---
-.qK4fsMeZRSTGObSesXXRBA.coated {
+.dGuHauwffw.coated {
   color: #c6c6c6;
   background-color: #0ff;
   color: #fff;
   background-color: green;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated:after {
+.dGuHauwffw.coated:after {
   content: "Colored";
   color: green;
   background-color: #00f;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated:after:hover {
+.dGuHauwffw.coated:after:hover {
   transform: scale(2);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated:hover {
+.dGuHauwffw.coated:hover {
   transform: translateX(10%);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated:after {
+.dGuHauwffw.coated:after {
   content: "Colored";
   color: #000;
   background-color: #00f;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated:after:hover {
+.dGuHauwffw.coated:after:hover {
   transform: scale(2);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated:hover {
+.dGuHauwffw.coated:hover {
   transform: translateX(10%);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark {
+.dGuHauwffw.coated-dark {
   color: #c6c6c6;
   background-color: #0ff;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark:after {
+.dGuHauwffw.coated-dark:after {
   content: "Colored";
   color: red;
   background-color: #00f;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark:after:hover {
+.dGuHauwffw.coated-dark:after:hover {
   transform: scale(2);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark:hover {
+.dGuHauwffw.coated-dark:hover {
   transform: translateX(10%);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA {
+.dGuHauwffw.coated-dark a.dGuHauwffw {
   color: #c6c6c6;
   background-color: #0ff;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA:after {
+.dGuHauwffw.coated-dark a.dGuHauwffw:after {
   content: "Colored";
   color: #00f;
   background-color: #00f;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA:after:hover {
+.dGuHauwffw.coated-dark a.dGuHauwffw:after:hover {
   transform: scale(2);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA:hover {
+.dGuHauwffw.coated-dark a.dGuHauwffw:hover {
   transform: translateX(10%);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA img.qK4fsMeZRSTGObSesXXRBA {
+.dGuHauwffw.coated-dark a.dGuHauwffw img.dGuHauwffw {
   color: #fff;
   background-color: green;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA img.qK4fsMeZRSTGObSesXXRBA:after {
+.dGuHauwffw.coated-dark a.dGuHauwffw img.dGuHauwffw:after {
   content: "Colored";
   color: #000;
   background-color: #00f;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA img.qK4fsMeZRSTGObSesXXRBA:after:hover {
+.dGuHauwffw.coated-dark a.dGuHauwffw img.dGuHauwffw:after:hover {
   transform: scale(2);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated-dark a.qK4fsMeZRSTGObSesXXRBA img.qK4fsMeZRSTGObSesXXRBA:hover {
+.dGuHauwffw.coated-dark a.dGuHauwffw img.dGuHauwffw:hover {
   transform: translateX(10%);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated span.qK4fsMeZRSTGObSesXXRBA {
+.dGuHauwffw.coated span.dGuHauwffw {
   color: #c6c6c6;
   background-color: #0ff;
   display: block;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated span.qK4fsMeZRSTGObSesXXRBA:after {
+.dGuHauwffw.coated span.dGuHauwffw:after {
   content: "Colored";
   color: green;
   background-color: #00f;
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated span.qK4fsMeZRSTGObSesXXRBA:after:hover {
+.dGuHauwffw.coated span.dGuHauwffw:after:hover {
   transform: scale(2);
 }
 
-.qK4fsMeZRSTGObSesXXRBA.coated span.qK4fsMeZRSTGObSesXXRBA:hover {
+.dGuHauwffw.coated span.dGuHauwffw:hover {
   transform: translateX(10%);
 }

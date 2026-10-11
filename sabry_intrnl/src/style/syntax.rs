@@ -1,26 +1,20 @@
-use ostrta::OneSyntaxToRuleThemAll;
 use raffia::{
+    ParserBuilder,
     ast::{
         ClassSelector, ComplexSelectorChild, CompoundSelector, IdSelector, InterpolableIdent,
         NestingSelector, PseudoClassSelector, SimpleSelector, Statement, Stylesheet, TypeSelector,
     },
-    ParserBuilder,
 };
-
-pub mod ostrta;
 
 /// Convenience wrapper for [Stylesheet]
 pub struct StylesheetAdapter<'s> {
-    pub syntax: OneSyntaxToRuleThemAll,
+    pub syntax: SyntaxKind,
     source: &'s str,
     stylesheet: Stylesheet<'s>,
 }
 
 impl<'s> StylesheetAdapter<'s> {
-    pub fn new(
-        source: &'s str,
-        syntax: OneSyntaxToRuleThemAll,
-    ) -> Result<Self, raffia::error::Error> {
+    pub fn new(source: &'s str, syntax: SyntaxKind) -> Result<Self, raffia::error::Error> {
         Ok(Self {
             stylesheet: ParserBuilder::new(source)
                 .ignore_comments()
@@ -141,16 +135,82 @@ impl<'s> StylesheetAdapter<'s> {
     }
 }
 
+/// Convenience unification entrypoint
+/// to make friends with all the different syntax-consumers
+#[derive(Default, Debug, Clone, Copy)]
+pub enum SyntaxKind {
+    #[default]
+    Scss,
+    Sass,
+    Css,
+}
+
+impl TryFrom<&str> for SyntaxKind {
+    type Error = ();
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        match value {
+            "sass" => Ok(Self::Sass),
+            "scss" => Ok(Self::Scss),
+            "css" => Ok(Self::Css),
+            _ => Err(()),
+        }
+    }
+}
+
+impl TryFrom<raffia::Syntax> for SyntaxKind {
+    type Error = ();
+    fn try_from(value: raffia::Syntax) -> Result<Self, Self::Error> {
+        match value {
+            raffia::Syntax::Sass => Ok(Self::Sass),
+            raffia::Syntax::Scss => Ok(Self::Scss),
+            raffia::Syntax::Css => Ok(Self::Css),
+            _ => Err(()),
+        }
+    }
+}
+
+#[cfg(feature = "style-compiler")]
+impl From<sasso::Syntax> for SyntaxKind {
+    fn from(value: sasso::Syntax) -> Self {
+        match value {
+            sasso::Syntax::Sass => Self::Sass,
+            sasso::Syntax::Scss => Self::Scss,
+            sasso::Syntax::Css => Self::Css,
+        }
+    }
+}
+
+impl From<SyntaxKind> for raffia::Syntax {
+    fn from(value: SyntaxKind) -> Self {
+        match value {
+            SyntaxKind::Sass => Self::Sass,
+            SyntaxKind::Scss => Self::Scss,
+            SyntaxKind::Css => Self::Css,
+        }
+    }
+}
+
+#[cfg(feature = "style-compiler")]
+impl From<SyntaxKind> for sasso::Syntax {
+    fn from(value: SyntaxKind) -> Self {
+        match value {
+            SyntaxKind::Scss => Self::Scss,
+            SyntaxKind::Sass => Self::Sass,
+            SyntaxKind::Css => Self::Css,
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use std::collections::HashSet;
 
     use raffia::{
-        ast::{InterpolableIdent, TypeSelector},
         Spanned,
+        ast::{InterpolableIdent, TypeSelector},
     };
 
-    use crate::syntax::ostrta::OneSyntaxToRuleThemAll;
+    use crate::style::syntax::SyntaxKind;
 
     use super::StylesheetAdapter;
 
@@ -206,7 +266,7 @@ div#id2
         let expect_tags = HashSet::from(["ul", "div", "span"]);
 
         //scss
-        let adp = StylesheetAdapter::new(source_scss, OneSyntaxToRuleThemAll::Scss).unwrap();
+        let adp = StylesheetAdapter::new(source_scss, SyntaxKind::Scss).unwrap();
 
         let classes = adp
             .class_selectors()
@@ -244,7 +304,7 @@ div#id2
         assert_eq!(expect_tags, tags);
 
         //sass
-        let adp = StylesheetAdapter::new(source_sass, OneSyntaxToRuleThemAll::Sass).unwrap();
+        let adp = StylesheetAdapter::new(source_sass, SyntaxKind::Sass).unwrap();
 
         let classes = adp
             .class_selectors()
@@ -288,7 +348,7 @@ div#id2
         let newname = "cls203-jg7ihgjhftyfhjh";
         let expect = ".cls1{color:red; .cls203-jg7ihgjhftyfhjh{color:green;}}";
 
-        let adp = StylesheetAdapter::new(scss, OneSyntaxToRuleThemAll::Scss).unwrap();
+        let adp = StylesheetAdapter::new(scss, SyntaxKind::Scss).unwrap();
         let classes = adp.class_selectors();
         let target_class = classes[0].clone();
 

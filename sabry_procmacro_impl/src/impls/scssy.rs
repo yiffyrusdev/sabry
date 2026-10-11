@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use proc_macro2::TokenStream;
 use quote::quote;
-use sabry_intrnl::scoper::ArbitraryScope;
+use sabry_intrnl::style::scope::ArbitraryScope;
 use syn::{Ident, parse::ParseStream};
 
 use super::{ArbitraryStyleBlock, ArbitraryStyleSyntax};
@@ -67,12 +67,3 @@ impl MacroSyntax {
         })
     }
 }
-
-// impl Parse for MacroSyntax {
-//     fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-//         Self::parse_syn(input, None)
-//     }
-// }
-
-#[cfg(test)]
-mod test {}

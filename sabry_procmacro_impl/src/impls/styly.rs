@@ -1,12 +1,14 @@
 use std::path::PathBuf;
 
-use cfg_if::cfg_if;
 use itertools::Itertools;
 use proc_macro2::{Span, TokenStream};
 use quote::quote;
 use sabry_intrnl::{
-    config::SabryConfig,
-    scoper::{ArbitraryScope, ScopedSelector, sanitize_css_member},
+    conf::SabryConfig,
+    style::{
+        compiler::CompilerAdapter,
+        scope::{ArbitraryScope, ScopedSelector, sanitize_css_member},
+    },
 };
 use syn::{
     Ident, Token,
@@ -102,7 +104,7 @@ pub fn styly_macro_impl(input: TokenStream, source_path: PathBuf) -> TokenStream
                     let ident = sanitize_css_member(&s);
                     let fnident = syn::parse_str::<Ident>(format!("_{ident}").as_str())
                         .expect("BUG: invalid ident for nesting selector formed");
-                    let formatstr = format!("{{c}}{}", &s);
+                    let formatstr = format!("{{c}}{}", s);
                     let doc = format!("Nesting selector. Originated from '&{s}'");
 
                     quote! {
@@ -152,52 +154,41 @@ pub fn styly_macro_impl(input: TokenStream, source_path: PathBuf) -> TokenStream
 
             let mod_docs = format!(
                 "'{}' style scope. The hash class is `{}`",
-                &scope_ident, &scope_wrapper_ident
+                scope_ident, scope_wrapper_ident
             );
             let wrp_docs = format!(
                 "hash class for '{}' scope. All HTML elements should have this class applied",
-                &scope_ident
+                scope_ident
             );
 
             if constant {
-                cfg_if! {
-                    if #[cfg(feature = "const-compile")] {
-                        use sabry_intrnl::compiler::CompilerAdapter;
-                        let compiler = CompilerAdapter::new(config.clone());
-                        let css = match compiler.compile_module(ms.syntax.0, &scope.hashed_code) {
-                            Ok(c) => c,
-                            Err(e) => {
-                                return syn::Error::new(
-                                    ms.code.span,
-                                    format!("Could not compile const inline: {e:?}"),
-                                )
-                                .to_compile_error()
-                            }
-                        };
-
-                        let const_docs = format!("The compiled CSS style for {} scope", &scope_ident);
-                        let const_wrapper_ident = syn::parse_str::<Ident>(
-                            format!("{}_CSS", &scope_ident.to_string().to_uppercase()).as_str(),
-                        )
-                        .expect("BUG: We just converted valid Ident to string and uppercased");
-
-                        quote! {
-                            #[doc = #const_docs]
-                            #scope_vis const #const_wrapper_ident: &str = #css ;
-                            #[doc = #wrp_docs]
-                            #scope_vis const #scope_wrapper_ident : &str = #scope_hash ;
-                            #[doc = #mod_docs]
-                            #scope_vis mod #scope_ident {
-                                #(#scope_members)*
-                                #(#special_nesting_members)*
-                            }
-                        }
-                    } else {
+                let compiler = CompilerAdapter::new(config.clone());
+                let css = match compiler.compile_module(ms.syntax.0, &scope.hashed_code) {
+                    Ok(c) => c,
+                    Err(e) => {
                         return syn::Error::new(
-                            Span::call_site(),
-                            "`styly!(const scope...` requires `experimental-const-scoping` feature flag",
+                            ms.code.span,
+                            format!("Could not compile const inline: {e:?}"),
                         )
                         .to_compile_error();
+                    }
+                };
+
+                let const_docs = format!("The compiled CSS style for {} scope", scope_ident);
+                let const_wrapper_ident = syn::parse_str::<Ident>(
+                    format!("{}_CSS", scope_ident.to_string().to_uppercase()).as_str(),
+                )
+                .expect("BUG: We just converted valid Ident to string and uppercased");
+
+                quote! {
+                    #[doc = #const_docs]
+                    #scope_vis const #const_wrapper_ident: &str = #css ;
+                    #[doc = #wrp_docs]
+                    #scope_vis const #scope_wrapper_ident : &str = #scope_hash ;
+                    #[doc = #mod_docs]
+                    #scope_vis mod #scope_ident {
+                        #(#scope_members)*
+                        #(#special_nesting_members)*
                     }
                 }
             } else {

@@ -19,5 +19,4 @@ proc-macro = true
 sabry_procmacro_impl.workspace = true
 
 [features]
-const-compile = ["sabry_procmacro_impl/const-compile"]
 nightly = ["sabry_procmacro_impl/nightly"]

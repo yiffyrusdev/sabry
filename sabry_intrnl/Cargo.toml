@@ -13,21 +13,21 @@ all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
+## Css
+raffia.version = "^0.13"
+sasso.workspace = true
+sasso.optional = true
 base64.workspace = true
-base64.optional = true
-grass.workspace = true
-grass.optional = true
-lightningcss.workspace = true
-lightningcss.optional = true
-raffia.workspace = true
-syn.workspace = true
-
-cfg-if.workspace = true
-serde.workspace = true
-serde.features = ["derive"]
+## Codegen
 thiserror.workspace = true
+syn.workspace = true
+## Manifets seri
+serde.workspace = true
+serde.optional = true
+serde.features = ["derive"]
 toml.workspace = true
+toml.optional = true
 
 [features]
-compile = ["dep:grass", "dep:lightningcss"]
-scope = ["dep:base64"]
+config-manifest = ["dep:toml", "dep:serde"]
+style-compiler = ["dep:sasso"]

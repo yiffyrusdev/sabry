@@ -3,17 +3,17 @@ use std::{
     convert::Infallible,
     fs::{self, OpenOptions},
     io::{self, Write},
-    path::PathBuf,
-    str::FromStr,
     vec,
 };
 
 use sabry_intrnl::{
-    compiler::{CompilerAdapter, SabryCompilerError},
-    config::{manifest::ManifestError, BehavHashCollision, BehavSassModCollision, SabryConfig},
-    scoper::{hash::ScopeHash, ArbitraryScope, ScopeError},
+    conf::{BehavHashCollision, BehavSassModCollision, SabryConfig, manifest::ManifestError},
+    style::{
+        compiler::{CompilerAdapter, SabryCompilerError},
+        scope::{ArbitraryScope, ScopeError, ScopeHash},
+    },
 };
-use sabry_procmacro_impl::impls::{styly, ArbitraryStyleSyntax};
+use sabry_procmacro_impl::impls::{ArbitraryStyleSyntax, styly};
 use walkdir::WalkDir;
 
 use crate::filevisit::{self, FileVisitError};
@@ -71,7 +71,6 @@ pub struct SabryBuilder {
     state: SabryBuildState,
 }
 
-//🧙
 impl SabryBuilder {
     /// Construct new [SabryBuilder] from the config
     ///
@@ -124,42 +123,40 @@ impl SabryBuilder {
     pub fn generate_output(&mut self) -> BuilderResult {
         // warn on empty loaded_css_modules
         if self.state.loaded_css_modules.is_empty() {
-            println!("🧙 sabry didn't compile any CSS. Perhaps the crate has no styles? Lets write some!\nAlso you should check that you do use `styly!` macro properly - at the top level as an item.");
+            println!(
+                "🧙 sabry didn't compile any CSS. Perhaps the crate has no styles? Lets write some!\nAlso you should check that you do use `styly!` macro properly - at the top level as an item."
+            );
         }
 
         if let Some(scope_dir) = &self.config.css.scopes {
-            println!("🧙 writing CSS files for each of loaded scopes into {scope_dir}");
+            println!("🧙 writing CSS files for each of loaded scopes into {scope_dir:?}");
 
             fs::create_dir_all(scope_dir)?;
             for (scope, code) in &self.state.loaded_css_modules {
-                let scope_path = format!("{}/{}.css", scope_dir, scope);
+                let scope_path = scope_dir.join(scope).with_extension("css");
                 fs::write(scope_path, code)?;
             }
         }
 
         if let Some(bundle_file) = &self.config.css.bundle {
-            println!("🧙 writing merged CSS for the entire crate into {bundle_file}");
-
-            let path = PathBuf::from_str(bundle_file)?;
-
-            if let Some(dir) = path.parent() {
+            println!("🧙 writing merged CSS for the entire crate into {bundle_file:?}");
+            if let Some(dir) = bundle_file.parent() {
                 fs::create_dir_all(dir)?;
             }
 
             // remove the file to write new fresh tasty CSS
-            let _ = fs::remove_file(&path);
+            let _ = fs::remove_file(bundle_file);
             // and then reopen it
             let mut file = OpenOptions::new()
                 .create_new(true)
                 .append(true)
-                .open(path)?;
+                .open(bundle_file)?;
 
             // merged bundle CSS does require another lightningcss pass
             let mut buffer = String::new();
             for (_, code) in &self.state.loaded_css_modules {
                 buffer.push_str(code);
             }
-            buffer = self.css_compiler.lightningcss(&buffer)?;
 
             write!(file, "{buffer}")?;
         }
@@ -258,13 +255,12 @@ impl SabryBuilder {
         let mut modules: Vec<StyleModule> = vec![];
         if let Some(sass_mods) = &self.config.sass.modules {
             for pre in sass_mods {
-                let pre_path = PathBuf::from_str(pre)?;
-                let pre_name = pre_path
+                let pre_name = pre
                     .file_name()
                     .ok_or(SabryBuildError::FileName())?
                     .to_string_lossy()
                     .to_string();
-                let code = fs::read_to_string(pre_path)?;
+                let code = fs::read_to_string(pre)?;
                 modules.push((pre_name, code));
             }
         }
@@ -276,9 +272,7 @@ impl SabryBuilder {
         if let Some(sass_pres) = &self.config.sass.prelude {
             let mut sass_preludes: Vec<SassPreludeModule> = vec![];
             for pre in sass_pres {
-                let pre_path = PathBuf::from_str(pre)?;
-
-                let syntax = pre_path
+                let syntax = pre
                     .extension()
                     .unwrap_or_default()
                     .to_str()
@@ -287,23 +281,21 @@ impl SabryBuilder {
                     Ok(s) => s,
                     Err(_) => {
                         return Err(SabryBuildError::Another(format!(
-                            "Unknown syntax for sass prelude {pre}"
-                        )))
+                            "Unknown syntax for sass prelude {pre:?}"
+                        )));
                     }
                 };
 
-                let code = fs::read_to_string(pre_path)?;
+                let code = fs::read_to_string(pre)?;
                 sass_preludes.push(SassPreludeModule { syntax, code });
             }
             self.state.sass_prelude.extend(sass_preludes);
         }
 
         // load css preludes
-        if let Some(css_pre) = &self.config.css.prelude {
-            for pre in css_pre {
-                let code = fs::read_to_string(pre)?;
-                self.state.css_prelude.push_str(&code);
-            }
+        for pre in &self.config.css.prelude {
+            let code = fs::read_to_string(pre)?;
+            self.state.css_prelude.push_str(&code);
         }
 
         Ok(())
@@ -319,9 +311,9 @@ impl SabryBuilder {
     /// This function will not overwrite the module file. Never.
     ///
     pub fn load_side_module(&mut self, name: ModuleName, code: ModuleCode) -> BuilderResult {
-        println!("🧙 loading side module '{}'", &name);
+        println!("🧙 loading side module '{}'", name);
 
-        let module_file_path = format!("{}/{}", &self.config.sass.intermediate_dir, &name);
+        let module_file_path = self.config.sass.intermediate_dir.join(&name);
         let mut open_options = OpenOptions::new();
         let mut open_options = open_options.write(true);
 
@@ -333,10 +325,12 @@ impl SabryBuilder {
         open_options = if self.state.known_side_modules.contains(&name) {
             match &self.config.sass.module_name_collision {
                 BehavSassModCollision::Error => {
-                    return Err(SabryBuildError::ModuleCollision { module: name })
+                    return Err(SabryBuildError::ModuleCollision { module: name });
                 }
                 BehavSassModCollision::Merge => {
-                    println!("🧙 sabry found duplicate module name '{name}': merging code, as configured");
+                    println!(
+                        "🧙 sabry found duplicate module name '{name}': merging code, as configured"
+                    );
                     open_options.append(true)
                 }
             }
@@ -399,7 +393,9 @@ pub enum SabryBuildError {
     FileVisit(#[from] FileVisitError),
     #[error("Syntax of style can not be parsed")]
     SyntaxError(#[from] ScopeError),
-    #[error("Another scope has the same hash, and sabry is configured to raise an error. Try to adjust config, increase hash size, or change the style code")]
+    #[error(
+        "Another scope has the same hash, and sabry is configured to raise an error. Try to adjust config, increase hash size, or change the style code"
+    )]
     HashCollision { scope: ModuleName },
     #[error("Something's wrong with file path")]
     Path(#[from] Infallible),

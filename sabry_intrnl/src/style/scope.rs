@@ -1,14 +1,14 @@
 use std::fmt::Debug;
 
-use hash::ScopeHash;
 use raffia::{
     Span, Spanned,
     ast::{InterpolableIdent, TypeSelector},
 };
 
-use crate::syntax::{StylesheetAdapter, ostrta::OneSyntaxToRuleThemAll};
-
-pub mod hash;
+use crate::{
+    conf::SabryHashConfig,
+    style::syntax::{StylesheetAdapter, SyntaxKind},
+};
 
 #[derive(thiserror::Error)]
 pub enum ScopeError {
@@ -36,7 +36,7 @@ pub struct ArbitraryScope<'s> {
 impl<'s> ArbitraryScope<'s> {
     /// Parse given source code with given syntax and assign given name
     pub fn from_source(
-        syntax: OneSyntaxToRuleThemAll,
+        syntax: SyntaxKind,
         name: syn::Ident,
         source: &'s str,
     ) -> Result<Self, ScopeError> {
@@ -54,11 +54,7 @@ impl<'s> ArbitraryScope<'s> {
     /// Consume arbitrary scope and create a [HashedScope] in its basis
     ///
     /// This function calls [HashedScope::new] under the hood
-    #[cfg(feature = "scope")]
-    pub fn hashed(
-        self,
-        config: &crate::config::SabryHashConfig,
-    ) -> Result<HashedScope<'s>, ScopeError> {
+    pub fn hashed(self, config: &SabryHashConfig) -> Result<HashedScope<'s>, ScopeError> {
         let hash = ScopeHash::new(&self, config);
         HashedScope::new(hash, self)
     }
@@ -309,7 +305,6 @@ impl ScopedSelector {
     }
 
     /// Generate rusty member ident based on selector type and CSS ident
-    #[cfg(feature = "scope")]
     pub fn gen_rusty_ident(&self) -> Option<syn::Ident> {
         let arb = &self.as_arbitrary().ident;
         let basic = sanitize_css_member(arb);
@@ -375,7 +370,6 @@ impl ScopedSelector {
     }
 }
 
-#[cfg(feature = "scope")]
 pub fn sanitize_css_member(source: &str) -> String {
     let mut target = String::with_capacity(source.len() + 1);
 
@@ -417,17 +411,76 @@ pub fn sanitize_css_member(source: &str) -> String {
     target
 }
 
+/// Convenience wrapper for String-being-a-hash
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct ScopeHash(String);
+
+impl ScopeHash {
+    pub fn new(scope: &ArbitraryScope, config: &SabryHashConfig) -> Self {
+        use base64::Engine;
+        use raffia::ast::InterpolableIdent;
+        use std::hash::Hasher;
+
+        let mut hasher = std::hash::DefaultHasher::new();
+
+        if config.use_scope_name {
+            hasher.write(scope.name.to_string().as_bytes());
+        }
+        if config.use_code_text {
+            hasher.write(scope.adapter().source().as_bytes());
+        }
+        if config.use_code_size {
+            hasher.write(&scope.adapter().source().len().to_ne_bytes());
+        }
+        if config.use_item_names {
+            let classes = scope.adapter().class_selectors();
+            let ids = scope.adapter().id_selectors();
+            //# types/tags dont participate
+            //# child-parent dont participate
+
+            let merged_items = classes
+                .iter()
+                .map(|s| &s.name)
+                .chain(ids.iter().map(|i| &i.name))
+                .map(|ident| match ident {
+                    InterpolableIdent::Literal(lit) => Some(lit),
+                    _ => None,
+                })
+                .filter_map(|mbl| mbl.map(|l| l.raw))
+                .collect::<String>();
+
+            hasher.write(merged_items.as_bytes());
+        }
+
+        let hash = hasher.finish().to_be_bytes();
+
+        let hash = base64::prelude::BASE64_URL_SAFE_NO_PAD.encode(hash);
+        let hash = sanitize_css_member(&hash);
+
+        Self(hash)
+    }
+
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+
+    #[cfg(test)]
+    pub fn test_init(v: String) -> Self {
+        Self(v)
+    }
+}
+
 #[cfg(test)]
 mod test {
+    use crate::{
+        conf::SabryHashConfig,
+        style::{scope::HashedScope, syntax::SyntaxKind},
+    };
+
+    use super::ScopeHash;
     use std::collections::HashSet;
 
     use syn::Ident;
-
-    use crate::{
-        config::SabryHashConfig,
-        scoper::{HashedScope, hash::ScopeHash},
-        syntax::ostrta::OneSyntaxToRuleThemAll,
-    };
 
     use super::ArbitraryScope;
 
@@ -446,12 +499,9 @@ mod test {
             "".to_string(), // comes from `div` which has no html hashed code, still want to check presense
         ]);
 
-        let scope = ArbitraryScope::from_source(
-            OneSyntaxToRuleThemAll::Scss,
-            syn::parse_str("scope1").unwrap(),
-            code,
-        )
-        .unwrap();
+        let scope =
+            ArbitraryScope::from_source(SyntaxKind::Scss, syn::parse_str("scope1").unwrap(), code)
+                .unwrap();
         let scope = HashedScope::new(hash, scope).unwrap();
         let scope_selector_htmls = scope
             .hashed_selectors
@@ -495,7 +545,7 @@ mod test {
 
         let hash_cfg = SabryHashConfig::default();
         let scope = ArbitraryScope::from_source(
-            OneSyntaxToRuleThemAll::Scss,
+            SyntaxKind::Scss,
             syn::parse_str::<Ident>("scope2oiej").unwrap(),
             code,
         )
@@ -511,5 +561,28 @@ mod test {
             .collect::<HashSet<_>>();
 
         assert_eq!(expect_ident_names, sels);
+    }
+
+    #[test]
+    fn hash_matches() {
+        let source = ".cls1{color:red; &-dark{color: black} #id1 {color:green;} div {color:blue;}} .cls3#id2{color: black;}";
+
+        let scope1 = ArbitraryScope::from_source(
+            SyntaxKind::Scss,
+            syn::parse_str::<Ident>("lasifudm").unwrap(),
+            source,
+        )
+        .unwrap();
+        let hash1 = ScopeHash::new(&scope1, &SabryHashConfig::default());
+
+        let scope2 = ArbitraryScope::from_source(
+            SyntaxKind::Scss,
+            syn::parse_str::<Ident>("lasifudm").unwrap(),
+            source,
+        )
+        .unwrap();
+        let hash2 = ScopeHash::new(&scope2, &SabryHashConfig::default());
+
+        assert_eq!(hash1, hash2);
     }
 }

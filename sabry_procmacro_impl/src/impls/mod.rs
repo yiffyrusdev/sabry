@@ -3,7 +3,7 @@ use std::{fmt::Debug, fs, path::PathBuf, str::FromStr};
 use proc_macro2::{Span, TokenStream};
 use quote::{ToTokens, TokenStreamExt, quote};
 use regex::Regex;
-use sabry_intrnl::syntax::ostrta::OneSyntaxToRuleThemAll;
+use sabry_intrnl::style::syntax::SyntaxKind;
 use syn::{Ident, LitStr, Token, braced, parse::Parse};
 
 pub mod scssy;
@@ -96,9 +96,9 @@ impl ToString for ArbitraryStyleBlock {
 }
 
 #[derive(Default, Debug, Clone, Copy)]
-pub struct ArbitraryStyleSyntax(OneSyntaxToRuleThemAll);
+pub struct ArbitraryStyleSyntax(SyntaxKind);
 
-impl From<ArbitraryStyleSyntax> for OneSyntaxToRuleThemAll {
+impl From<ArbitraryStyleSyntax> for SyntaxKind {
     fn from(value: ArbitraryStyleSyntax) -> Self {
         value.0
     }
@@ -107,8 +107,9 @@ impl From<ArbitraryStyleSyntax> for OneSyntaxToRuleThemAll {
 impl ToTokens for ArbitraryStyleSyntax {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         match self.0 {
-            OneSyntaxToRuleThemAll::Sass => tokens.append_all(quote! {"sass"}),
-            OneSyntaxToRuleThemAll::Scss => tokens.append_all(quote! {"scss"}),
+            SyntaxKind::Sass => tokens.append_all(quote! {"sass"}),
+            SyntaxKind::Scss => tokens.append_all(quote! {"scss"}),
+            SyntaxKind::Css => tokens.append_all(quote! {"css"}),
         }
     }
 }
@@ -116,7 +117,7 @@ impl ToTokens for ArbitraryStyleSyntax {
 impl TryFrom<&str> for ArbitraryStyleSyntax {
     type Error = ();
     fn try_from(value: &str) -> Result<Self, Self::Error> {
-        Ok(Self(OneSyntaxToRuleThemAll::try_from(value)?))
+        Ok(Self(SyntaxKind::try_from(value)?))
     }
 }
 
